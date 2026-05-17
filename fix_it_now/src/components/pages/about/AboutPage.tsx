@@ -148,4 +148,5 @@ export function AboutPage() {
       <Footer />
     </div>
   );
+  
 }
