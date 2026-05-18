@@ -55,5 +55,4 @@ export function Navbar() {
       )}
     </header>
   );
-  
 }
