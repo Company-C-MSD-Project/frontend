@@ -1,10 +1,9 @@
-// auth-attacher
+//login and start
 import { createMiddleware } from '@tanstack/react-start'
 import { supabase } from './client'
 
 // Must be registered as a global `functionMiddleware` in `src/start.ts`; otherwise
 // the browser never attaches the bearer token to serverFn RPCs.
-// Ask the Supabase client for the current active auth session
 export const attachSupabaseAuth = createMiddleware({ type: 'function' }).client(
   async ({ next }) => {
     const { data } = await supabase.auth.getSession()
