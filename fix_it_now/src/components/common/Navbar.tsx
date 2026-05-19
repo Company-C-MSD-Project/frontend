@@ -8,7 +8,7 @@ export function Navbar() {
   const navLinks = (
     <>
       <Link to="/" onClick={() => setOpen(false)} className="hover:text-foreground transition-colors" activeOptions={{ exact: true }} activeProps={{ className: "text-foreground font-semibold" }}>Home</Link>
-      <Link to="/" hash="services" onClick={() => setOpen(false)} className="hover:text-foreground transition-colors">Services</Link>
+      <Link to="/services" onClick={() => setOpen(false)} className="hover:text-foreground transition-colors" activeProps={{ className: "text-foreground font-semibold" }}>Services</Link>
       <Link to="/news" onClick={() => setOpen(false)} className="hover:text-foreground transition-colors" activeProps={{ className: "text-foreground font-semibold" }}>News</Link>
       <Link to="/about" onClick={() => setOpen(false)} className="hover:text-foreground transition-colors" activeProps={{ className: "text-foreground font-semibold" }}>About Us</Link>
     </>
@@ -28,7 +28,7 @@ export function Navbar() {
 
         <div className="hidden items-center gap-2 md:flex">
           <Link to="/login" className="rounded-full px-3 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors lg:px-4">Sign In</Link>
-          <Link to="/login" className="rounded-full bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground shadow-sm hover:opacity-90 transition-opacity lg:px-4">Sign Up</Link>
+          <Link to="/signup" className="rounded-full bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground shadow-sm hover:opacity-90 transition-opacity lg:px-4">Sign Up</Link>
         </div>
 
         <button
@@ -49,7 +49,7 @@ export function Navbar() {
           </div>
           <div className="mt-4 grid grid-cols-2 gap-2">
             <Link to="/login" onClick={() => setOpen(false)} className="rounded-full border border-border px-4 py-2 text-center text-sm font-medium text-foreground hover:bg-muted transition-colors">Sign In</Link>
-            <Link to="/login" onClick={() => setOpen(false)} className="rounded-full bg-primary px-4 py-2 text-center text-sm font-semibold text-primary-foreground shadow-sm hover:opacity-90 transition-opacity">Sign Up</Link>
+            <Link to="/signup" onClick={() => setOpen(false)} className="rounded-full bg-primary px-4 py-2 text-center text-sm font-semibold text-primary-foreground shadow-sm hover:opacity-90 transition-opacity">Sign Up</Link>
           </div>
         </div>
       )}
