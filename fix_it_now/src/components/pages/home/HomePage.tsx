@@ -12,14 +12,14 @@ import welder from "@/assets/cover/service-welder.jpg";
 import cleaner from "@/assets/cover/service-cleaner.jpg";
 
 const services = [
-  { name: "Electrician", img: electrician, desc: "Wiring, repairs, installations." },
-  { name: "Mason", img: mason, desc: "Brickwork, plastering, tiling." },
-  { name: "Plumber", img: plumber, desc: "Leaks, pipes, fixtures." },
-  { name: "Carpenter", img: carpenter, desc: "Furniture, doors, custom builds." },
-  { name: "Painter", img: painter, desc: "Interior & exterior painting." },
-  { name: "HVAC Tech", img: hvac, desc: "AC service & installation." },
-  { name: "Welder", img: welder, desc: "Gates, grills, metalwork." },
-  { name: "Cleaner", img: cleaner, desc: "Deep & routine home cleaning." },
+  { id: "electrician", name: "Electrician", img: electrician, desc: "Wiring, repairs, installations." },
+  { id: "mason", name: "Mason", img: mason, desc: "Brickwork, plastering, tiling." },
+  { id: "plumber", name: "Plumber", img: plumber, desc: "Leaks, pipes, fixtures." },
+  { id: "carpenter", name: "Carpenter", img: carpenter, desc: "Furniture, doors, custom builds." },
+  { id: "painter", name: "Painter", img: painter, desc: "Interior & exterior painting." },
+  { id: "hvac", name: "HVAC Tech", img: hvac, desc: "AC service & installation." },
+  { id: "welder", name: "Welder", img: welder, desc: "Gates, grills, metalwork." },
+  { id: "cleaner", name: "Cleaner", img: cleaner, desc: "Deep & routine home cleaning." },
 ];
 
 export function HomePage() {
@@ -50,9 +50,9 @@ function Hero() {
             carpenters and more. Book in minutes. Pay on completion. Backed by our service guarantee.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href="#services" className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-md hover:opacity-90 transition-opacity">
+            <Link to="/services" className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-md hover:opacity-90 transition-opacity">
               Browse services <ArrowRight className="h-4 w-4" />
-            </a>
+            </Link>
             <Link to="/login" className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground hover:bg-muted transition-colors">
               Get started free
             </Link>
@@ -96,11 +96,16 @@ function Services() {
             <p className="text-xs font-semibold uppercase tracking-widest text-primary">Our services</p>
             <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Find the right pro for any job</h2>
           </div>
-          <a href="#" className="hidden text-sm font-medium text-primary hover:underline sm:inline">View all →</a>
+          <Link to="/services" className="hidden text-sm font-medium text-primary hover:underline sm:inline">View all →</Link>
         </div>
         <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
           {services.map((s) => (
-            <div key={s.name} className="group overflow-hidden rounded-2xl border border-border bg-card transition-all hover:shadow-lg">
+            <Link
+              key={s.id}
+              to="/services/$serviceId"
+              params={{ serviceId: s.id }}
+              className="group overflow-hidden rounded-2xl border border-border bg-card transition-all hover:shadow-lg"
+            >
               <div className="relative aspect-[4/3] overflow-hidden">
                 <img
                   src={s.img}
@@ -117,7 +122,7 @@ function Services() {
               <div className="p-4">
                 <p className="text-sm text-muted-foreground">{s.desc}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
