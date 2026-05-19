@@ -1,0 +1,355 @@
+
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as NewsRouteImport } from './routes/news'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as InsightsRouteImport } from './routes/insights'
+import { Route as AppRouteImport } from './routes/app'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as ServicesIndexRouteImport } from './routes/services.index'
+import { Route as ServicesServiceIdRouteImport } from './routes/services.$serviceId'
+import { Route as DashboardProviderRouteImport } from './routes/dashboard.provider'
+import { Route as DashboardHomeownerRouteImport } from './routes/dashboard.homeowner'
+import { Route as DashboardAdminRouteImport } from './routes/dashboard.admin'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsRoute = NewsRouteImport.update({
+  id: '/news',
+  path: '/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsightsRoute = InsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesIndexRoute = ServicesIndexRouteImport.update({
+  id: '/services/',
+  path: '/services/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesServiceIdRoute = ServicesServiceIdRouteImport.update({
+  id: '/$serviceId',
+  path: '/$serviceId',
+  getParentRoute: () => ServicesRoute,
+} as any)
+const DashboardProviderRoute = DashboardProviderRouteImport.update({
+  id: '/dashboard/provider',
+  path: '/dashboard/provider',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardHomeownerRoute = DashboardHomeownerRouteImport.update({
+  id: '/dashboard/homeowner',
+  path: '/dashboard/homeowner',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardAdminRoute = DashboardAdminRouteImport.update({
+  id: '/dashboard/admin',
+  path: '/dashboard/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+
+export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/app': typeof AppRoute
+  '/insights': typeof InsightsRoute
+  '/login': typeof LoginRoute
+  '/news': typeof NewsRoute
+  '/profile': typeof ProfileRoute
+  '/settings': typeof SettingsRoute
+  '/signup': typeof SignupRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/dashboard/admin': typeof DashboardAdminRoute
+  '/dashboard/homeowner': typeof DashboardHomeownerRoute
+  '/dashboard/provider': typeof DashboardProviderRoute
+  '/services/$serviceId': typeof ServicesServiceIdRoute
+  '/services/': typeof ServicesIndexRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/app': typeof AppRoute
+  '/insights': typeof InsightsRoute
+  '/login': typeof LoginRoute
+  '/news': typeof NewsRoute
+  '/profile': typeof ProfileRoute
+  '/settings': typeof SettingsRoute
+  '/signup': typeof SignupRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/dashboard/admin': typeof DashboardAdminRoute
+  '/dashboard/homeowner': typeof DashboardHomeownerRoute
+  '/dashboard/provider': typeof DashboardProviderRoute
+  '/services/$serviceId': typeof ServicesServiceIdRoute
+  '/services': typeof ServicesIndexRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/app': typeof AppRoute
+  '/insights': typeof InsightsRoute
+  '/login': typeof LoginRoute
+  '/news': typeof NewsRoute
+  '/profile': typeof ProfileRoute
+  '/settings': typeof SettingsRoute
+  '/signup': typeof SignupRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/dashboard/admin': typeof DashboardAdminRoute
+  '/dashboard/homeowner': typeof DashboardHomeownerRoute
+  '/dashboard/provider': typeof DashboardProviderRoute
+  '/services/$serviceId': typeof ServicesServiceIdRoute
+  '/services/': typeof ServicesIndexRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/app'
+    | '/insights'
+    | '/login'
+    | '/news'
+    | '/profile'
+    | '/settings'
+    | '/signup'
+    | '/admin/login'
+    | '/dashboard/admin'
+    | '/dashboard/homeowner'
+    | '/dashboard/provider'
+    | '/services/$serviceId'
+    | '/services/'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/about'
+    | '/app'
+    | '/insights'
+    | '/login'
+    | '/news'
+    | '/profile'
+    | '/settings'
+    | '/signup'
+    | '/admin/login'
+    | '/dashboard/admin'
+    | '/dashboard/homeowner'
+    | '/dashboard/provider'
+    | '/services/$serviceId'
+    | '/services'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/app'
+    | '/insights'
+    | '/login'
+    | '/news'
+    | '/profile'
+    | '/settings'
+    | '/signup'
+    | '/admin/login'
+    | '/dashboard/admin'
+    | '/dashboard/homeowner'
+    | '/dashboard/provider'
+    | '/services/$serviceId'
+    | '/services/'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  AppRoute: typeof AppRoute
+  InsightsRoute: typeof InsightsRoute
+  LoginRoute: typeof LoginRoute
+  NewsRoute: typeof NewsRoute
+  ProfileRoute: typeof ProfileRoute
+  SettingsRoute: typeof SettingsRoute
+  SignupRoute: typeof SignupRoute
+  AdminLoginRoute: typeof AdminLoginRoute
+  DashboardAdminRoute: typeof DashboardAdminRoute
+  DashboardHomeownerRoute: typeof DashboardHomeownerRoute
+  DashboardProviderRoute: typeof DashboardProviderRoute
+  ServicesIndexRoute: typeof ServicesIndexRoute
+}
+
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news': {
+      id: '/news'
+      path: '/news'
+      fullPath: '/news'
+      preLoaderRoute: typeof NewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insights': {
+      id: '/insights'
+      path: '/insights'
+      fullPath: '/insights'
+      preLoaderRoute: typeof InsightsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/': {
+      id: '/services/'
+      path: '/services'
+      fullPath: '/services/'
+      preLoaderRoute: typeof ServicesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/$serviceId': {
+      id: '/services/$serviceId'
+      path: '/$serviceId'
+      fullPath: '/services/$serviceId'
+      preLoaderRoute: typeof ServicesServiceIdRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/dashboard/provider': {
+      id: '/dashboard/provider'
+      path: '/dashboard/provider'
+      fullPath: '/dashboard/provider'
+      preLoaderRoute: typeof DashboardProviderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/homeowner': {
+      id: '/dashboard/homeowner'
+      path: '/dashboard/homeowner'
+      fullPath: '/dashboard/homeowner'
+      preLoaderRoute: typeof DashboardHomeownerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/admin': {
+      id: '/dashboard/admin'
+      path: '/dashboard/admin'
+      fullPath: '/dashboard/admin'
+      preLoaderRoute: typeof DashboardAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+  }
+}
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  AppRoute: AppRoute,
+  InsightsRoute: InsightsRoute,
+  LoginRoute: LoginRoute,
+  NewsRoute: NewsRoute,
+  ProfileRoute: ProfileRoute,
+  SettingsRoute: SettingsRoute,
+  SignupRoute: SignupRoute,
+  AdminLoginRoute: AdminLoginRoute,
+  DashboardAdminRoute: DashboardAdminRoute,
+  DashboardHomeownerRoute: DashboardHomeownerRoute,
+  DashboardProviderRoute: DashboardProviderRoute,
+  ServicesIndexRoute: ServicesIndexRoute,
+}
+export const routeTree = rootRouteImport
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
