@@ -1,43 +1,45 @@
 import { Link, useParams } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { ChevronRight, Search, MapPin, Star, Shield, CheckCircle2, Zap, Clock, ChevronDown } from "lucide-react";
+import { ChevronRight, Search, MapPin, Star, Shield, CheckCircle2, Clock, ChevronDown } from "lucide-react";
 import { Navbar } from "@/components/common/Navbar";
 import { Footer } from "@/components/common/Footer";
-import { getService } from "@/lib/services-data";
+import { getSubService } from "@/lib/services-data";
 
 const DISTRICTS = ["Colombo", "Gampaha", "Kalutara", "Kandy", "Galle", "Negombo"];
 const TIMES = ["Morning (8 AM – 12 PM)", "Afternoon (12 PM – 4 PM)", "Evening (4 PM – 8 PM)", "ASAP"];
 
-export function ServiceDetailPage() {
-  const { serviceId } = useParams({ from: "/services/$serviceId/" });
-  const service = getService(serviceId);
+export function SubServiceDetailPage() {
+  const { serviceId, subServiceId } = useParams({ from: "/services/$serviceId/$subServiceId" });
+  const data = getSubService(serviceId, subServiceId);
 
   const [filter, setFilter] = useState("all");
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
-    if (!service) return [];
-    return service.providers.filter((p) => {
+    if (!data) return [];
+    return data.service.providers.filter((p) => {
       if (query && !`${p.name} ${p.title}`.toLowerCase().includes(query.toLowerCase())) return false;
       if (filter === "rated" && !p.topRated) return false;
       if (filter === "available" && !p.availability.toLowerCase().includes("available")) return false;
       return true;
     });
-  }, [service, filter, query]);
+  }, [data, filter, query]);
 
-  if (!service) {
+  if (!data) {
     return (
       <div className="min-h-screen bg-background text-foreground">
         <Navbar />
         <div className="mx-auto max-w-6xl px-5 py-24 text-center">
-          <h1 className="text-2xl font-semibold">Service not found</h1>
+          <h1 className="text-2xl font-semibold">Sub-service not found</h1>
           <Link to="/services" className="mt-4 inline-block text-primary hover:underline">Back to services →</Link>
         </div>
         <Footer />
       </div>
     );
   }
+
+  const { service, sub } = data;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -55,27 +57,29 @@ export function ServiceDetailPage() {
             <ChevronRight className="h-3 w-3" />
             <Link to="/services" className="hover:text-background">Services</Link>
             <ChevronRight className="h-3 w-3" />
-            <span className="text-background">{service.name}</span>
+            <Link to="/services/$serviceId" params={{ serviceId }} className="hover:text-background">{service.name}</Link>
+            <ChevronRight className="h-3 w-3" />
+            <span className="text-background">{sub.name}</span>
           </nav>
 
           <div className="mt-6 grid gap-8 sm:grid-cols-[1fr_auto] sm:items-end">
             <div>
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-background/15 text-3xl backdrop-blur">
-                {service.emoji}
+                {sub.emoji}
               </div>
-              <h1 className="mt-5 text-3xl font-bold tracking-tight sm:text-5xl">{service.name} Services</h1>
+              <h1 className="mt-5 text-3xl font-bold tracking-tight sm:text-5xl">{sub.name}</h1>
+              <p className="mt-3 max-w-2xl text-sm text-background/85 sm:text-base">{sub.description}</p>
               <div className="mt-4 flex flex-wrap items-center gap-2 text-xs">
-                <span className="inline-flex items-center gap-1 rounded-full bg-background/15 px-3 py-1 font-semibold backdrop-blur"><Star className="h-3 w-3 fill-current" /> Top Category</span>
-                <span className="inline-flex items-center gap-1 rounded-full bg-background/15 px-3 py-1 font-semibold backdrop-blur">✓ {service.totalSpecialists.toLocaleString()}+ Specialists</span>
+                <span className="inline-flex items-center gap-1 rounded-full bg-background/15 px-3 py-1 font-semibold backdrop-blur">✓ Verified Specialists</span>
                 <span className="opacity-90">{service.avgRating} avg. rating</span>
                 <span className="opacity-50">·</span>
-                <span className="opacity-90">{service.jobsDone.toLocaleString()}+ jobs done</span>
+                <span className="opacity-90">Response {service.avgResponse}</span>
               </div>
             </div>
 
             <div className="rounded-2xl bg-background/95 p-5 text-foreground shadow-xl backdrop-blur sm:min-w-[240px]">
               <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Starting From</p>
-              <p className="mt-1.5 text-3xl font-bold">Rs. {service.startingPrice.toLocaleString()} <span className="text-sm font-medium text-muted-foreground">/service</span></p>
+              <p className="mt-1.5 text-3xl font-bold">Rs. {sub.priceFrom.toLocaleString()} <span className="text-sm font-medium text-muted-foreground">onwards</span></p>
               <button className="mt-4 w-full rounded-xl bg-primary py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90 transition-opacity">Book Now →</button>
             </div>
           </div>
@@ -85,31 +89,25 @@ export function ServiceDetailPage() {
       {/* Main */}
       <section className="mx-auto max-w-6xl px-5 py-12">
         <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
-          {/* Left */}
           <div className="space-y-10">
-            {/* Sub-services */}
+            {/* What's included */}
             <div>
-              <h2 className="mb-5 text-xs font-bold uppercase tracking-wider text-primary">{service.name} Sub-Services</h2>
-              <div className="grid gap-4 sm:grid-cols-2">
-                {service.subServices.map((s) => (
-                  <Link
-                    key={s.id}
-                    to="/services/$serviceId/$subServiceId"
-                    params={{ serviceId: service.id, subServiceId: s.id }}
-                    className="rounded-2xl border border-border bg-card p-5 text-left transition-all hover:border-primary/50 hover:shadow-md"
-                  >
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-xl">{s.emoji}</div>
-                    <p className="mt-3 font-semibold">{s.name}</p>
-                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{s.description}</p>
-                    <p className="mt-3 text-sm"><span className="font-bold text-primary">Rs. {s.priceFrom.toLocaleString()}</span> <span className="text-xs text-muted-foreground">onwards</span></p>
-                  </Link>
+              <h2 className="mb-5 text-xs font-bold uppercase tracking-wider text-primary">What's Included</h2>
+              <ul className="grid gap-3 sm:grid-cols-2">
+                {service.included.map((item) => (
+                  <li key={item} className="flex items-start gap-3 rounded-2xl border border-border bg-card p-4">
+                    <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md bg-primary/15 text-primary">
+                      <CheckCircle2 className="h-3.5 w-3.5" />
+                    </span>
+                    <span className="text-sm">{item}</span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
 
             {/* Providers */}
             <div>
-              <h2 className="mb-4 text-xs font-bold uppercase tracking-wider text-primary">Available {service.name === "Plumbing" ? "Plumbers" : "Specialists"} Near You</h2>
+              <h2 className="mb-4 text-xs font-bold uppercase tracking-wider text-primary">Available Specialists For {sub.name}</h2>
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                 <div className="relative flex-1">
@@ -188,14 +186,9 @@ export function ServiceDetailPage() {
           <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
             <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
               <p className="flex items-center gap-2 text-sm font-bold">
-                <span className="text-base">🛠️</span> Quick Book a {service.name === "Plumbing" ? "Plumber" : "Specialist"}
+                <span className="text-base">🛠️</span> Quick Book {sub.name}
               </p>
               <div className="mt-4 space-y-3">
-                <Field label="Service Type">
-                  <select className={inputCls}>
-                    {service.subServices.map((s) => <option key={s.id}>{s.name}</option>)}
-                  </select>
-                </Field>
                 <Field label="Preferred Date">
                   <input type="date" className={inputCls} />
                 </Field>

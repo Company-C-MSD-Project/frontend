@@ -1,7 +1,6 @@
 import { Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { useState } from "react";
-import { Home as HomeIcon, Wrench, Upload, User as UserIcon, Eye, EyeOff, AlertCircle } from "lucide-react";
-import { Navbar } from "@/components/common/Navbar";
+import { Home as HomeIcon, Wrench, Upload, User as UserIcon, Eye, EyeOff, AlertCircle, ChevronLeft } from "lucide-react";
 import { Footer } from "@/components/common/Footer";
 import { toast } from "sonner";
 import { setRole, dashboardPathFor } from "@/lib/role";
@@ -27,13 +26,21 @@ export function SignupPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Navbar />
-      <main className="mx-auto max-w-3xl px-4 py-10 sm:py-14">
-        <div className="text-center">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
+      <div className="relative overflow-hidden bg-gradient-to-br from-accent/50 via-background to-primary/15 px-5 pt-8 pb-16">
+        <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-accent/40 blur-3xl" />
+        <Link to="/" className="relative inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <ChevronLeft className="h-4 w-4" /> Back to Home
+        </Link>
+        <div className="relative mx-auto mt-8 max-w-3xl text-center">
+          <div className="flex items-center justify-center gap-2">
+            <Wrench className="h-7 w-7 text-primary" strokeWidth={2.5} />
+            <span className="text-2xl font-bold tracking-tight text-foreground">FixItNow</span>
+          </div>
+          <span className="mt-5 inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-card/80 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary shadow-sm backdrop-blur">
             {role === "homeowner" ? <><UserIcon className="h-3.5 w-3.5" /> Create Account</> : <><Wrench className="h-3.5 w-3.5" /> Join as Pro</>}
           </span>
-          <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+          <h1 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             {role === "homeowner" ? "Join as a Homeowner" : "Register as a Service Provider"}
           </h1>
           <p className="mt-2 text-sm text-muted-foreground sm:text-base">
@@ -42,9 +49,12 @@ export function SignupPage() {
               : "Grow your business and connect with thousands of homeowners across Sri Lanka."}
           </p>
         </div>
+      </div>
 
+
+      <main className="mx-auto -mt-10 max-w-3xl px-4 pb-14">
         {/* Role tabs */}
-        <div className="mx-auto mt-6 grid max-w-xl grid-cols-2 gap-3">
+        <div className="mx-auto grid max-w-xl grid-cols-2 gap-3">
           {[
             { v: "homeowner" as const, label: "Homeowner", Icon: HomeIcon },
             { v: "provider" as const, label: "Service Provider", Icon: Wrench },
