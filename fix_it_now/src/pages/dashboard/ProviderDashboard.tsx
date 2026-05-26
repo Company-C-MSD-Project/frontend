@@ -1,8 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Wrench, Calendar, DollarSign, Star, TrendingUp, Bell } from "lucide-react";
-import { Footer } from "@/components/common/Footer";
-
-
+import { Bell, Wrench, Calendar, DollarSign, Star, TrendingUp } from "lucide-react";
 
 export function ProviderDashboard() {
   const jobs = [
@@ -13,11 +10,11 @@ export function ProviderDashboard() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="sticky top-0 z-30 border-b border-border bg-card/95 backdrop-blur">
+      <header className="border-b border-border bg-card">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3">
           <Link to="/" className="flex items-center gap-2">
-            <Wrench className="h-5 w-5 text-primary sm:h-6 sm:w-6" strokeWidth={2.5} />
-            <span className="text-base font-bold tracking-tight sm:text-lg">FixItNow</span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">FN</div>
+            <span className="font-bold">FixItNow · Pro</span>
           </Link>
           <nav className="hidden gap-6 text-sm text-muted-foreground md:flex">
             <a href="#" className="font-medium text-foreground">Dashboard</a>
@@ -31,8 +28,6 @@ export function ProviderDashboard() {
           </div>
         </div>
       </header>
-
-
 
       <main className="mx-auto max-w-6xl px-5 py-8">
         <div>
@@ -102,7 +97,6 @@ export function ProviderDashboard() {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

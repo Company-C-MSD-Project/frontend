@@ -1,7 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ShieldCheck, BarChart3, Wallet, Settings, LifeBuoy, LogOut, LayoutDashboard, Trash2 } from "lucide-react";
-import { Navbar } from "@/components/common/Navbar";
-import { Footer } from "@/components/common/Footer";
+import { Bell, ShieldCheck, BarChart3, Wallet, Settings, LifeBuoy, LogOut, LayoutDashboard, Trash2 } from "lucide-react";
 
 export const Route = createFileRoute("/profile")({
   component: ProfilePage,
@@ -10,8 +8,30 @@ export const Route = createFileRoute("/profile")({
 function ProfilePage() {
   return (
     <div className="min-h-screen bg-muted/40 text-foreground">
-      <Navbar />
-
+      {/* Top bar */}
+      <header className="border-b border-border bg-card">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3">
+          <Link to="/" className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">FN</div>
+            <span className="font-bold">FixItNow Ultra-Suite</span>
+          </Link>
+          <nav className="hidden gap-6 text-sm text-muted-foreground md:flex">
+            <Link to="/services" className="hover:text-foreground">Find Services</Link>
+            <a href="#" className="hover:text-foreground">My Wallet</a>
+            <a href="#" className="hover:text-foreground">Go Gold</a>
+          </nav>
+          <div className="flex items-center gap-3">
+            <button className="rounded-full p-2 hover:bg-muted"><Bell className="h-5 w-5 text-muted-foreground" /></button>
+            <div className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">AJ</div>
+              <div className="hidden text-right sm:block">
+                <p className="text-xs font-semibold leading-tight">Alex Johnson</p>
+                <p className="text-[10px] text-muted-foreground leading-tight">Premium Member</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
 
       <div className="mx-auto grid max-w-7xl gap-6 px-5 py-6 lg:grid-cols-[210px_1fr]">
         {/* Side nav */}
@@ -129,7 +149,6 @@ function ProfilePage() {
           </div>
         </main>
       </div>
-      <Footer />
     </div>
   );
 }
