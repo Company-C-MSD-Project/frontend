@@ -22,9 +22,11 @@ import { Route as DashboardProviderRouteImport } from './routes/dashboard.provid
 import { Route as DashboardHomeownerRouteImport } from './routes/dashboard.homeowner'
 import { Route as DashboardAdminRouteImport } from './routes/dashboard.admin'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as UsernameBookRouteImport } from './routes/$username.book'
 import { Route as ServicesServiceIdIndexRouteImport } from './routes/services.$serviceId.index'
 import { Route as ServicesServiceIdSubServiceIdRouteImport } from './routes/services.$serviceId.$subServiceId'
 import { Route as AuthenticatedUsernameProfileRouteImport } from './routes/_authenticated.$username.profile'
+import { Route as AuthenticatedUsernameJobsRouteImport } from './routes/_authenticated.$username.jobs'
 import { Route as AuthenticatedUsernameDashboardRouteImport } from './routes/_authenticated.$username.dashboard'
 
 const SignupRoute = SignupRouteImport.update({
@@ -91,6 +93,11 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/admin/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UsernameBookRoute = UsernameBookRouteImport.update({
+  id: '/$username/book',
+  path: '/$username/book',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesServiceIdIndexRoute = ServicesServiceIdIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -108,6 +115,12 @@ const AuthenticatedUsernameProfileRoute =
     path: '/$username/profile',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedUsernameJobsRoute =
+  AuthenticatedUsernameJobsRouteImport.update({
+    id: '/$username/jobs',
+    path: '/$username/jobs',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedUsernameDashboardRoute =
   AuthenticatedUsernameDashboardRouteImport.update({
     id: '/$username/dashboard',
@@ -122,6 +135,7 @@ export interface FileRoutesByFullPath {
   '/news': typeof NewsRoute
   '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
+  '/$username/book': typeof UsernameBookRoute
   '/admin/login': typeof AdminLoginRoute
   '/dashboard/admin': typeof DashboardAdminRoute
   '/dashboard/homeowner': typeof DashboardHomeownerRoute
@@ -129,6 +143,7 @@ export interface FileRoutesByFullPath {
   '/services/$serviceId': typeof ServicesServiceIdRouteWithChildren
   '/services/': typeof ServicesIndexRoute
   '/$username/dashboard': typeof AuthenticatedUsernameDashboardRoute
+  '/$username/jobs': typeof AuthenticatedUsernameJobsRoute
   '/$username/profile': typeof AuthenticatedUsernameProfileRoute
   '/services/$serviceId/$subServiceId': typeof ServicesServiceIdSubServiceIdRoute
   '/services/$serviceId/': typeof ServicesServiceIdIndexRoute
@@ -140,12 +155,14 @@ export interface FileRoutesByTo {
   '/news': typeof NewsRoute
   '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
+  '/$username/book': typeof UsernameBookRoute
   '/admin/login': typeof AdminLoginRoute
   '/dashboard/admin': typeof DashboardAdminRoute
   '/dashboard/homeowner': typeof DashboardHomeownerRoute
   '/dashboard/provider': typeof DashboardProviderRoute
   '/services': typeof ServicesIndexRoute
   '/$username/dashboard': typeof AuthenticatedUsernameDashboardRoute
+  '/$username/jobs': typeof AuthenticatedUsernameJobsRoute
   '/$username/profile': typeof AuthenticatedUsernameProfileRoute
   '/services/$serviceId/$subServiceId': typeof ServicesServiceIdSubServiceIdRoute
   '/services/$serviceId': typeof ServicesServiceIdIndexRoute
@@ -159,6 +176,7 @@ export interface FileRoutesById {
   '/news': typeof NewsRoute
   '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
+  '/$username/book': typeof UsernameBookRoute
   '/admin/login': typeof AdminLoginRoute
   '/dashboard/admin': typeof DashboardAdminRoute
   '/dashboard/homeowner': typeof DashboardHomeownerRoute
@@ -166,6 +184,7 @@ export interface FileRoutesById {
   '/services/$serviceId': typeof ServicesServiceIdRouteWithChildren
   '/services/': typeof ServicesIndexRoute
   '/_authenticated/$username/dashboard': typeof AuthenticatedUsernameDashboardRoute
+  '/_authenticated/$username/jobs': typeof AuthenticatedUsernameJobsRoute
   '/_authenticated/$username/profile': typeof AuthenticatedUsernameProfileRoute
   '/services/$serviceId/$subServiceId': typeof ServicesServiceIdSubServiceIdRoute
   '/services/$serviceId/': typeof ServicesServiceIdIndexRoute
@@ -179,6 +198,7 @@ export interface FileRouteTypes {
     | '/news'
     | '/profile'
     | '/signup'
+    | '/$username/book'
     | '/admin/login'
     | '/dashboard/admin'
     | '/dashboard/homeowner'
@@ -186,6 +206,7 @@ export interface FileRouteTypes {
     | '/services/$serviceId'
     | '/services/'
     | '/$username/dashboard'
+    | '/$username/jobs'
     | '/$username/profile'
     | '/services/$serviceId/$subServiceId'
     | '/services/$serviceId/'
@@ -197,12 +218,14 @@ export interface FileRouteTypes {
     | '/news'
     | '/profile'
     | '/signup'
+    | '/$username/book'
     | '/admin/login'
     | '/dashboard/admin'
     | '/dashboard/homeowner'
     | '/dashboard/provider'
     | '/services'
     | '/$username/dashboard'
+    | '/$username/jobs'
     | '/$username/profile'
     | '/services/$serviceId/$subServiceId'
     | '/services/$serviceId'
@@ -215,6 +238,7 @@ export interface FileRouteTypes {
     | '/news'
     | '/profile'
     | '/signup'
+    | '/$username/book'
     | '/admin/login'
     | '/dashboard/admin'
     | '/dashboard/homeowner'
@@ -222,6 +246,7 @@ export interface FileRouteTypes {
     | '/services/$serviceId'
     | '/services/'
     | '/_authenticated/$username/dashboard'
+    | '/_authenticated/$username/jobs'
     | '/_authenticated/$username/profile'
     | '/services/$serviceId/$subServiceId'
     | '/services/$serviceId/'
@@ -235,6 +260,7 @@ export interface RootRouteChildren {
   NewsRoute: typeof NewsRoute
   ProfileRoute: typeof ProfileRoute
   SignupRoute: typeof SignupRoute
+  UsernameBookRoute: typeof UsernameBookRoute
   AdminLoginRoute: typeof AdminLoginRoute
   DashboardAdminRoute: typeof DashboardAdminRoute
   DashboardHomeownerRoute: typeof DashboardHomeownerRoute
@@ -336,6 +362,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$username/book': {
+      id: '/$username/book'
+      path: '/$username/book'
+      fullPath: '/$username/book'
+      preLoaderRoute: typeof UsernameBookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services/$serviceId/': {
       id: '/services/$serviceId/'
       path: '/'
@@ -357,6 +390,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedUsernameProfileRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/$username/jobs': {
+      id: '/_authenticated/$username/jobs'
+      path: '/$username/jobs'
+      fullPath: '/$username/jobs'
+      preLoaderRoute: typeof AuthenticatedUsernameJobsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/$username/dashboard': {
       id: '/_authenticated/$username/dashboard'
       path: '/$username/dashboard'
@@ -369,11 +409,13 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteChildren {
   AuthenticatedUsernameDashboardRoute: typeof AuthenticatedUsernameDashboardRoute
+  AuthenticatedUsernameJobsRoute: typeof AuthenticatedUsernameJobsRoute
   AuthenticatedUsernameProfileRoute: typeof AuthenticatedUsernameProfileRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedUsernameDashboardRoute: AuthenticatedUsernameDashboardRoute,
+  AuthenticatedUsernameJobsRoute: AuthenticatedUsernameJobsRoute,
   AuthenticatedUsernameProfileRoute: AuthenticatedUsernameProfileRoute,
 }
 
@@ -402,6 +444,7 @@ const rootRouteChildren: RootRouteChildren = {
   NewsRoute: NewsRoute,
   ProfileRoute: ProfileRoute,
   SignupRoute: SignupRoute,
+  UsernameBookRoute: UsernameBookRoute,
   AdminLoginRoute: AdminLoginRoute,
   DashboardAdminRoute: DashboardAdminRoute,
   DashboardHomeownerRoute: DashboardHomeownerRoute,
