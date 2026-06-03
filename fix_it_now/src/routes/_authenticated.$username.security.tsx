@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { HomeownerDashboard } from "@/pages/dashboard/HomeownerDashboard";
+import { AdminSecurityPage } from "@/pages/admin/AdminSecurityPage";
 import { useCurrentUser } from "@/hooks/use-current-user";
 
 export const Route = createFileRoute("/_authenticated/$username/security")({
@@ -18,5 +19,6 @@ function SecurityRoute() {
   }, [loading, profile, username, navigate]);
   if (loading || !profile) return <div className="flex min-h-screen items-center justify-center text-sm text-muted-foreground">Loading…</div>;
   if (profile.username.toLowerCase() !== username.toLowerCase()) return null;
+  if (profile.role === "admin") return <AdminSecurityPage />;
   return <HomeownerDashboard initialTab="security" />;
 }
