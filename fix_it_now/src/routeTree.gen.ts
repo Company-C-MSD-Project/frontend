@@ -29,18 +29,31 @@ import { Route as UsernameBookRouteImport } from './routes/$username.book'
 import { Route as ServicesServiceIdIndexRouteImport } from './routes/services.$serviceId.index'
 import { Route as ServicesServiceIdSubServiceIdRouteImport } from './routes/services.$serviceId.$subServiceId'
 import { Route as AuthenticatedUsernameWalletRouteImport } from './routes/_authenticated.$username.wallet'
+import { Route as AuthenticatedUsernameSystemHealthRouteImport } from './routes/_authenticated.$username.system-health'
 import { Route as AuthenticatedUsernameSecurityRouteImport } from './routes/_authenticated.$username.security'
 import { Route as AuthenticatedUsernameReviewsRouteImport } from './routes/_authenticated.$username.reviews'
 import { Route as AuthenticatedUsernameProfileRouteImport } from './routes/_authenticated.$username.profile'
 import { Route as AuthenticatedUsernamePastBookingsRouteImport } from './routes/_authenticated.$username.past-bookings'
+import { Route as AuthenticatedUsernameOverviewRouteImport } from './routes/_authenticated.$username.overview'
 import { Route as AuthenticatedUsernameNewJobsRouteImport } from './routes/_authenticated.$username.new-jobs'
 import { Route as AuthenticatedUsernameJobsBookingsRouteImport } from './routes/_authenticated.$username.jobs-bookings'
 import { Route as AuthenticatedUsernameJobsRouteImport } from './routes/_authenticated.$username.jobs'
 import { Route as AuthenticatedUsernameDashboardRouteImport } from './routes/_authenticated.$username.dashboard'
 import { Route as AuthenticatedUsernameActiveBookingsRouteImport } from './routes/_authenticated.$username.active-bookings'
+import { Route as AuthenticatedUsernameUpdateNewsIndexRouteImport } from './routes/_authenticated.$username.update-news.index'
+import { Route as AuthenticatedUsernameProvidersIndexRouteImport } from './routes/_authenticated.$username.providers.index'
+import { Route as AuthenticatedUsernameProviderRequestIndexRouteImport } from './routes/_authenticated.$username.provider-request.index'
 import { Route as AuthenticatedUsernameMyservicesIndexRouteImport } from './routes/_authenticated.$username.myservices.index'
+import { Route as AuthenticatedUsernameHomeownersIndexRouteImport } from './routes/_authenticated.$username.homeowners.index'
+import { Route as AuthenticatedUsernameCategoryRequestIndexRouteImport } from './routes/_authenticated.$username.category-request.index'
+import { Route as AuthenticatedUsernameUpdateNewsNewRouteImport } from './routes/_authenticated.$username.update-news.new'
+import { Route as AuthenticatedUsernameProvidersIdRouteImport } from './routes/_authenticated.$username.providers.$id'
+import { Route as AuthenticatedUsernameProviderRequestIdRouteImport } from './routes/_authenticated.$username.provider-request.$id'
 import { Route as AuthenticatedUsernameMyservicesNewRouteImport } from './routes/_authenticated.$username.myservices.new'
 import { Route as AuthenticatedUsernameMyservicesCardIdRouteImport } from './routes/_authenticated.$username.myservices.$cardId'
+import { Route as AuthenticatedUsernameHomeownersIdRouteImport } from './routes/_authenticated.$username.homeowners.$id'
+import { Route as AuthenticatedUsernameCategoryRequestIdRouteImport } from './routes/_authenticated.$username.category-request.$id'
+import { Route as AuthenticatedUsernameUpdateNewsIdEditRouteImport } from './routes/_authenticated.$username.update-news.$id.edit'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -143,6 +156,12 @@ const AuthenticatedUsernameWalletRoute =
     path: '/$username/wallet',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedUsernameSystemHealthRoute =
+  AuthenticatedUsernameSystemHealthRouteImport.update({
+    id: '/$username/system-health',
+    path: '/$username/system-health',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedUsernameSecurityRoute =
   AuthenticatedUsernameSecurityRouteImport.update({
     id: '/$username/security',
@@ -165,6 +184,12 @@ const AuthenticatedUsernamePastBookingsRoute =
   AuthenticatedUsernamePastBookingsRouteImport.update({
     id: '/$username/past-bookings',
     path: '/$username/past-bookings',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedUsernameOverviewRoute =
+  AuthenticatedUsernameOverviewRouteImport.update({
+    id: '/$username/overview',
+    path: '/$username/overview',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedUsernameNewJobsRoute =
@@ -197,10 +222,58 @@ const AuthenticatedUsernameActiveBookingsRoute =
     path: '/$username/active-bookings',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedUsernameUpdateNewsIndexRoute =
+  AuthenticatedUsernameUpdateNewsIndexRouteImport.update({
+    id: '/$username/update-news/',
+    path: '/$username/update-news/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedUsernameProvidersIndexRoute =
+  AuthenticatedUsernameProvidersIndexRouteImport.update({
+    id: '/$username/providers/',
+    path: '/$username/providers/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedUsernameProviderRequestIndexRoute =
+  AuthenticatedUsernameProviderRequestIndexRouteImport.update({
+    id: '/$username/provider-request/',
+    path: '/$username/provider-request/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedUsernameMyservicesIndexRoute =
   AuthenticatedUsernameMyservicesIndexRouteImport.update({
     id: '/$username/myservices/',
     path: '/$username/myservices/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedUsernameHomeownersIndexRoute =
+  AuthenticatedUsernameHomeownersIndexRouteImport.update({
+    id: '/$username/homeowners/',
+    path: '/$username/homeowners/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedUsernameCategoryRequestIndexRoute =
+  AuthenticatedUsernameCategoryRequestIndexRouteImport.update({
+    id: '/$username/category-request/',
+    path: '/$username/category-request/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedUsernameUpdateNewsNewRoute =
+  AuthenticatedUsernameUpdateNewsNewRouteImport.update({
+    id: '/$username/update-news/new',
+    path: '/$username/update-news/new',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedUsernameProvidersIdRoute =
+  AuthenticatedUsernameProvidersIdRouteImport.update({
+    id: '/$username/providers/$id',
+    path: '/$username/providers/$id',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedUsernameProviderRequestIdRoute =
+  AuthenticatedUsernameProviderRequestIdRouteImport.update({
+    id: '/$username/provider-request/$id',
+    path: '/$username/provider-request/$id',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedUsernameMyservicesNewRoute =
@@ -213,6 +286,24 @@ const AuthenticatedUsernameMyservicesCardIdRoute =
   AuthenticatedUsernameMyservicesCardIdRouteImport.update({
     id: '/$username/myservices/$cardId',
     path: '/$username/myservices/$cardId',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedUsernameHomeownersIdRoute =
+  AuthenticatedUsernameHomeownersIdRouteImport.update({
+    id: '/$username/homeowners/$id',
+    path: '/$username/homeowners/$id',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedUsernameCategoryRequestIdRoute =
+  AuthenticatedUsernameCategoryRequestIdRouteImport.update({
+    id: '/$username/category-request/$id',
+    path: '/$username/category-request/$id',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedUsernameUpdateNewsIdEditRoute =
+  AuthenticatedUsernameUpdateNewsIdEditRouteImport.update({
+    id: '/$username/update-news/$id/edit',
+    path: '/$username/update-news/$id/edit',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
@@ -238,16 +329,29 @@ export interface FileRoutesByFullPath {
   '/$username/jobs': typeof AuthenticatedUsernameJobsRoute
   '/$username/jobs-bookings': typeof AuthenticatedUsernameJobsBookingsRoute
   '/$username/new-jobs': typeof AuthenticatedUsernameNewJobsRoute
+  '/$username/overview': typeof AuthenticatedUsernameOverviewRoute
   '/$username/past-bookings': typeof AuthenticatedUsernamePastBookingsRoute
   '/$username/profile': typeof AuthenticatedUsernameProfileRoute
   '/$username/reviews': typeof AuthenticatedUsernameReviewsRoute
   '/$username/security': typeof AuthenticatedUsernameSecurityRoute
+  '/$username/system-health': typeof AuthenticatedUsernameSystemHealthRoute
   '/$username/wallet': typeof AuthenticatedUsernameWalletRoute
   '/services/$serviceId/$subServiceId': typeof ServicesServiceIdSubServiceIdRoute
   '/services/$serviceId/': typeof ServicesServiceIdIndexRoute
+  '/$username/category-request/$id': typeof AuthenticatedUsernameCategoryRequestIdRoute
+  '/$username/homeowners/$id': typeof AuthenticatedUsernameHomeownersIdRoute
   '/$username/myservices/$cardId': typeof AuthenticatedUsernameMyservicesCardIdRoute
   '/$username/myservices/new': typeof AuthenticatedUsernameMyservicesNewRoute
+  '/$username/provider-request/$id': typeof AuthenticatedUsernameProviderRequestIdRoute
+  '/$username/providers/$id': typeof AuthenticatedUsernameProvidersIdRoute
+  '/$username/update-news/new': typeof AuthenticatedUsernameUpdateNewsNewRoute
+  '/$username/category-request/': typeof AuthenticatedUsernameCategoryRequestIndexRoute
+  '/$username/homeowners/': typeof AuthenticatedUsernameHomeownersIndexRoute
   '/$username/myservices/': typeof AuthenticatedUsernameMyservicesIndexRoute
+  '/$username/provider-request/': typeof AuthenticatedUsernameProviderRequestIndexRoute
+  '/$username/providers/': typeof AuthenticatedUsernameProvidersIndexRoute
+  '/$username/update-news/': typeof AuthenticatedUsernameUpdateNewsIndexRoute
+  '/$username/update-news/$id/edit': typeof AuthenticatedUsernameUpdateNewsIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -270,16 +374,29 @@ export interface FileRoutesByTo {
   '/$username/jobs': typeof AuthenticatedUsernameJobsRoute
   '/$username/jobs-bookings': typeof AuthenticatedUsernameJobsBookingsRoute
   '/$username/new-jobs': typeof AuthenticatedUsernameNewJobsRoute
+  '/$username/overview': typeof AuthenticatedUsernameOverviewRoute
   '/$username/past-bookings': typeof AuthenticatedUsernamePastBookingsRoute
   '/$username/profile': typeof AuthenticatedUsernameProfileRoute
   '/$username/reviews': typeof AuthenticatedUsernameReviewsRoute
   '/$username/security': typeof AuthenticatedUsernameSecurityRoute
+  '/$username/system-health': typeof AuthenticatedUsernameSystemHealthRoute
   '/$username/wallet': typeof AuthenticatedUsernameWalletRoute
   '/services/$serviceId/$subServiceId': typeof ServicesServiceIdSubServiceIdRoute
   '/services/$serviceId': typeof ServicesServiceIdIndexRoute
+  '/$username/category-request/$id': typeof AuthenticatedUsernameCategoryRequestIdRoute
+  '/$username/homeowners/$id': typeof AuthenticatedUsernameHomeownersIdRoute
   '/$username/myservices/$cardId': typeof AuthenticatedUsernameMyservicesCardIdRoute
   '/$username/myservices/new': typeof AuthenticatedUsernameMyservicesNewRoute
+  '/$username/provider-request/$id': typeof AuthenticatedUsernameProviderRequestIdRoute
+  '/$username/providers/$id': typeof AuthenticatedUsernameProvidersIdRoute
+  '/$username/update-news/new': typeof AuthenticatedUsernameUpdateNewsNewRoute
+  '/$username/category-request': typeof AuthenticatedUsernameCategoryRequestIndexRoute
+  '/$username/homeowners': typeof AuthenticatedUsernameHomeownersIndexRoute
   '/$username/myservices': typeof AuthenticatedUsernameMyservicesIndexRoute
+  '/$username/provider-request': typeof AuthenticatedUsernameProviderRequestIndexRoute
+  '/$username/providers': typeof AuthenticatedUsernameProvidersIndexRoute
+  '/$username/update-news': typeof AuthenticatedUsernameUpdateNewsIndexRoute
+  '/$username/update-news/$id/edit': typeof AuthenticatedUsernameUpdateNewsIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -305,16 +422,29 @@ export interface FileRoutesById {
   '/_authenticated/$username/jobs': typeof AuthenticatedUsernameJobsRoute
   '/_authenticated/$username/jobs-bookings': typeof AuthenticatedUsernameJobsBookingsRoute
   '/_authenticated/$username/new-jobs': typeof AuthenticatedUsernameNewJobsRoute
+  '/_authenticated/$username/overview': typeof AuthenticatedUsernameOverviewRoute
   '/_authenticated/$username/past-bookings': typeof AuthenticatedUsernamePastBookingsRoute
   '/_authenticated/$username/profile': typeof AuthenticatedUsernameProfileRoute
   '/_authenticated/$username/reviews': typeof AuthenticatedUsernameReviewsRoute
   '/_authenticated/$username/security': typeof AuthenticatedUsernameSecurityRoute
+  '/_authenticated/$username/system-health': typeof AuthenticatedUsernameSystemHealthRoute
   '/_authenticated/$username/wallet': typeof AuthenticatedUsernameWalletRoute
   '/services/$serviceId/$subServiceId': typeof ServicesServiceIdSubServiceIdRoute
   '/services/$serviceId/': typeof ServicesServiceIdIndexRoute
+  '/_authenticated/$username/category-request/$id': typeof AuthenticatedUsernameCategoryRequestIdRoute
+  '/_authenticated/$username/homeowners/$id': typeof AuthenticatedUsernameHomeownersIdRoute
   '/_authenticated/$username/myservices/$cardId': typeof AuthenticatedUsernameMyservicesCardIdRoute
   '/_authenticated/$username/myservices/new': typeof AuthenticatedUsernameMyservicesNewRoute
+  '/_authenticated/$username/provider-request/$id': typeof AuthenticatedUsernameProviderRequestIdRoute
+  '/_authenticated/$username/providers/$id': typeof AuthenticatedUsernameProvidersIdRoute
+  '/_authenticated/$username/update-news/new': typeof AuthenticatedUsernameUpdateNewsNewRoute
+  '/_authenticated/$username/category-request/': typeof AuthenticatedUsernameCategoryRequestIndexRoute
+  '/_authenticated/$username/homeowners/': typeof AuthenticatedUsernameHomeownersIndexRoute
   '/_authenticated/$username/myservices/': typeof AuthenticatedUsernameMyservicesIndexRoute
+  '/_authenticated/$username/provider-request/': typeof AuthenticatedUsernameProviderRequestIndexRoute
+  '/_authenticated/$username/providers/': typeof AuthenticatedUsernameProvidersIndexRoute
+  '/_authenticated/$username/update-news/': typeof AuthenticatedUsernameUpdateNewsIndexRoute
+  '/_authenticated/$username/update-news/$id/edit': typeof AuthenticatedUsernameUpdateNewsIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -340,16 +470,29 @@ export interface FileRouteTypes {
     | '/$username/jobs'
     | '/$username/jobs-bookings'
     | '/$username/new-jobs'
+    | '/$username/overview'
     | '/$username/past-bookings'
     | '/$username/profile'
     | '/$username/reviews'
     | '/$username/security'
+    | '/$username/system-health'
     | '/$username/wallet'
     | '/services/$serviceId/$subServiceId'
     | '/services/$serviceId/'
+    | '/$username/category-request/$id'
+    | '/$username/homeowners/$id'
     | '/$username/myservices/$cardId'
     | '/$username/myservices/new'
+    | '/$username/provider-request/$id'
+    | '/$username/providers/$id'
+    | '/$username/update-news/new'
+    | '/$username/category-request/'
+    | '/$username/homeowners/'
     | '/$username/myservices/'
+    | '/$username/provider-request/'
+    | '/$username/providers/'
+    | '/$username/update-news/'
+    | '/$username/update-news/$id/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -372,16 +515,29 @@ export interface FileRouteTypes {
     | '/$username/jobs'
     | '/$username/jobs-bookings'
     | '/$username/new-jobs'
+    | '/$username/overview'
     | '/$username/past-bookings'
     | '/$username/profile'
     | '/$username/reviews'
     | '/$username/security'
+    | '/$username/system-health'
     | '/$username/wallet'
     | '/services/$serviceId/$subServiceId'
     | '/services/$serviceId'
+    | '/$username/category-request/$id'
+    | '/$username/homeowners/$id'
     | '/$username/myservices/$cardId'
     | '/$username/myservices/new'
+    | '/$username/provider-request/$id'
+    | '/$username/providers/$id'
+    | '/$username/update-news/new'
+    | '/$username/category-request'
+    | '/$username/homeowners'
     | '/$username/myservices'
+    | '/$username/provider-request'
+    | '/$username/providers'
+    | '/$username/update-news'
+    | '/$username/update-news/$id/edit'
   id:
     | '__root__'
     | '/'
@@ -406,16 +562,29 @@ export interface FileRouteTypes {
     | '/_authenticated/$username/jobs'
     | '/_authenticated/$username/jobs-bookings'
     | '/_authenticated/$username/new-jobs'
+    | '/_authenticated/$username/overview'
     | '/_authenticated/$username/past-bookings'
     | '/_authenticated/$username/profile'
     | '/_authenticated/$username/reviews'
     | '/_authenticated/$username/security'
+    | '/_authenticated/$username/system-health'
     | '/_authenticated/$username/wallet'
     | '/services/$serviceId/$subServiceId'
     | '/services/$serviceId/'
+    | '/_authenticated/$username/category-request/$id'
+    | '/_authenticated/$username/homeowners/$id'
     | '/_authenticated/$username/myservices/$cardId'
     | '/_authenticated/$username/myservices/new'
+    | '/_authenticated/$username/provider-request/$id'
+    | '/_authenticated/$username/providers/$id'
+    | '/_authenticated/$username/update-news/new'
+    | '/_authenticated/$username/category-request/'
+    | '/_authenticated/$username/homeowners/'
     | '/_authenticated/$username/myservices/'
+    | '/_authenticated/$username/provider-request/'
+    | '/_authenticated/$username/providers/'
+    | '/_authenticated/$username/update-news/'
+    | '/_authenticated/$username/update-news/$id/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -580,6 +749,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedUsernameWalletRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/$username/system-health': {
+      id: '/_authenticated/$username/system-health'
+      path: '/$username/system-health'
+      fullPath: '/$username/system-health'
+      preLoaderRoute: typeof AuthenticatedUsernameSystemHealthRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/$username/security': {
       id: '/_authenticated/$username/security'
       path: '/$username/security'
@@ -606,6 +782,13 @@ declare module '@tanstack/react-router' {
       path: '/$username/past-bookings'
       fullPath: '/$username/past-bookings'
       preLoaderRoute: typeof AuthenticatedUsernamePastBookingsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/$username/overview': {
+      id: '/_authenticated/$username/overview'
+      path: '/$username/overview'
+      fullPath: '/$username/overview'
+      preLoaderRoute: typeof AuthenticatedUsernameOverviewRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/$username/new-jobs': {
@@ -643,11 +826,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedUsernameActiveBookingsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/$username/update-news/': {
+      id: '/_authenticated/$username/update-news/'
+      path: '/$username/update-news'
+      fullPath: '/$username/update-news/'
+      preLoaderRoute: typeof AuthenticatedUsernameUpdateNewsIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/$username/providers/': {
+      id: '/_authenticated/$username/providers/'
+      path: '/$username/providers'
+      fullPath: '/$username/providers/'
+      preLoaderRoute: typeof AuthenticatedUsernameProvidersIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/$username/provider-request/': {
+      id: '/_authenticated/$username/provider-request/'
+      path: '/$username/provider-request'
+      fullPath: '/$username/provider-request/'
+      preLoaderRoute: typeof AuthenticatedUsernameProviderRequestIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/$username/myservices/': {
       id: '/_authenticated/$username/myservices/'
       path: '/$username/myservices'
       fullPath: '/$username/myservices/'
       preLoaderRoute: typeof AuthenticatedUsernameMyservicesIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/$username/homeowners/': {
+      id: '/_authenticated/$username/homeowners/'
+      path: '/$username/homeowners'
+      fullPath: '/$username/homeowners/'
+      preLoaderRoute: typeof AuthenticatedUsernameHomeownersIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/$username/category-request/': {
+      id: '/_authenticated/$username/category-request/'
+      path: '/$username/category-request'
+      fullPath: '/$username/category-request/'
+      preLoaderRoute: typeof AuthenticatedUsernameCategoryRequestIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/$username/update-news/new': {
+      id: '/_authenticated/$username/update-news/new'
+      path: '/$username/update-news/new'
+      fullPath: '/$username/update-news/new'
+      preLoaderRoute: typeof AuthenticatedUsernameUpdateNewsNewRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/$username/providers/$id': {
+      id: '/_authenticated/$username/providers/$id'
+      path: '/$username/providers/$id'
+      fullPath: '/$username/providers/$id'
+      preLoaderRoute: typeof AuthenticatedUsernameProvidersIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/$username/provider-request/$id': {
+      id: '/_authenticated/$username/provider-request/$id'
+      path: '/$username/provider-request/$id'
+      fullPath: '/$username/provider-request/$id'
+      preLoaderRoute: typeof AuthenticatedUsernameProviderRequestIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/$username/myservices/new': {
@@ -664,6 +903,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedUsernameMyservicesCardIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/$username/homeowners/$id': {
+      id: '/_authenticated/$username/homeowners/$id'
+      path: '/$username/homeowners/$id'
+      fullPath: '/$username/homeowners/$id'
+      preLoaderRoute: typeof AuthenticatedUsernameHomeownersIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/$username/category-request/$id': {
+      id: '/_authenticated/$username/category-request/$id'
+      path: '/$username/category-request/$id'
+      fullPath: '/$username/category-request/$id'
+      preLoaderRoute: typeof AuthenticatedUsernameCategoryRequestIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/$username/update-news/$id/edit': {
+      id: '/_authenticated/$username/update-news/$id/edit'
+      path: '/$username/update-news/$id/edit'
+      fullPath: '/$username/update-news/$id/edit'
+      preLoaderRoute: typeof AuthenticatedUsernameUpdateNewsIdEditRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
@@ -673,14 +933,27 @@ interface AuthenticatedRouteChildren {
   AuthenticatedUsernameJobsRoute: typeof AuthenticatedUsernameJobsRoute
   AuthenticatedUsernameJobsBookingsRoute: typeof AuthenticatedUsernameJobsBookingsRoute
   AuthenticatedUsernameNewJobsRoute: typeof AuthenticatedUsernameNewJobsRoute
+  AuthenticatedUsernameOverviewRoute: typeof AuthenticatedUsernameOverviewRoute
   AuthenticatedUsernamePastBookingsRoute: typeof AuthenticatedUsernamePastBookingsRoute
   AuthenticatedUsernameProfileRoute: typeof AuthenticatedUsernameProfileRoute
   AuthenticatedUsernameReviewsRoute: typeof AuthenticatedUsernameReviewsRoute
   AuthenticatedUsernameSecurityRoute: typeof AuthenticatedUsernameSecurityRoute
+  AuthenticatedUsernameSystemHealthRoute: typeof AuthenticatedUsernameSystemHealthRoute
   AuthenticatedUsernameWalletRoute: typeof AuthenticatedUsernameWalletRoute
+  AuthenticatedUsernameCategoryRequestIdRoute: typeof AuthenticatedUsernameCategoryRequestIdRoute
+  AuthenticatedUsernameHomeownersIdRoute: typeof AuthenticatedUsernameHomeownersIdRoute
   AuthenticatedUsernameMyservicesCardIdRoute: typeof AuthenticatedUsernameMyservicesCardIdRoute
   AuthenticatedUsernameMyservicesNewRoute: typeof AuthenticatedUsernameMyservicesNewRoute
+  AuthenticatedUsernameProviderRequestIdRoute: typeof AuthenticatedUsernameProviderRequestIdRoute
+  AuthenticatedUsernameProvidersIdRoute: typeof AuthenticatedUsernameProvidersIdRoute
+  AuthenticatedUsernameUpdateNewsNewRoute: typeof AuthenticatedUsernameUpdateNewsNewRoute
+  AuthenticatedUsernameCategoryRequestIndexRoute: typeof AuthenticatedUsernameCategoryRequestIndexRoute
+  AuthenticatedUsernameHomeownersIndexRoute: typeof AuthenticatedUsernameHomeownersIndexRoute
   AuthenticatedUsernameMyservicesIndexRoute: typeof AuthenticatedUsernameMyservicesIndexRoute
+  AuthenticatedUsernameProviderRequestIndexRoute: typeof AuthenticatedUsernameProviderRequestIndexRoute
+  AuthenticatedUsernameProvidersIndexRoute: typeof AuthenticatedUsernameProvidersIndexRoute
+  AuthenticatedUsernameUpdateNewsIndexRoute: typeof AuthenticatedUsernameUpdateNewsIndexRoute
+  AuthenticatedUsernameUpdateNewsIdEditRoute: typeof AuthenticatedUsernameUpdateNewsIdEditRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
@@ -691,18 +964,42 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedUsernameJobsBookingsRoute:
     AuthenticatedUsernameJobsBookingsRoute,
   AuthenticatedUsernameNewJobsRoute: AuthenticatedUsernameNewJobsRoute,
+  AuthenticatedUsernameOverviewRoute: AuthenticatedUsernameOverviewRoute,
   AuthenticatedUsernamePastBookingsRoute:
     AuthenticatedUsernamePastBookingsRoute,
   AuthenticatedUsernameProfileRoute: AuthenticatedUsernameProfileRoute,
   AuthenticatedUsernameReviewsRoute: AuthenticatedUsernameReviewsRoute,
   AuthenticatedUsernameSecurityRoute: AuthenticatedUsernameSecurityRoute,
+  AuthenticatedUsernameSystemHealthRoute:
+    AuthenticatedUsernameSystemHealthRoute,
   AuthenticatedUsernameWalletRoute: AuthenticatedUsernameWalletRoute,
+  AuthenticatedUsernameCategoryRequestIdRoute:
+    AuthenticatedUsernameCategoryRequestIdRoute,
+  AuthenticatedUsernameHomeownersIdRoute:
+    AuthenticatedUsernameHomeownersIdRoute,
   AuthenticatedUsernameMyservicesCardIdRoute:
     AuthenticatedUsernameMyservicesCardIdRoute,
   AuthenticatedUsernameMyservicesNewRoute:
     AuthenticatedUsernameMyservicesNewRoute,
+  AuthenticatedUsernameProviderRequestIdRoute:
+    AuthenticatedUsernameProviderRequestIdRoute,
+  AuthenticatedUsernameProvidersIdRoute: AuthenticatedUsernameProvidersIdRoute,
+  AuthenticatedUsernameUpdateNewsNewRoute:
+    AuthenticatedUsernameUpdateNewsNewRoute,
+  AuthenticatedUsernameCategoryRequestIndexRoute:
+    AuthenticatedUsernameCategoryRequestIndexRoute,
+  AuthenticatedUsernameHomeownersIndexRoute:
+    AuthenticatedUsernameHomeownersIndexRoute,
   AuthenticatedUsernameMyservicesIndexRoute:
     AuthenticatedUsernameMyservicesIndexRoute,
+  AuthenticatedUsernameProviderRequestIndexRoute:
+    AuthenticatedUsernameProviderRequestIndexRoute,
+  AuthenticatedUsernameProvidersIndexRoute:
+    AuthenticatedUsernameProvidersIndexRoute,
+  AuthenticatedUsernameUpdateNewsIndexRoute:
+    AuthenticatedUsernameUpdateNewsIndexRoute,
+  AuthenticatedUsernameUpdateNewsIdEditRoute:
+    AuthenticatedUsernameUpdateNewsIdEditRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
