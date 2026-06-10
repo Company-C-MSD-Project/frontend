@@ -5,6 +5,7 @@ import { Navbar } from "@/components/common/Navbar";
 import { Footer } from "@/components/common/Footer";
 import { getSubService } from "@/lib/services-data";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { setBookingIntent } from "@/lib/booking";
 
 const DISTRICTS = ["Colombo", "Gampaha", "Kalutara", "Kandy", "Galle", "Negombo"];
 const TIMES = ["Morning (8 AM – 12 PM)", "Afternoon (12 PM – 4 PM)", "Evening (4 PM – 8 PM)", "ASAP"];
@@ -15,7 +16,12 @@ export function SubServiceDetailPage() {
   const { profile } = useCurrentUser();
   const bookLink = profile?.username
     ? { to: "/$username/book", params: { username: profile.username } } as const
-    : { to: "/login", search: { redirect: "/services" } };
+    : { to: "/login" as const, onClick: () => setBookingIntent({}) };
+  const providerBookFor = (providerId: string) =>
+    profile?.username
+      ? ({ to: "/$username/book", params: { username: profile.username }, search: { step: 3, provider: providerId } } as const)
+      : ({ to: "/login" as const, onClick: () => setBookingIntent({ step: 3, provider: providerId }) });
+
 
   const [filter, setFilter] = useState("all");
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -176,7 +182,7 @@ export function SubServiceDetailPage() {
                     </div>
                     <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
                       <p className="text-sm"><span className="text-lg font-bold">Rs. {p.hourly.toLocaleString()}</span><span className="text-xs text-muted-foreground"> /hr</span></p>
-                      <Link {...bookLink} className="rounded-lg bg-primary px-4 py-2 text-xs font-bold text-primary-foreground hover:opacity-90 transition-opacity">Book Now</Link>
+                      <Link {...providerBookFor(p.id)} className="rounded-lg bg-primary px-4 py-2 text-xs font-bold text-primary-foreground hover:opacity-90 transition-opacity">Book Now</Link>
                     </div>
                   </div>
                 ))}

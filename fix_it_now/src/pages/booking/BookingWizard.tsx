@@ -14,14 +14,14 @@ const STEPS = [
   { n: 1, label: "Select Service" },
   { n: 2, label: "Choose Provider" },
   { n: 3, label: "Schedule" },
-  { n: 4, label: "Confirm & Pay" },
+  { n: 4, label: "Confirm & Book" },
   { n: 5, label: "Booking Done" },
 ];
 
 type JobType = "on_the_spot" | "scheduled";
 
 export function BookingWizard() {
-  const search = useSearch({ from: "/$username/book" }) as { subService?: string; step?: number };
+  const search = useSearch({ from: "/$username/book" }) as { subService?: string; provider?: string; step?: number };
   const { username } = useParams({ from: "/$username/book" });
   const navigate = useNavigate();
   const { profile, loading: userLoading } = useCurrentUser();
@@ -36,7 +36,7 @@ export function BookingWizard() {
   const [jobType, setJobType] = useState<JobType>("on_the_spot");
   const [problemDesc, setProblemDesc] = useState("");
 
-  const [providerId, setProviderId] = useState<string | null>(null);
+  const [providerId, setProviderId] = useState<string | null>(search.provider ?? null);
 
   const [scheduledDate, setScheduledDate] = useState<Date>(new Date());
   const [scheduledTime, setScheduledTime] = useState<string>("10:00 AM");
@@ -68,6 +68,25 @@ export function BookingWizard() {
     }
   }, [search.subService]);
 
+  // preload provider if passed in (from "Book Now" on a provider card)
+  useEffect(() => {
+    if (!search.provider) return;
+    import("@/integrations/supabase/client").then(({ supabase }) =>
+      supabase
+        .from("providers")
+        .select("*, profile:profiles(id, display_name, username, avatar_url)")
+        .eq("id", search.provider!)
+        .maybeSingle()
+        .then(({ data }) => {
+          if (data) {
+            setProviders((prev) => (prev.some((p) => p.id === (data as any).id) ? prev : [data as any, ...prev]));
+            setProviderId((data as any).id);
+            if (!categoryId && (data as any).category_id) setCategoryId((data as any).category_id);
+          }
+        })
+    );
+  }, [search.provider]);
+
   // load sub-services when category changes
   useEffect(() => {
     if (categoryId) loadSubServices(categoryId).then(setSubServices);
@@ -94,20 +113,24 @@ export function BookingWizard() {
   const canNext = () => {
     if (step === 1) return !!(categoryId && subServiceId);
     if (step === 2) return !!providerId;
-    if (step === 3) return !!(addressLine.trim() && scheduledTime);
-    if (step === 4) return agree && !!profile?.id;
+    if (step === 3) return !!(providerId && addressLine.trim() && scheduledTime);
+    if (step === 4) return agree && !!profile?.id && !!providerId;
     return false;
   };
 
   const handleConfirm = async () => {
-    if (!profile?.id || !provider || !subService) return;
+    if (!profile?.id || !provider) {
+      toast.error("Please choose a provider before confirming.");
+      return;
+    }
     setSubmitting(true);
     try {
+      const serviceName = subService?.name ?? category?.name ?? provider.headline ?? "Service";
       const b = await createBooking({
         homeowner_id: profile.id,
         provider_id: provider.id,
-        sub_service_id: subService.id,
-        service_name: subService.name,
+        sub_service_id: subService?.id ?? null,
+        service_name: serviceName,
         job_type: jobType,
         scheduled_date: jobType === "scheduled" ? scheduledDate.toISOString().slice(0, 10) : null,
         scheduled_time: scheduledTime,
@@ -131,6 +154,7 @@ export function BookingWizard() {
     }
   };
 
+
   if (userLoading) {
     return <div className="flex min-h-screen items-center justify-center text-sm text-muted-foreground">Loading…</div>;
   }
@@ -144,7 +168,7 @@ export function BookingWizard() {
     <div className="min-h-screen bg-muted/30 text-foreground">
       <Navbar />
       <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-6 sm:px-6">
-        <Stepper current={step} />
+        <Stepper current={step} onJump={(n) => { if (step < 5 && n < step) setStep(n); }} />
 
         {step === 1 && (
           <Step1
@@ -240,15 +264,21 @@ export function BookingWizard() {
 }
 
 /* ---------- Stepper ---------- */
-function Stepper({ current }: { current: number }) {
+function Stepper({ current, onJump }: { current: number; onJump?: (n: number) => void }) {
   return (
     <div className="mb-8 flex items-center justify-center gap-2 sm:gap-3">
       {STEPS.map((s, i) => {
         const done = current > s.n;
         const active = current === s.n;
+        const canJump = !!onJump && done;
+        const Wrapper: any = canJump ? "button" : "div";
         return (
           <div key={s.n} className="flex items-center gap-2 sm:gap-3">
-            <div className="flex flex-col items-center gap-1.5">
+            <Wrapper
+              type={canJump ? "button" : undefined}
+              onClick={canJump ? () => onJump!(s.n) : undefined}
+              className={`flex flex-col items-center gap-1.5 ${canJump ? "cursor-pointer hover:opacity-80" : ""}`}
+            >
               <div
                 className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold transition-colors ${
                   done ? "bg-emerald-600 text-white" : active ? "bg-foreground text-background" : "border border-border bg-card text-muted-foreground"
@@ -259,7 +289,7 @@ function Stepper({ current }: { current: number }) {
               <span className={`text-[10px] sm:text-xs font-medium ${active ? "text-foreground" : "text-muted-foreground"} hidden sm:block`}>
                 {s.label}
               </span>
-            </div>
+            </Wrapper>
             {i < STEPS.length - 1 && <div className={`h-px w-6 sm:w-12 ${done ? "bg-emerald-600" : "bg-border"}`} />}
           </div>
         );
@@ -673,7 +703,7 @@ function Step4(p: {
     <div>
       <p className="mx-auto w-fit rounded-full bg-primary/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">Step 4 of 5 · Final step</p>
       <h1 className="mt-3 text-center text-3xl font-bold sm:text-4xl">Review & Confirm Booking</h1>
-      <p className="mt-2 text-center text-sm text-muted-foreground">Check all details, choose your payment method, and confirm</p>
+      <p className="mt-2 text-center text-sm text-muted-foreground">Check all details and confirm your booking</p>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_320px]">
         <div className="space-y-6">
@@ -689,37 +719,9 @@ function Step4(p: {
             </div>
           </div>
 
-          {/* Payment method */}
+          {/* Confirmation */}
           <div className="rounded-2xl border border-border bg-card p-6">
-            <p className="text-xs font-bold uppercase tracking-wider text-primary">Payment method</p>
-            <div className="mt-4 space-y-3">
-              {[
-                { v: "card", icon: "💳", t: "Visa •••• 4242", d: "Expires 08/27 · Secure & encrypted", tag: "Default" },
-                { v: "wallet", icon: "💰", t: "FixItNow Wallet", d: "Balance: Rs. 124,050 available" },
-                { v: "bank", icon: "🏦", t: "Bank Transfer", d: "Sampath Bank · Manual verification" },
-                { v: "genie", icon: "📱", t: "Dialog Genie", d: "Mobile wallet payment" },
-              ].map((o) => {
-                const active = p.paymentMethod === o.v;
-                return (
-                  <button
-                    key={o.v}
-                    onClick={() => p.setPaymentMethod(o.v)}
-                    className={`flex w-full items-center gap-3 rounded-xl border p-4 text-left transition-colors ${active ? "border-primary bg-primary/10" : "border-border bg-background hover:bg-muted/50"}`}
-                  >
-                    <span className={`flex h-5 w-5 items-center justify-center rounded-full border ${active ? "border-primary bg-primary" : "border-border"}`}>
-                      {active && <span className="h-2 w-2 rounded-full bg-background" />}
-                    </span>
-                    <span className="text-2xl">{o.icon}</span>
-                    <div className="flex-1">
-                      <p className="text-sm font-bold">{o.t} {o.tag && <span className="ml-1 rounded-full bg-primary/20 px-2 py-0.5 text-[10px] font-bold text-primary">{o.tag}</span>}</p>
-                      <p className="text-[11px] text-muted-foreground">{o.d}</p>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="mt-5 rounded-xl bg-emerald-50 p-4 text-xs text-emerald-700">
+            <div className="rounded-xl bg-emerald-50 p-4 text-xs text-emerald-700">
               <p className="font-bold">🛡 Your payment is protected by escrow.</p>
               <p className="mt-1">Funds are held securely by FixItNow and only released to {providerName} after you confirm the job is satisfactorily complete. You are fully protected.</p>
             </div>
@@ -734,9 +736,9 @@ function Step4(p: {
               disabled={!p.canConfirm || p.submitting}
               className="mt-5 w-full rounded-xl bg-foreground py-3.5 text-sm font-bold text-background hover:opacity-90 disabled:opacity-40 flex items-center justify-center gap-2"
             >
-              <Lock className="h-4 w-4" /> {p.submitting ? "Processing…" : `Confirm & Pay Rs. ${p.totalAmount.toLocaleString()} →`}
+              <Lock className="h-4 w-4" /> {p.submitting ? "Processing…" : "Confirm and Book →"}
             </button>
-            <button onClick={p.onBack} className="mt-3 block w-full text-center text-xs text-muted-foreground hover:text-foreground">← Back to schedule | SSL encrypted · PCI compliant</button>
+            <button onClick={p.onBack} className="mt-3 block w-full text-center text-xs text-muted-foreground hover:text-foreground">← Back to schedule</button>
           </div>
         </div>
 
