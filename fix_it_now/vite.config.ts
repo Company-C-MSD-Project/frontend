@@ -161,7 +161,10 @@ function devServerFnErrorLogger() {
 }
 
 export default defineConfig(({ command, mode }) => {
-  const useCloudflare = command === "build";
+  // BUILD_TARGET=spa produces a static SPA (for VM/nginx hosting, e.g. EC2);
+  // the default build remains the Cloudflare Workers SSR target.
+  const spaBuild = process.env.BUILD_TARGET === "spa";
+  const useCloudflare = command === "build" && !spaBuild;
 
   // Load VITE_ env vars and define them for SSR
   const env = loadEnv(mode, process.cwd(), "VITE_");
@@ -192,7 +195,7 @@ export default defineConfig(({ command, mode }) => {
       devClientErrorLogger(),
       devServerFnErrorLogger(),
       ...(useCloudflare ? [cloudflare({ viteEnvironment: { name: "ssr" } })] : []),
-      tanstackStart(),
+      tanstackStart(spaBuild ? { spa: { enabled: true } } : undefined),
       viteReact(),
       mode === "development" && componentTagger(),
     ].filter(Boolean),
