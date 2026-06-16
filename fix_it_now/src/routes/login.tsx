@@ -101,10 +101,10 @@ function LoginPage() {
       // Use apiBaseUrl() (not import.meta.env directly) — route files don't inline
       // import.meta.env.VITE_*, so a direct read here resolves to an empty base.
       if (useNewApi()) {
-        // Fall back to the backend on :8080 of the current host if the env-derived
-        // base ever resolves empty (route-file env inlining can be unreliable).
-        const base = apiBaseUrl() || `${window.location.protocol}//${window.location.hostname}:8080`;
-        window.location.href = `${base}/api/v1/auth/oauth/google`;
+        // apiBaseUrl() reads the env from api-client.ts (reliably inlined): it is
+        // "http://localhost:8080" in dev and "" (same-origin) in production behind
+        // the nginx reverse proxy. Do NOT add a falsy fallback — "" is intentional.
+        window.location.href = `${apiBaseUrl()}/api/v1/auth/oauth/google`;
         return;
       }
       const { lovable } = await import("@/integrations/lovable/index");
