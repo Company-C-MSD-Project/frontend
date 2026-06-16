@@ -173,7 +173,9 @@ export default defineConfig(({ command, mode }) => {
   return {
     server: {
       host: "::",
-      port: 8080,
+      // Dev server on 3000 so :8080 is free for the Spring Boot backend
+      // (VITE_API_BASE_URL_DEV=http://localhost:8080). 3000 is CORS-allowed.
+      port: 3000,
     },
     define: envDefine,
     resolve: {
