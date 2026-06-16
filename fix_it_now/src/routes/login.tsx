@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Mail, Lock, Wrench, ChevronLeft, User as UserIcon, Shield } from "lucide-react";
 import { toast } from "sonner";
 import { setRole, dashboardPathFor, userDashboardPath, type Role } from "@/lib/role";
-import { useNewApi } from "@/lib/api-client";
+import { useNewApi, apiBaseUrl } from "@/lib/api-client";
 import { authApi } from "@/lib/auth-api";
 
 export const Route = createFileRoute("/login")({
@@ -96,6 +96,14 @@ function LoginPage() {
     setGoogleLoading(true);
     try {
       setRole(role);
+      // Spring Boot backend: hand off to the server's Google OAuth flow, which
+      // redirects back to /oauth/callback with our JWT + refresh token.
+      // Use apiBaseUrl() (not import.meta.env directly) — route files don't inline
+      // import.meta.env.VITE_*, so a direct read here resolves to an empty base.
+      if (useNewApi()) {
+        window.location.href = `${apiBaseUrl()}/api/v1/auth/oauth/google`;
+        return;
+      }
       const { lovable } = await import("@/integrations/lovable/index");
       // Always come back to /login so we can reliably honor `redirect`
       // even when the OAuth round-trip races route guards (e.g. /book).

@@ -5,6 +5,7 @@ import { Navbar } from "@/components/common/Navbar";
 import { Footer } from "@/components/common/Footer";
 import { toast } from "sonner";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { AddressAutocomplete } from "@/components/maps/AddressAutocomplete";
 import {
   loadCategories, loadSubServices, loadProvidersForCategory, getSubService,
   createBooking, type Category, type SubService, type Provider, type Booking,
@@ -622,7 +623,7 @@ function Step3(p: {
             <div className="mt-4 space-y-3">
               <div>
                 <label className="text-xs font-semibold">Street Address *</label>
-                <input value={p.addressLine} onChange={(e) => p.setAddressLine(e.target.value)} placeholder="e.g. 42 Palm Grove, Colombo 3" className="mt-1.5 w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ring" />
+                <AddressAutocomplete value={p.addressLine} onChange={p.setAddressLine} placeholder="e.g. 42 Palm Grove, Colombo 3" className="mt-1.5 w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ring" />
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
                 <div>

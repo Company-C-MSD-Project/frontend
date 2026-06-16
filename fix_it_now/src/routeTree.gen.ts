@@ -26,6 +26,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as NewsIndexRouteImport } from './routes/news.index'
 import { Route as ServicesServiceIdRouteImport } from './routes/services.$serviceId'
+import { Route as OauthCallbackRouteImport } from './routes/oauth.callback'
 import { Route as NewsIdRouteImport } from './routes/news.$id'
 import { Route as DashboardProviderRouteImport } from './routes/dashboard.provider'
 import { Route as DashboardHomeownerRouteImport } from './routes/dashboard.homeowner'
@@ -149,6 +150,11 @@ const ServicesServiceIdRoute = ServicesServiceIdRouteImport.update({
   id: '/$serviceId',
   path: '/$serviceId',
   getParentRoute: () => ServicesRoute,
+} as any)
+const OauthCallbackRoute = OauthCallbackRouteImport.update({
+  id: '/oauth/callback',
+  path: '/oauth/callback',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const NewsIdRoute = NewsIdRouteImport.update({
   id: '/$id',
@@ -398,6 +404,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/homeowner': typeof DashboardHomeownerRoute
   '/dashboard/provider': typeof DashboardProviderRoute
   '/news/$id': typeof NewsIdRoute
+  '/oauth/callback': typeof OauthCallbackRoute
   '/services/$serviceId': typeof ServicesServiceIdRouteWithChildren
   '/news/': typeof NewsIndexRoute
   '/services/': typeof ServicesIndexRoute
@@ -453,6 +460,7 @@ export interface FileRoutesByTo {
   '/dashboard/homeowner': typeof DashboardHomeownerRoute
   '/dashboard/provider': typeof DashboardProviderRoute
   '/news/$id': typeof NewsIdRoute
+  '/oauth/callback': typeof OauthCallbackRoute
   '/news': typeof NewsIndexRoute
   '/services': typeof ServicesIndexRoute
   '/$username/active-bookings': typeof AuthenticatedUsernameActiveBookingsRoute
@@ -507,6 +515,7 @@ export interface FileRoutesById {
   '/dashboard/homeowner': typeof DashboardHomeownerRoute
   '/dashboard/provider': typeof DashboardProviderRoute
   '/news/$id': typeof NewsIdRoute
+  '/oauth/callback': typeof OauthCallbackRoute
   '/services/$serviceId': typeof ServicesServiceIdRouteWithChildren
   '/news/': typeof NewsIndexRoute
   '/services/': typeof ServicesIndexRoute
@@ -566,6 +575,7 @@ export interface FileRouteTypes {
     | '/dashboard/homeowner'
     | '/dashboard/provider'
     | '/news/$id'
+    | '/oauth/callback'
     | '/services/$serviceId'
     | '/news/'
     | '/services/'
@@ -621,6 +631,7 @@ export interface FileRouteTypes {
     | '/dashboard/homeowner'
     | '/dashboard/provider'
     | '/news/$id'
+    | '/oauth/callback'
     | '/news'
     | '/services'
     | '/$username/active-bookings'
@@ -674,6 +685,7 @@ export interface FileRouteTypes {
     | '/dashboard/homeowner'
     | '/dashboard/provider'
     | '/news/$id'
+    | '/oauth/callback'
     | '/services/$serviceId'
     | '/news/'
     | '/services/'
@@ -732,6 +744,7 @@ export interface RootRouteChildren {
   DashboardAdminRoute: typeof DashboardAdminRoute
   DashboardHomeownerRoute: typeof DashboardHomeownerRoute
   DashboardProviderRoute: typeof DashboardProviderRoute
+  OauthCallbackRoute: typeof OauthCallbackRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -854,6 +867,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/services/$serviceId'
       preLoaderRoute: typeof ServicesServiceIdRouteImport
       parentRoute: typeof ServicesRoute
+    }
+    '/oauth/callback': {
+      id: '/oauth/callback'
+      path: '/oauth/callback'
+      fullPath: '/oauth/callback'
+      preLoaderRoute: typeof OauthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/news/$id': {
       id: '/news/$id'
@@ -1333,6 +1353,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardAdminRoute: DashboardAdminRoute,
   DashboardHomeownerRoute: DashboardHomeownerRoute,
   DashboardProviderRoute: DashboardProviderRoute,
+  OauthCallbackRoute: OauthCallbackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
