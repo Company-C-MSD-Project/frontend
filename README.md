@@ -62,3 +62,53 @@ Start the local Vite development server:
 ```bash
 npm run dev
 ```
+The app runs at **http://localhost:3000**.
+
+> Convenience launcher at the monorepo root: `start-frontend.cmd` (auto-installs if needed).
+
+---
+
+## 🔌 Connecting to the backend (important)
+
+The frontend talks to the **Spring Boot backend on `http://localhost:8080`**
+(`VITE_USE_NEW_API="true"` in the committed `.env`). So before you sign in or load data,
+**start the backend first** (see the backend repo's README). If the backend isn't running
+on `:8080`, you'll see `404`s / failed requests and Google sign-in won't work.
+
+---
+
+## ⚙️ Environment configuration
+
+The committed `fix_it_now/.env` already provides the backend URL and feature flag, so the
+app runs out of the box. The **only** thing missing on a fresh clone is the (git-ignored)
+**Google Maps key**, which is optional:
+
+```bash
+cd fix_it_now
+cp .env.local.example .env.local      # then put your Google Maps key in it
+```
+Without a Maps key the booking address field gracefully falls back to a plain text input —
+everything else works.
+
+---
+
+## ✅ Testing
+
+Unit tests use **Vitest + Testing Library**:
+```bash
+cd fix_it_now
+npm run test          # run once
+npm run test:watch    # watch mode
+```
+Tests also run automatically on every push via **GitHub Actions**
+(`.github/workflows/frontend-ci.yml`).
+
+---
+
+## 🧰 Troubleshooting
+
+- **`npm run dev` says "Could not read package.json"** → you're in the wrong folder. The
+  Node project is in `fix_it_now/`, so run `cd fix_it_now` first.
+- **Google sign-in shows `404 ... /api/v1/auth/oauth/google`** → the **backend isn't
+  running on `:8080`** (or an old process is squatting on the port). Start the backend, then retry.
+- **Port 3000 already in use** → stop the other dev server, or change the port in `vite.config.ts`.
