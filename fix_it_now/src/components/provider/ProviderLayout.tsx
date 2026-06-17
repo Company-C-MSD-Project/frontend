@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { Footer } from "@/components/common/Footer";
 import { useCurrentUser } from "@/hooks/use-current-user";
-import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
 
 type NavKey =
@@ -40,6 +40,7 @@ interface Props {
 
 export function ProviderLayout({ active, newRequestsCount = 0, reviewsCount = 0, children }: Props) {
   const { profile } = useCurrentUser();
+  const { signOut } = useAuth();
   const navigate = useNavigate();
   const username = profile?.username ?? "";
   const displayName = profile?.display_name ?? username ?? "Provider";
@@ -54,7 +55,7 @@ export function ProviderLayout({ active, newRequestsCount = 0, reviewsCount = 0,
   }, [mobileOpen]);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    await signOut();
     toast.success("Signed out");
     navigate({ to: "/" });
   };

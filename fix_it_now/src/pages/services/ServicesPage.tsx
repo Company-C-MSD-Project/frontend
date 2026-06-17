@@ -23,13 +23,14 @@ export function ServicesPage() {
     ? { to: "/$username/book", params: { username: profile.username } } as const
     : { to: "/login" as const, onClick: () => setBookingIntent({}) };
 
-  const [query, setQuery] = useState("");
-  const [location, setLocation] = useState("Your location");
   const [services, setServices] = useState<ServiceCategory[]>(SERVICES);
   const [topProviders, setTopProviders] = useState<Provider[]>([]);
+  const [query, setQuery] = useState("");
+  const [applied, setApplied] = useState("");
+  const [location, setLocation] = useState("Your location");
 
   const filteredServices = useMemo(() => {
-    const normalized = query.trim().toLowerCase();
+    const normalized = applied.trim().toLowerCase();
     const useLocation = location !== "Your location";
     const normalizedLocation = location.toLowerCase();
 
@@ -37,7 +38,8 @@ export function ServicesPage() {
       const matchesQuery = !normalized
         ? true
         : [service.name, service.tagline, service.description, service.specialists]
-            .some((field) => field.toLowerCase().includes(normalized));
+            .some((field) => field.toLowerCase().includes(normalized)) ||
+          service.subServices.some((subService) => subService.name.toLowerCase().includes(normalized));
 
       const matchesLocation = !useLocation
         ? true
@@ -45,7 +47,7 @@ export function ServicesPage() {
 
       return matchesQuery && matchesLocation;
     });
-  }, [query, location, services]);
+  }, [applied, location, services]);
 
   useEffect(() => {
     let alive = true;
@@ -70,8 +72,6 @@ export function ServicesPage() {
       }))
     : FALLBACK_TOP;
 
-
-
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
@@ -89,7 +89,7 @@ export function ServicesPage() {
           <form
             onSubmit={(event) => {
               event.preventDefault();
-              setSearchTerm(query);
+              setApplied(query);
             }}
             className="mx-auto mt-8 flex max-w-2xl flex-col gap-2 rounded-2xl border border-border bg-card p-2 shadow-sm sm:flex-row"
           >
@@ -97,7 +97,8 @@ export function ServicesPage() {
               <Search className="h-4 w-4 text-muted-foreground" />
               <input
                 value={query}
-                onChange={(event) => setQuery(event.target.value)}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") setApplied(query); }}
                 placeholder="What service do you need?"
                 className="w-full bg-transparent py-2.5 text-sm outline-none placeholder:text-muted-foreground"
                 aria-label="Search services"
@@ -128,7 +129,12 @@ export function ServicesPage() {
           <div className="mx-auto mt-5 flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
             <span className="font-medium">Popular:</span>
             {POPULAR.map((p) => (
-              <button key={p} className="rounded-full border border-border bg-card px-3 py-1.5 font-medium text-foreground hover:bg-muted transition-colors">
+              <button
+                key={p}
+                type="button"
+                onClick={() => { setQuery(p); setApplied(p); }}
+                className="rounded-full border border-border bg-card px-3 py-1.5 font-medium text-foreground hover:bg-muted transition-colors"
+              >
                 {p}
               </button>
             ))}

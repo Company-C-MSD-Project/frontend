@@ -19,7 +19,7 @@ import {
   X,
 } from "lucide-react";
 import { useCurrentUser } from "@/hooks/use-current-user";
-import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
 
 export type AdminNavKey =
@@ -42,6 +42,7 @@ interface Props {
 
 export function AdminLayout({ active, children }: Props) {
   const { profile } = useCurrentUser();
+  const { signOut } = useAuth();
   const navigate = useNavigate();
   const username = profile?.username ?? "";
   const displayName = profile?.display_name ?? username ?? "Admin";
@@ -55,7 +56,7 @@ export function AdminLayout({ active, children }: Props) {
   }, [mobileOpen]);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    await signOut();
     toast.success("Signed out");
     navigate({ to: "/" });
   };
