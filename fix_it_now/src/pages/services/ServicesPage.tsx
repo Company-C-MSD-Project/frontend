@@ -25,6 +25,8 @@ export function ServicesPage() {
 
   const [services, setServices] = useState<ServiceCategory[]>(SERVICES);
   const [topProviders, setTopProviders] = useState<Provider[]>([]);
+  const [query, setQuery] = useState("");
+  const [applied, setApplied] = useState("");
   useEffect(() => {
     let alive = true;
     browseService.listCategories().then((list) => {
@@ -48,7 +50,15 @@ export function ServicesPage() {
       }))
     : FALLBACK_TOP;
 
-
+  // Search filters the category catalogue in place (applied on click / Enter / Popular chip).
+  const q = applied.trim().toLowerCase();
+  const filtered = q
+    ? services.filter(
+        (s) =>
+          s.name.toLowerCase().includes(q) ||
+          s.subServices.some((ss) => ss.name.toLowerCase().includes(q)),
+      )
+    : services;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -68,6 +78,9 @@ export function ServicesPage() {
             <div className="flex flex-1 items-center gap-2 rounded-xl px-3">
               <Search className="h-4 w-4 text-muted-foreground" />
               <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") setApplied(query); }}
                 placeholder="What service do you need?"
                 className="w-full bg-transparent py-2.5 text-sm outline-none placeholder:text-muted-foreground"
               />
@@ -81,7 +94,11 @@ export function ServicesPage() {
                 <option>Galle</option>
               </select>
             </div>
-            <button className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity">
+            <button
+              type="button"
+              onClick={() => setApplied(query)}
+              className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
+            >
               Search Now
             </button>
           </div>
@@ -89,7 +106,12 @@ export function ServicesPage() {
           <div className="mx-auto mt-5 flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
             <span className="font-medium">Popular:</span>
             {POPULAR.map((p) => (
-              <button key={p} className="rounded-full border border-border bg-card px-3 py-1.5 font-medium text-foreground hover:bg-muted transition-colors">
+              <button
+                key={p}
+                type="button"
+                onClick={() => { setQuery(p); setApplied(p); }}
+                className="rounded-full border border-border bg-card px-3 py-1.5 font-medium text-foreground hover:bg-muted transition-colors"
+              >
                 {p}
               </button>
             ))}
@@ -104,7 +126,7 @@ export function ServicesPage() {
           <a href="#" className="text-sm font-medium text-primary hover:underline">View All 30+ Categories →</a>
         </div>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-          {services.map((s) => (
+          {filtered.map((s) => (
             <Link
               key={s.id}
               to="/services/$serviceId"
@@ -121,6 +143,11 @@ export function ServicesPage() {
             </Link>
           ))}
         </div>
+        {q && filtered.length === 0 && (
+          <p className="mt-8 text-center text-sm text-muted-foreground">
+            No categories match &ldquo;{applied}&rdquo;. Try a different search.
+          </p>
+        )}
       </section>
 
       {/* Top rated providers */}
