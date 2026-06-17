@@ -2,14 +2,15 @@ import { Link } from "@tanstack/react-router";
 import { Search, Bell, Filter, MapPin, Clock, Star } from "lucide-react";
 import { Footer } from "@/components/common/Footer";
 import { SERVICES } from "@/lib/services-data";
+import { formatCurrency } from "@/lib/currency";
 
 export function HomeownerDashboard() {
   const services = SERVICES.slice(0, 6);
   const providers = [
-    { name: "Marcus Sterling", title: "Master Plumber", area: "Downtown Brooklyn", avail: "Within 2 hours", price: 85, rating: 4.9, color: "oklch(0.42 0.04 55)" },
-    { name: "Elena Rodriguez", title: "Electrical Specialist", area: "Queens Village", avail: "Today", price: 95, rating: 4.8, color: "oklch(0.55 0.10 60)" },
-    { name: "James Wilson", title: "HVAC & Cooling", area: "Manhattan Heights", avail: "Scheduled", price: 120, rating: 5.0, color: "oklch(0.78 0.14 75)" },
-    { name: "Sarah Chen", title: "Professional Painter", area: "Jersey City", avail: "Within 24 hours", price: 65, rating: 4.7, color: "oklch(0.88 0.06 70)" },
+    { name: "Marcus Sterling", title: "Master Plumber", area: "Downtown Colombo", avail: "Within 2 hours", price: 2800, rating: 4.9, color: "oklch(0.42 0.04 55)" },
+    { name: "Elena Rodriguez", title: "Electrical Specialist", area: "Negombo", avail: "Today", price: 3200, rating: 4.8, color: "oklch(0.55 0.10 60)" },
+    { name: "James Wilson", title: "HVAC & Cooling", area: "Gampaha", avail: "Scheduled", price: 4500, rating: 5.0, color: "oklch(0.78 0.14 75)" },
+    { name: "Sarah Chen", title: "Professional Painter", area: "Kandy", avail: "Within 24 hours", price: 2500, rating: 4.7, color: "oklch(0.88 0.06 70)" },
   ];
 
   return (
@@ -96,7 +97,7 @@ export function HomeownerDashboard() {
                   <p className="flex items-center gap-1 text-[11px] text-muted-foreground"><MapPin className="h-3 w-3" /> {p.area}</p>
                   <p className="flex items-center gap-1 text-[11px] text-muted-foreground"><Clock className="h-3 w-3" /> Availability: {p.avail}</p>
                   <div className="flex items-center justify-between border-t border-border pt-2.5">
-                    <p className="text-xs"><span className="text-base font-bold">${p.price}</span><span className="text-muted-foreground">/hr</span></p>
+                    <p className="text-xs"><span className="text-base font-bold">{formatCurrency(p.price)}</span><span className="text-muted-foreground">/hr</span></p>
                     <button className="rounded-lg bg-primary px-3 py-1.5 text-[11px] font-bold text-primary-foreground hover:opacity-90 transition-opacity">Book Now</button>
                   </div>
                 </div>

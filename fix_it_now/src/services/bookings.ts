@@ -1,4 +1,5 @@
 // Homeowner booking services — UI-shaped DTOs for active/past bookings.
+import { normalizeCurrencyText } from "@/lib/currency";
 import { http } from "./http";
 
 export interface ActiveBookingDTO {
@@ -61,11 +62,27 @@ export interface PastBookingsStats {
   total_spent: string;
 }
 
+function normalizeActiveBookings(data: { stats: ActiveBookingsStats; items: ActiveBookingDTO[] }) {
+  return {
+    ...data,
+    stats: { ...data.stats, in_escrow: normalizeCurrencyText(data.stats.in_escrow) },
+    items: (data.items ?? []).map((item) => ({ ...item, price: normalizeCurrencyText(item.price) })),
+  };
+}
+
+function normalizePastBookings(data: { stats: PastBookingsStats; items: PastBookingDTO[] }) {
+  return {
+    ...data,
+    stats: { ...data.stats, total_spent: normalizeCurrencyText(data.stats.total_spent) },
+    items: (data.items ?? []).map((item) => ({ ...item, price: normalizeCurrencyText(item.price) })),
+  };
+}
+
 export const bookingsService = {
   active: () =>
-    http.get<{ stats: ActiveBookingsStats; items: ActiveBookingDTO[] }>("/bookings/active").then((r) => r.data),
+    http.get<{ stats: ActiveBookingsStats; items: ActiveBookingDTO[] }>("/bookings/active").then((r) => normalizeActiveBookings(r.data)),
   past: () =>
-    http.get<{ stats: PastBookingsStats; items: PastBookingDTO[] }>("/bookings/past").then((r) => r.data),
+    http.get<{ stats: PastBookingsStats; items: PastBookingDTO[] }>("/bookings/past").then((r) => normalizePastBookings(r.data)),
   cancel: (id: string) => http.patch(`/bookings/${id}/status`, { status: "cancelled" }).then((r) => r.data),
   reschedule: (id: string, payload: { date: string; time: string }) =>
     http.patch(`/bookings/${id}/status`, { status: "rescheduled", ...payload }).then((r) => r.data),

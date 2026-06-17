@@ -1,4 +1,5 @@
 import { http } from "./http";
+import { normalizeCurrencyText } from "@/lib/currency";
 
 export interface WalletBalance {
   available: number;
@@ -62,7 +63,7 @@ export const walletService = {
       date: String(t.date ?? ""),
       ref: String(t.ref ?? t.reference ?? t.id ?? ""),
       type: String(t.type ?? ""),
-      amount: String(t.amount ?? ""),
+      amount: normalizeCurrencyText(t.amount ?? ""),
       tone: (t.tone ?? "credit") as WalletTransaction["tone"],
     }));
   },

@@ -1,11 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { Bell, Wrench, Calendar, DollarSign, Star, TrendingUp } from "lucide-react";
+import { formatCurrency } from "@/lib/currency";
 
 export function ProviderDashboard() {
   const jobs = [
-    { id: 1, customer: "Alex Johnson", service: "Emergency Plumbing", time: "Today · 2:30 PM", status: "Confirmed", price: 85 },
-    { id: 2, customer: "Maria Santos", service: "Faucet Repair", time: "Tomorrow · 10:00 AM", status: "Pending", price: 65 },
-    { id: 3, customer: "T. Kumar", service: "Pipe Replacement", time: "Oct 26 · 4:00 PM", status: "Confirmed", price: 140 },
+    { id: 1, customer: "Alex Johnson", service: "Emergency Plumbing", time: "Today · 2:30 PM", status: "Confirmed", price: 8500 },
+    { id: 2, customer: "Maria Santos", service: "Faucet Repair", time: "Tomorrow · 10:00 AM", status: "Pending", price: 6500 },
+    { id: 3, customer: "T. Kumar", service: "Pipe Replacement", time: "Oct 26 · 4:00 PM", status: "Confirmed", price: 14000 },
   ];
 
   return (
@@ -38,7 +39,7 @@ export function ProviderDashboard() {
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
             { label: "Active Jobs", value: "3", icon: Wrench, hint: "+1 since yesterday" },
-            { label: "This Week", value: "$1,240", icon: DollarSign, hint: "+18% vs last week" },
+            { label: "This Week", value: "Rs. 37,200", icon: DollarSign, hint: "+18% vs last week" },
             { label: "Avg Rating", value: "4.9", icon: Star, hint: "From 128 reviews" },
             { label: "Completion Rate", value: "98%", icon: TrendingUp, hint: "Top 5% of pros" },
           ].map((s) => {
@@ -75,7 +76,7 @@ export function ProviderDashboard() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-bold">${j.price}</p>
+                    <p className="font-bold">{formatCurrency(j.price)}</p>
                     <span className={`text-[10px] font-semibold uppercase ${j.status === "Confirmed" ? "text-success" : "text-muted-foreground"}`}>{j.status}</span>
                   </div>
                 </div>
