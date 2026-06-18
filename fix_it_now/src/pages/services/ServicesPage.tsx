@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Search, MapPin, Star, ArrowRight } from "lucide-react";
 import { Navbar } from "@/components/common/Navbar";
 import { Footer } from "@/components/common/Footer";
@@ -7,14 +7,15 @@ import { SERVICES, type ServiceCategory, type Provider } from "@/lib/services-da
 import { browseService } from "@/services/browse";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { setBookingIntent } from "@/lib/booking";
+import { formatCurrency } from "@/lib/currency";
 
 const POPULAR = ["Faucet Repair", "AC Maintenance", "Roof Inspection", "Garden Design"];
 
 const FALLBACK_TOP: Array<{ id: string; name: string; title: string; area: string; avail: string; price: number; rating: number }> = [
-  { id: "plumber", name: "Marcus Sterling", title: "Master Plumber", area: "Downtown Colombo", avail: "Available within 2 hours", price: 85, rating: 4.9 },
-  { id: "electrician", name: "Elena Rodriguez", title: "Electrical Specialist", area: "Negombo", avail: "Available today", price: 95, rating: 4.8 },
-  { id: "hvac", name: "James Wilson", title: "HVAC & Cooling", area: "Gampaha", avail: "Scheduled slots open", price: 120, rating: 5.0 },
-  { id: "painter", name: "Sarah Chen", title: "Professional Painter", area: "Kandy", avail: "Available within 24 hrs", price: 65, rating: 4.7 },
+  { id: "plumber", name: "Marcus Sterling", title: "Master Plumber", area: "Downtown Colombo", avail: "Available within 2 hours", price: 2800, rating: 4.9 },
+  { id: "electrician", name: "Elena Rodriguez", title: "Electrical Specialist", area: "Negombo", avail: "Available today", price: 3200, rating: 4.8 },
+  { id: "hvac", name: "James Wilson", title: "HVAC & Cooling", area: "Gampaha", avail: "Scheduled slots open", price: 4500, rating: 5.0 },
+  { id: "painter", name: "Sarah Chen", title: "Professional Painter", area: "Kandy", avail: "Available within 24 hrs", price: 2500, rating: 4.7 },
 ];
 
 export function ServicesPage() {
@@ -26,7 +27,28 @@ export function ServicesPage() {
   const [services, setServices] = useState<ServiceCategory[]>(SERVICES);
   const [topProviders, setTopProviders] = useState<Provider[]>([]);
   const [query, setQuery] = useState("");
-  const [applied, setApplied] = useState("");
+  const [location, setLocation] = useState("Your location");
+
+  const filteredServices = useMemo(() => {
+    const normalized = query.trim().toLowerCase();
+    const useLocation = location !== "Your location";
+    const normalizedLocation = location.toLowerCase();
+
+    return services.filter((service) => {
+      const matchesQuery = !normalized
+        ? true
+        : [service.name, service.tagline, service.description, service.specialists]
+            .some((field) => field.toLowerCase().includes(normalized)) ||
+          service.subServices.some((subService) => subService.name.toLowerCase().includes(normalized));
+
+      const matchesLocation = !useLocation
+        ? true
+        : service.providers.some((provider) => provider.area.toLowerCase().includes(normalizedLocation));
+
+      return matchesQuery && matchesLocation;
+    });
+  }, [query, location, services]);
+
   useEffect(() => {
     let alive = true;
     browseService.listCategories().then((list) => {
@@ -50,16 +72,6 @@ export function ServicesPage() {
       }))
     : FALLBACK_TOP;
 
-  // Search filters the category catalogue in place (applied on click / Enter / Popular chip).
-  const q = applied.trim().toLowerCase();
-  const filtered = q
-    ? services.filter(
-        (s) =>
-          s.name.toLowerCase().includes(q) ||
-          s.subServices.some((ss) => ss.name.toLowerCase().includes(q)),
-      )
-    : services;
-
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
@@ -74,34 +86,43 @@ export function ServicesPage() {
             Browse 2,400+ verified professionals across 30+ service categories.
           </p>
 
-          <div className="mx-auto mt-8 flex max-w-2xl flex-col gap-2 rounded-2xl border border-border bg-card p-2 shadow-sm sm:flex-row">
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+            }}
+            className="mx-auto mt-8 flex max-w-2xl flex-col gap-2 rounded-2xl border border-border bg-card p-2 shadow-sm sm:flex-row"
+          >
             <div className="flex flex-1 items-center gap-2 rounded-xl px-3">
               <Search className="h-4 w-4 text-muted-foreground" />
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={(e) => { if (e.key === "Enter") setApplied(query); }}
                 placeholder="What service do you need?"
                 className="w-full bg-transparent py-2.5 text-sm outline-none placeholder:text-muted-foreground"
+                aria-label="Search services"
               />
             </div>
             <div className="flex items-center gap-2 rounded-xl border border-border bg-background px-3 sm:border-l-0">
               <MapPin className="h-4 w-4 text-muted-foreground" />
-              <select className="w-full bg-transparent py-2.5 text-sm outline-none sm:w-auto">
-                <option>Your location</option>
-                <option>Colombo</option>
-                <option>Kandy</option>
-                <option>Galle</option>
+              <select
+                value={location}
+                onChange={(event) => setLocation(event.target.value)}
+                className="w-full bg-transparent py-2.5 text-sm outline-none sm:w-auto"
+                aria-label="Select location"
+              >
+                <option value="Your location">Your location</option>
+                <option value="Colombo">Colombo</option>
+                <option value="Kandy">Kandy</option>
+                <option value="Galle">Galle</option>
               </select>
             </div>
             <button
-              type="button"
-              onClick={() => setApplied(query)}
+              type="submit"
               className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
             >
               Search Now
             </button>
-          </div>
+          </form>
 
           <div className="mx-auto mt-5 flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
             <span className="font-medium">Popular:</span>
@@ -109,7 +130,7 @@ export function ServicesPage() {
               <button
                 key={p}
                 type="button"
-                onClick={() => { setQuery(p); setApplied(p); }}
+                onClick={() => setQuery(p)}
                 className="rounded-full border border-border bg-card px-3 py-1.5 font-medium text-foreground hover:bg-muted transition-colors"
               >
                 {p}
@@ -126,7 +147,7 @@ export function ServicesPage() {
           <a href="#" className="text-sm font-medium text-primary hover:underline">View All 30+ Categories →</a>
         </div>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-          {filtered.map((s) => (
+          {filteredServices.map((s) => (
             <Link
               key={s.id}
               to="/services/$serviceId"
@@ -142,12 +163,12 @@ export function ServicesPage() {
               </div>
             </Link>
           ))}
+          {filteredServices.length === 0 ? (
+            <div className="col-span-full rounded-2xl border border-border bg-card p-10 text-center text-sm text-muted-foreground">
+              No services matched your search. Try a different keyword.
+            </div>
+          ) : null}
         </div>
-        {q && filtered.length === 0 && (
-          <p className="mt-8 text-center text-sm text-muted-foreground">
-            No categories match &ldquo;{applied}&rdquo;. Try a different search.
-          </p>
-        )}
       </section>
 
       {/* Top rated providers */}
@@ -173,7 +194,7 @@ export function ServicesPage() {
                 <p className="flex items-center gap-1 text-xs text-muted-foreground"><MapPin className="h-3 w-3" /> {p.area}</p>
                 <p className="text-xs text-success">✓ {p.avail}</p>
                 <div className="flex items-center justify-between pt-2">
-                  <p className="text-sm"><span className="text-lg font-bold">${p.price}</span><span className="text-xs text-muted-foreground">/hr</span></p>
+                  <p className="text-sm"><span className="text-lg font-bold">{formatCurrency(p.price)}</span><span className="text-xs text-muted-foreground">/hr</span></p>
                   <Link {...bookLink} className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:opacity-90 transition-opacity">
                     Book Now
                   </Link>
@@ -192,7 +213,7 @@ export function ServicesPage() {
             <p className="mt-1 text-sm opacity-90">Enjoy 0% service fees, priority booking, and extended warranties.</p>
           </div>
           <button className="inline-flex items-center gap-2 rounded-xl bg-background px-5 py-3 text-sm font-semibold text-foreground shadow-sm hover:opacity-90 transition-opacity">
-            Subscribe to Gold — $29.99/mo <ArrowRight className="h-4 w-4" />
+            Subscribe to Gold — Rs. 29,990/mo <ArrowRight className="h-4 w-4" />
           </button>
         </div>
       </section>

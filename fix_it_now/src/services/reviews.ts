@@ -1,4 +1,5 @@
 import { http } from "./http";
+import { normalizeCurrencyText } from "@/lib/currency";
 
 export interface Review {
   id: string;
@@ -25,7 +26,10 @@ export interface ReviewStats {
 }
 
 export const reviewsService = {
-  list: () => http.get<Review[]>("/reviews").then((r) => r.data),
+  list: () => http.get<Review[]>("/reviews").then((r) => r.data.map((review) => ({
+    ...review,
+    amount: normalizeCurrencyText(review.amount),
+  }))),
   stats: () => http.get<ReviewStats>("/reviews/stats").then((r) => r.data),
   flag: (id: string) => http.post(`/reviews/${id}/flag`).then((r) => r.data),
   hide: (id: string) => http.post(`/reviews/${id}/hide`).then((r) => r.data),
