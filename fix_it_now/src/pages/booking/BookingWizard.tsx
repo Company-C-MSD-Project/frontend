@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useSearch, useParams } from "@tanstack/react-router";
-import { Check, ChevronLeft, ChevronRight, MapPin, Star, Clock, Shield, Lock, Zap, CalendarDays, Search, Edit2 } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, MapPin, Star, Clock, Shield, Lock, Zap, CalendarDays, Search, Edit2, CreditCard } from "lucide-react";
 import { Navbar } from "@/components/common/Navbar";
 import { Footer } from "@/components/common/Footer";
+import { PayPalButton } from "@/components/common/PayPalButton";
 import { toast } from "sonner";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { AddressAutocomplete } from "@/components/maps/AddressAutocomplete";
@@ -20,6 +21,7 @@ const STEPS = [
 ];
 
 type JobType = "on_the_spot" | "scheduled";
+type PaymentMethod = "paypal" | "later";
 
 export function BookingWizard() {
   const search = useSearch({ from: "/$username/book" }) as { subService?: string; provider?: string; step?: number };
@@ -46,7 +48,7 @@ export function BookingWizard() {
   const [postalCode, setPostalCode] = useState("");
   const [landmarks, setLandmarks] = useState("");
 
-  const [paymentMethod, setPaymentMethod] = useState("card");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("paypal");
   const [agree, setAgree] = useState(false);
 
   const [confirmedBooking, setConfirmedBooking] = useState<Booking | null>(null);
@@ -109,6 +111,11 @@ export function BookingWizard() {
   const estHours = 2;
   const platformFee = 200;
   const totalAmount = hourlyRate * estHours + platformFee;
+  const paypalCurrency = String(import.meta.env.VITE_PAYPAL_CURRENCY ?? "USD").toUpperCase();
+  const lkrPerPaypalUnit = Number(import.meta.env.VITE_PAYPAL_LKR_PER_UNIT);
+  const paypalAmount = Number.isFinite(lkrPerPaypalUnit) && lkrPerPaypalUnit > 0
+    ? Number((totalAmount / lkrPerPaypalUnit).toFixed(2))
+    : null;
 
   // step gating
   const canNext = () => {
@@ -122,7 +129,7 @@ export function BookingWizard() {
   const handleConfirm = async () => {
     if (!profile?.id || !provider) {
       toast.error("Please choose a provider before confirming.");
-      return;
+      return false;
     }
     setSubmitting(true);
     try {
@@ -148,8 +155,10 @@ export function BookingWizard() {
       setConfirmedBooking(b);
       setStep(5);
       toast.success("Booking confirmed!");
+      return true;
     } catch (e: any) {
       toast.error(e.message || "Failed to create booking");
+      return false;
     } finally {
       setSubmitting(false);
     }
@@ -239,6 +248,8 @@ export function BookingWizard() {
             estHours={estHours}
             platformFee={platformFee}
             totalAmount={totalAmount}
+            paypalAmount={paypalAmount}
+            paypalCurrency={paypalCurrency}
             paymentMethod={paymentMethod}
             setPaymentMethod={setPaymentMethod}
             agree={agree}
@@ -694,9 +705,10 @@ function Step4(p: {
   scheduledDate: Date; scheduledTime: string; addressLine: string; district: string;
   jobType: JobType;
   hourlyRate: number; estHours: number; platformFee: number; totalAmount: number;
-  paymentMethod: string; setPaymentMethod: (v: string) => void;
+  paypalAmount: number | null; paypalCurrency: string;
+  paymentMethod: PaymentMethod; setPaymentMethod: (v: PaymentMethod) => void;
   agree: boolean; setAgree: (v: boolean) => void;
-  submitting: boolean; onBack: () => void; onConfirm: () => void; canConfirm: boolean;
+  submitting: boolean; onBack: () => void; onConfirm: () => Promise<boolean>; canConfirm: boolean;
 }) {
   const labour = p.hourlyRate * p.estHours;
   const providerName = p.provider?.profile?.display_name ?? "Provider";
@@ -727,15 +739,83 @@ function Step4(p: {
               <p className="mt-1">Funds are held securely by FixItNow and only released to {providerName} after you confirm the job is satisfactorily complete. You are fully protected.</p>
             </div>
 
+            <div className="mt-5">
+              <p className="text-xs font-bold uppercase tracking-wider text-primary">Payment method</p>
+              <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                <button
+                  type="button"
+                  onClick={() => p.setPaymentMethod("paypal")}
+                  className={`rounded-xl border p-4 text-left transition ${
+                    p.paymentMethod === "paypal"
+                      ? "border-[#0070ba] bg-[#0070ba]/5 ring-1 ring-[#0070ba]"
+                      : "border-border hover:bg-muted/40"
+                  }`}
+                >
+                  <span className="text-base font-black italic text-[#003087]">
+                    Pay<span className="text-[#0070ba]">Pal</span>
+                  </span>
+                  <span className="mt-1 block text-[11px] text-muted-foreground">
+                    Pay securely with PayPal Smart Buttons
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => p.setPaymentMethod("later")}
+                  className={`rounded-xl border p-4 text-left transition ${
+                    p.paymentMethod === "later"
+                      ? "border-primary bg-primary/5 ring-1 ring-primary"
+                      : "border-border hover:bg-muted/40"
+                  }`}
+                >
+                  <span className="flex items-center gap-2 text-sm font-bold">
+                    <CreditCard className="h-4 w-4" /> Pay after service
+                  </span>
+                  <span className="mt-1 block text-[11px] text-muted-foreground">
+                    Confirm now and arrange payment later
+                  </span>
+                </button>
+              </div>
+            </div>
+
             <label className="mt-4 flex items-start gap-2 text-xs">
               <input type="checkbox" checked={p.agree} onChange={(e) => p.setAgree(e.target.checked)} className="mt-0.5" />
               <span>I agree to FixItNow's <span className="font-bold underline">Terms of Service</span> and <span className="font-bold underline">Booking Policy</span>. I confirm all booking details above are correct and authorise FixItNow to hold Rs. {p.totalAmount.toLocaleString()} in escrow.</span>
             </label>
 
+            {p.paymentMethod === "paypal" && (
+              <div className="mt-5">
+                {p.paypalAmount ? (
+                  <>
+                    <div className="mb-3 flex items-center justify-between rounded-lg bg-muted/40 px-3 py-2 text-xs">
+                      <span className="text-muted-foreground">PayPal charge</span>
+                      <span className="font-bold">{p.paypalCurrency} {p.paypalAmount.toFixed(2)}</span>
+                    </div>
+                    <PayPalButton
+                      amount={p.paypalAmount}
+                      currency={p.paypalCurrency}
+                      description={`${p.subService?.name ?? p.category?.name ?? "FixItNow service"} booking`}
+                      disabled={!p.canConfirm || p.submitting}
+                      onSuccess={async () => {
+                        toast.success("PayPal payment captured. Creating your booking…");
+                        const bookingCreated = await p.onConfirm();
+                        if (!bookingCreated) {
+                          throw new Error("Payment completed, but the booking could not be created. Contact support with your PayPal order ID.");
+                        }
+                      }}
+                      onError={(error) => toast.error(error.message)}
+                    />
+                  </>
+                ) : (
+                  <p className="rounded-xl bg-amber-50 p-4 text-xs text-amber-800">
+                    PayPal conversion is not configured. Add VITE_PAYPAL_LKR_PER_UNIT to .env.local.
+                  </p>
+                )}
+              </div>
+            )}
             <button
-              onClick={p.onConfirm}
+              onClick={() => void p.onConfirm()}
               disabled={!p.canConfirm || p.submitting}
-              className="mt-5 w-full rounded-xl bg-foreground py-3.5 text-sm font-bold text-background hover:opacity-90 disabled:opacity-40 flex items-center justify-center gap-2"
+              className={`${p.paymentMethod === "paypal" ? "hidden" : "flex"} mt-5 w-full items-center justify-center gap-2 rounded-xl bg-foreground py-3.5 text-sm font-bold text-background hover:opacity-90 disabled:opacity-40`}
             >
               <Lock className="h-4 w-4" /> {p.submitting ? "Processing…" : "Confirm and Book →"}
             </button>

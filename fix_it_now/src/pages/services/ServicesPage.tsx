@@ -89,7 +89,7 @@ export function ServicesPage() {
           <form
             onSubmit={(event) => {
               event.preventDefault();
-              setSearchTerm(query);
+              setQuery((value) => value.trim());
             }}
             className="mx-auto mt-8 flex max-w-2xl flex-col gap-2 rounded-2xl border border-border bg-card p-2 shadow-sm sm:flex-row"
           >
