@@ -61,9 +61,9 @@ export function HomeownerLayout({ active, children }: Props) {
         </NavGroup>
 
         <NavGroup label="Account">
-          <NavLink to="security" active={active} username={username} icon={ShieldCheck} label="Security Check" onNavigate={() => setMobileOpen(false)} />
+          <NavStub icon={ShieldCheck} label="Security Check" />
           <NavStub icon={Activity} label="System Health" />
-          <NavLink to="wallet" active={active} username={username} icon={WalletIcon} label="Wallet" onNavigate={() => setMobileOpen(false)} />
+          <NavStub icon={WalletIcon} label="Wallet" />
           <NavStub icon={Settings} label="Preferences" />
         </NavGroup>
 
@@ -214,7 +214,7 @@ function NavLink({
 function NavStub({ icon: Icon, label }: { icon: typeof LayoutGrid; label: string }) {
   return (
     <button
-      onClick={() => toast("Coming soon")}
+      onClick={() => toast(`${label} — coming soon 🚀`, { description: "System features will roll out in the near future." })}
       className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-semibold text-muted-foreground hover:bg-muted hover:text-foreground"
     >
       <Icon className="h-4 w-4" />
