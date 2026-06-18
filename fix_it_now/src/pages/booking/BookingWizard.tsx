@@ -370,7 +370,7 @@ function Step1(p: {
                         <p className="text-[11px] text-muted-foreground">{s.description}</p>
                       </div>
                     </div>
-                    <p className="text-sm font-bold whitespace-nowrap">Rs. {s.base_price.toLocaleString()}+</p>
+                    <p className="text-sm font-bold whitespace-nowrap">LKR {s.base_price.toLocaleString()}+</p>
                   </button>
                 );
               })}
@@ -493,7 +493,7 @@ function Step2(p: {
                     <div><p className="text-sm font-bold text-foreground">{pr.distance_km}km</p>Away</div>
                   </div>
                   <p className="mt-3 flex items-center gap-1 text-xs text-muted-foreground"><MapPin className="h-3 w-3" /> {pr.city} · {pr.distance_km} km away</p>
-                  <p className="mt-3 text-base font-bold">Rs. {pr.hourly_rate.toLocaleString()} <span className="text-xs font-normal text-muted-foreground">/hr</span></p>
+                  <p className="mt-3 text-base font-bold">LKR {pr.hourly_rate.toLocaleString()} <span className="text-xs font-normal text-muted-foreground">/hr</span></p>
                 </div>
               );
             })}
@@ -518,12 +518,12 @@ function Step2(p: {
                   <dl className="mt-4 space-y-2 text-xs">
                     <Row k="Service" v={p.subService?.name ?? "—"} />
                     <Row k="Type" v={p.jobType === "on_the_spot" ? "On-the-Spot" : "Scheduled"} />
-                    <Row k="Provider Rate" v={`Rs. ${selected.hourly_rate.toLocaleString()}/hr`} />
+                    <Row k="Provider Rate" v={`LKR ${selected.hourly_rate.toLocaleString()}/hr`} />
                     <Row k="Est. Duration" v="1–2 hours" />
                   </dl>
                   <div className="mt-4 flex items-center justify-between border-t border-border pt-3">
                     <p className="text-xs font-semibold">Estimated Cost</p>
-                    <p className="text-sm font-bold text-primary">Rs. {estLow.toLocaleString()}–{estHigh.toLocaleString()}</p>
+                    <p className="text-sm font-bold text-primary">LKR {estLow.toLocaleString()}–{estHigh.toLocaleString()}</p>
                   </div>
                   <button onClick={p.onNext} disabled={!p.canNext} className="mt-4 w-full rounded-xl bg-foreground py-3 text-sm font-bold text-background hover:opacity-90 disabled:opacity-40">
                     Continue to Schedule →
@@ -680,13 +680,13 @@ function Step3(p: {
                 <Row k="Address" v={p.addressLine || "—"} />
               </dl>
               <div className="mt-3 border-t border-border pt-3 space-y-2 text-xs">
-                <Row k="Provider Rate" v={`Rs. ${p.hourlyRate.toLocaleString()}/hr`} />
+                <Row k="Provider Rate" v={`LKR ${p.hourlyRate.toLocaleString()}/hr`} />
                 <Row k="Est. Duration" v="1–2 hrs" />
-                <Row k="Platform Fee" v={`Rs. ${p.platformFee}`} />
+                <Row k="Platform Fee" v={`LKR ${p.platformFee}`} />
               </div>
               <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
                 <p className="text-xs font-bold">Est. Total</p>
-                <p className="text-sm font-bold text-primary">Rs. {estLow.toLocaleString()}–{estHigh.toLocaleString()}</p>
+                <p className="text-sm font-bold text-primary">LKR {estLow.toLocaleString()}–{estHigh.toLocaleString()}</p>
               </div>
               <button onClick={p.onNext} disabled={!p.canNext} className="mt-4 w-full rounded-xl bg-foreground py-3 text-sm font-bold text-background hover:opacity-90 disabled:opacity-40">
                 Continue to Payment →
@@ -741,7 +741,7 @@ function Step4(p: {
 
             <label className="mt-4 flex items-start gap-2 text-xs">
               <input type="checkbox" checked={p.agree} onChange={(e) => p.setAgree(e.target.checked)} className="mt-0.5" />
-              <span>I agree to FixItNow's <span className="font-bold underline">Terms of Service</span> and <span className="font-bold underline">Booking Policy</span>. I confirm all booking details above are correct and authorise FixItNow to hold Rs. {p.totalAmount.toLocaleString()} in escrow.</span>
+              <span>I agree to FixItNow's <span className="font-bold underline">Terms of Service</span> and <span className="font-bold underline">Booking Policy</span>. I confirm all booking details above are correct and authorise FixItNow to hold LKR {p.totalAmount.toLocaleString()} in escrow.</span>
             </label>
 
             <button
@@ -777,12 +777,12 @@ function Step4(p: {
                 <Row k="Duration (est.)" v={`${p.estHours} hours`} />
               </dl>
               <div className="mt-3 space-y-2 border-t border-border pt-3 text-xs">
-                <Row k={`Labour (${p.estHours}hr × Rs. ${p.hourlyRate.toLocaleString()})`} v={`Rs. ${labour.toLocaleString()}`} />
-                <Row k="Platform Fee" v={`Rs. ${p.platformFee}`} />
+                <Row k={`Labour (${p.estHours}hr × LKR ${p.hourlyRate.toLocaleString()})`} v={`LKR ${labour.toLocaleString()}`} />
+                <Row k="Platform Fee" v={`LKR ${p.platformFee}`} />
               </div>
               <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
                 <p className="text-sm font-bold">Total (Escrow)</p>
-                <p className="text-base font-bold text-primary">Rs. {p.totalAmount.toLocaleString()}</p>
+                <p className="text-base font-bold text-primary">LKR {p.totalAmount.toLocaleString()}</p>
               </div>
               <p className="mt-2 text-center text-[10px] text-muted-foreground">Final amount adjusted after job completion</p>
             </div>
@@ -836,7 +836,7 @@ function Step5({ booking, provider, subService, username }: { booking: Booking; 
               <SummaryRow icon="🔧" t="Service" sub={`${subService?.description ?? ""}`} v={booking.service_name} />
               <SummaryRow icon="📅" t="Scheduled Date & Time" sub={new Date(booking.scheduled_date ?? booking.created_at).toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long", year: "numeric" })} v={booking.scheduled_time ?? "—"} />
               <SummaryRow icon="📍" t="Service Address" sub={`${booking.district ?? ""}, Sri Lanka`} v={booking.address_line} />
-              <SummaryRow icon="💳" t="Payment" sub={`Rs. ${booking.total_amount.toLocaleString()} held in escrow`} v="✓ Paid" badge />
+              <SummaryRow icon="💳" t="Payment" sub={`LKR ${booking.total_amount.toLocaleString()} held in escrow`} v="✓ Paid" badge />
             </div>
           </div>
 
@@ -863,7 +863,7 @@ function Step5({ booking, provider, subService, username }: { booking: Booking; 
             <p className="text-xs font-bold uppercase tracking-wider text-primary">What happens next</p>
             <ol className="mt-4 space-y-3 text-sm">
               {[
-                { t: "Booking Confirmed", d: `Your booking is placed. Payment of Rs. ${booking.total_amount.toLocaleString()} is held securely in escrow.`, when: "Just now", done: true },
+                { t: "Booking Confirmed", d: `Your booking is placed. Payment of LKR ${booking.total_amount.toLocaleString()} is held securely in escrow.`, when: "Just now", done: true },
                 { t: "Provider Notified", d: `${providerName} has been alerted and will accept your job request.`, when: "A few seconds ago", done: true },
                 { t: "Provider En Route", d: `${providerName.split(" ")[0]} will head to your location by the scheduled time.` },
                 { t: "Job In Progress", d: "Service is being carried out. Track progress live from your bookings page." },
@@ -915,12 +915,12 @@ function Step5({ booking, provider, subService, username }: { booking: Booking; 
                 <Row k="Duration (est.)" v={`${booking.est_hours} hours`} />
               </dl>
               <div className="mt-3 space-y-2 border-t border-border pt-3 text-xs">
-                <Row k={`Labour (${booking.est_hours}hr × Rs. ${booking.hourly_rate.toLocaleString()})`} v={`Rs. ${labour.toLocaleString()}`} />
-                <Row k="Platform Fee" v={`Rs. ${booking.platform_fee}`} />
+                <Row k={`Labour (${booking.est_hours}hr × LKR ${booking.hourly_rate.toLocaleString()})`} v={`LKR ${labour.toLocaleString()}`} />
+                <Row k="Platform Fee" v={`LKR ${booking.platform_fee}`} />
               </div>
               <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
                 <p className="text-sm font-bold">Total Paid</p>
-                <p className="text-base font-bold text-emerald-600">Rs. {booking.total_amount.toLocaleString()}</p>
+                <p className="text-base font-bold text-emerald-600">LKR {booking.total_amount.toLocaleString()}</p>
               </div>
               <p className="mt-2 text-center text-[10px] text-muted-foreground">Payment held in escrow until job completion</p>
             </div>

@@ -48,7 +48,7 @@ export function ProviderWalletPage() {
     setSubmitting(true);
     try {
       await walletService.withdraw(transfer);
-      toast.success(`Transfer of Rs. ${transfer.toLocaleString()} initiated`);
+      toast.success(`Transfer of LKR ${transfer.toLocaleString()} initiated`);
       const [b, t] = await Promise.all([
         walletService.balance().catch(() => balance),
         walletService.transactions().catch(() => tx),
@@ -63,7 +63,7 @@ export function ProviderWalletPage() {
   };
 
   const weeks = stats?.weeklyTrend?.length ? stats.weeklyTrend : [];
-  const fmt = (n: number) => `Rs. ${Number(n || 0).toLocaleString()}`;
+  const fmt = (n: number) => `LKR ${Number(n || 0).toLocaleString()}`;
 
   return (
     <ProviderLayout active="wallet" newRequestsCount={2} reviewsCount={128}>
@@ -146,10 +146,10 @@ export function ProviderWalletPage() {
                 </div>
 
                 <div className="space-y-1 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs">
-                  <Line label="Transfer Amount" value={`Rs. ${transfer.toLocaleString()}`} />
-                  <Line label="Processing Fee (1%)" value={`− Rs. ${fee.toLocaleString()}`} muted />
+                  <Line label="Transfer Amount" value={`LKR ${transfer.toLocaleString()}`} />
+                  <Line label="Processing Fee (1%)" value={`− LKR ${fee.toLocaleString()}`} muted />
                   <div className="my-1 border-t border-amber-200" />
-                  <Line label="You Receive" value={`Rs. ${receive.toLocaleString()}`} bold />
+                  <Line label="You Receive" value={`LKR ${receive.toLocaleString()}`} bold />
                 </div>
 
                 <p className="rounded-lg bg-amber-50 px-3 py-2 text-[11px] text-amber-800">⏱ Funds arrive in 1–2 business days via CEFT</p>
@@ -159,7 +159,7 @@ export function ProviderWalletPage() {
                   disabled={submitting || !transfer}
                   className="w-full rounded-xl bg-amber-900 px-4 py-3 text-sm font-bold text-amber-50 hover:bg-amber-950 disabled:opacity-60"
                 >
-                  ↑ Confirm Transfer — Rs. {transfer.toLocaleString()}
+                  ↑ Confirm Transfer — LKR {transfer.toLocaleString()}
                 </button>
               </div>
             </div>

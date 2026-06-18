@@ -1,5 +1,5 @@
 export function formatCurrency(value: number | string | null | undefined): string {
-  if (value === null || value === undefined || value === "") return "Rs. 0";
+  if (value === null || value === undefined || value === "") return "LKR 0";
 
   const amount =
     typeof value === "number"
@@ -8,7 +8,7 @@ export function formatCurrency(value: number | string | null | undefined): strin
 
   if (!Number.isFinite(amount)) return String(value);
 
-  return `Rs. ${amount.toLocaleString("en-US", {
+  return `LKR ${amount.toLocaleString("en-US", {
     maximumFractionDigits: 0,
   })}`;
 }
@@ -22,7 +22,7 @@ export function normalizeCurrencyText(value: number | string | null | undefined)
   if (value === null || value === undefined || value === "") return "";
 
   return String(value)
-    .replace(/US\$\s?/g, "Rs. ")
-    .replace(/\$\s?/g, "Rs. ")
-    .replace(/\bUSD\b\s?/gi, "Rs. ");
+    .replace(/US\$\s?/g, "LKR ")
+    .replace(/\$\s?/g, "LKR ")
+    .replace(/\bUSD\b\s?/gi, "LKR ");
 }

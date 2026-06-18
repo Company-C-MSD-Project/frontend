@@ -195,7 +195,7 @@ function JobCard({ booking, onAction }: { booking: Booking; onAction: (b: Bookin
           </div>
           <p className="text-xs text-muted-foreground">Ref · #{booking.ref_code} · {new Date(booking.created_at).toLocaleString()}</p>
         </div>
-        <p className="text-base font-bold">Rs. {booking.total_amount.toLocaleString()}</p>
+        <p className="text-base font-bold">LKR {booking.total_amount.toLocaleString()}</p>
       </div>
       <div className="mt-3 grid gap-2 text-xs text-muted-foreground sm:grid-cols-2">
         <p className="flex items-center gap-1"><Clock className="h-3 w-3" /> {booking.scheduled_date ? new Date(booking.scheduled_date).toLocaleDateString() : "ASAP"} · {booking.scheduled_time ?? "—"}</p>

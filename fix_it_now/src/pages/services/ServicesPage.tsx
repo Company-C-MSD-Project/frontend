@@ -1,13 +1,15 @@
-import { Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Search, MapPin, Star, ArrowRight } from "lucide-react";
 import { Navbar } from "@/components/common/Navbar";
 import { Footer } from "@/components/common/Footer";
+import { AddressAutocomplete } from "@/components/maps/AddressAutocomplete";
 import { browseService, type ServiceCategory, type Provider } from "@/services/browse";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { setBookingIntent } from "@/lib/booking";
+import { formatCurrency } from "@/lib/currency";
 
-const POPULAR = ["Faucet Repair", "AC Maintenance", "Roof Inspection", "Garden Design"];
+const POPULAR = ["Plumbing", "Electrical", "Cleaning", "Masonry", "Carpentry"];
 
 export function ServicesPage() {
   const { profile } = useCurrentUser();
@@ -18,6 +20,11 @@ export function ServicesPage() {
   const [services, setServices] = useState<ServiceCategory[]>([]);
   const [topProviders, setTopProviders] = useState<Provider[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const [query, setQuery] = useState("");
+  const [location, setLocation] = useState("");
+  const [showSuggest, setShowSuggest] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     let alive = true;
     Promise.all([browseService.listCategories(), browseService.topProviders(4)])
@@ -40,7 +47,42 @@ export function ServicesPage() {
     rating: p.rating,
   }));
 
+  // Type-ahead: match categories + their sub-services against the query.
+  const suggestions = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return [] as { slug: string; label: string; sub: string }[];
+    const out: { slug: string; label: string; sub: string }[] = [];
+    for (const c of services) {
+      if (c.name.toLowerCase().includes(q)) out.push({ slug: c.id, label: c.name, sub: "Category" });
+      for (const ss of c.subServices ?? []) {
+        if (ss.name.toLowerCase().includes(q)) out.push({ slug: c.id, label: ss.name, sub: `in ${c.name}` });
+      }
+    }
+    return out.slice(0, 8);
+  }, [query, services]);
 
+  const goTo = (slug: string) => {
+    setShowSuggest(false);
+    navigate({ to: "/services/$serviceId", params: { serviceId: slug } });
+  };
+  const runSearch = (explicit?: string) => {
+    const q = (explicit ?? query).trim().toLowerCase();
+    const cat = q
+      ? services.find((c) => c.name.toLowerCase().includes(q) || (c.subServices ?? []).some((ss) => ss.name.toLowerCase().includes(q)))
+      : undefined;
+    if (cat) { goTo(cat.id); return; }
+    setShowSuggest(false);
+    document.getElementById("all-categories")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  // Close the suggestions dropdown on outside click.
+  useEffect(() => {
+    const onDown = (e: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) setShowSuggest(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -56,24 +98,49 @@ export function ServicesPage() {
             Browse 2,400+ verified professionals across 30+ service categories.
           </p>
 
-          <div className="mx-auto mt-8 flex max-w-2xl flex-col gap-2 rounded-2xl border border-border bg-card p-2 shadow-sm sm:flex-row">
-            <div className="flex flex-1 items-center gap-2 rounded-xl px-3">
+          <div ref={searchRef} className="relative mx-auto mt-8 flex max-w-2xl flex-col gap-2 rounded-2xl border border-border bg-card p-2 shadow-sm sm:flex-row">
+            <div className="relative flex flex-1 items-center gap-2 rounded-xl px-3">
               <Search className="h-4 w-4 text-muted-foreground" />
               <input
+                value={query}
+                onChange={(e) => { setQuery(e.target.value); setShowSuggest(true); }}
+                onFocus={() => setShowSuggest(true)}
+                onKeyDown={(e) => { if (e.key === "Enter") runSearch(); }}
                 placeholder="What service do you need?"
                 className="w-full bg-transparent py-2.5 text-sm outline-none placeholder:text-muted-foreground"
               />
+              {showSuggest && suggestions.length > 0 && (
+                <div className="absolute left-0 right-0 top-full z-30 mt-2 overflow-hidden rounded-xl border border-border bg-card text-left shadow-lg">
+                  {suggestions.map((s, i) => (
+                    <button
+                      key={`${s.slug}-${s.label}-${i}`}
+                      type="button"
+                      onMouseDown={(e) => { e.preventDefault(); goTo(s.slug); }}
+                      className="flex w-full items-center gap-2 px-4 py-2.5 text-sm hover:bg-muted"
+                    >
+                      <Search className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                      <span className="font-medium">{s.label}</span>
+                      <span className="ml-auto text-[11px] text-muted-foreground">{s.sub}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
             <div className="flex items-center gap-2 rounded-xl border border-border bg-background px-3 sm:border-l-0">
-              <MapPin className="h-4 w-4 text-muted-foreground" />
-              <select className="w-full bg-transparent py-2.5 text-sm outline-none sm:w-auto">
-                <option>Your location</option>
-                <option>Colombo</option>
-                <option>Kandy</option>
-                <option>Galle</option>
-              </select>
+              <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" />
+              <AddressAutocomplete
+                value={location}
+                onChange={setLocation}
+                onPlace={(p) => setLocation(p.address)}
+                placeholder="Your location"
+                className="w-full bg-transparent py-2.5 text-sm outline-none placeholder:text-muted-foreground sm:w-44"
+              />
             </div>
-            <button className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity">
+            <button
+              type="button"
+              onClick={() => runSearch()}
+              className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
+            >
               Search Now
             </button>
           </div>
@@ -81,7 +148,12 @@ export function ServicesPage() {
           <div className="mx-auto mt-5 flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
             <span className="font-medium">Popular:</span>
             {POPULAR.map((p) => (
-              <button key={p} className="rounded-full border border-border bg-card px-3 py-1.5 font-medium text-foreground hover:bg-muted transition-colors">
+              <button
+                key={p}
+                type="button"
+                onClick={() => { setQuery(p); runSearch(p); }}
+                className="rounded-full border border-border bg-card px-3 py-1.5 font-medium text-foreground hover:bg-muted transition-colors"
+              >
                 {p}
               </button>
             ))}
@@ -90,7 +162,7 @@ export function ServicesPage() {
       </section>
 
       {/* Categories */}
-      <section className="mx-auto w-full max-w-6xl 4xl:max-w-[1800px] px-4 sm:px-5 3xl:max-w-7xl 3xl:max-w-[1600px] 4xl:max-w-[2200px] py-14">
+      <section id="all-categories" className="mx-auto w-full max-w-6xl 4xl:max-w-[1800px] px-4 sm:px-5 3xl:max-w-7xl 3xl:max-w-[1600px] 4xl:max-w-[2200px] py-14">
         <div className="mb-8 flex items-end justify-between gap-4">
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Browse All Categories</h2>
           <a href="#" className="text-sm font-medium text-primary hover:underline">View All 30+ Categories →</a>
@@ -149,7 +221,7 @@ export function ServicesPage() {
                   <p className="flex items-center gap-1 text-xs text-muted-foreground"><MapPin className="h-3 w-3" /> {p.area}</p>
                   <p className="text-xs text-success">✓ {p.avail}</p>
                   <div className="flex items-center justify-between pt-2">
-                    <p className="text-sm"><span className="text-lg font-bold">${p.price}</span><span className="text-xs text-muted-foreground">/hr</span></p>
+                    <p className="text-sm"><span className="text-lg font-bold">{formatCurrency(p.price)}</span><span className="text-xs text-muted-foreground">/hr</span></p>
                     <Link {...bookLink} className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:opacity-90 transition-opacity">
                       Book Now
                     </Link>
@@ -169,7 +241,7 @@ export function ServicesPage() {
             <p className="mt-1 text-sm opacity-90">Enjoy 0% service fees, priority booking, and extended warranties.</p>
           </div>
           <button className="inline-flex items-center gap-2 rounded-xl bg-background px-5 py-3 text-sm font-semibold text-foreground shadow-sm hover:opacity-90 transition-opacity">
-            Subscribe to Gold — $29.99/mo <ArrowRight className="h-4 w-4" />
+            Subscribe to Gold — LKR 1,000/mo <ArrowRight className="h-4 w-4" />
           </button>
         </div>
       </section>

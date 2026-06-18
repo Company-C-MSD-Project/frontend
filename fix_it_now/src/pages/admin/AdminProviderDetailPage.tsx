@@ -7,23 +7,23 @@ const PROVIDERS: Record<string, {
   category: string; icon: string; jobs: number; rating: number; status: "Active" | "Suspended" | "New" | "Top";
   nic: string; since: string; hourlyRate: string; verified: boolean; bio: string;
 }> = {
-  "marcus-sterling": { initials: "MS", name: "Marcus Sterling", email: "marcus.s@gmail.com", phone: "+94 77 234 5678", address: "12, Galle Road, Colombo 04", district: "Colombo", category: "Plumbing", icon: "🔧", jobs: 342, rating: 4.9, status: "Top", nic: "198512345V", since: "Aug 2024", hourlyRate: "Rs. 1,800", verified: true, bio: "Master plumber with 15+ years experience in residential and commercial systems." },
-  "elena-rodriguez": { initials: "ER", name: "Elena Rodriguez", email: "elena.r@gmail.com", phone: "+94 71 345 6789", address: "8, Ward Place, Colombo 07", district: "Colombo", category: "Electrical", icon: "⚡", jobs: 218, rating: 4.8, status: "Top", nic: "198723456V", since: "Nov 2024", hourlyRate: "Rs. 2,000", verified: true, bio: "Certified electrician specializing in solar and smart-home installations." },
-  "james-wilson": { initials: "JW", name: "James Wilson", email: "james.w@yahoo.com", phone: "+94 76 555 4321", address: "33, Negombo Road, Gampaha", district: "Gampaha", category: "HVAC", icon: "❄️", jobs: 156, rating: 4.6, status: "Active", nic: "198834567V", since: "Feb 2025", hourlyRate: "Rs. 1,600", verified: true, bio: "HVAC technician — split AC, central cooling, refrigeration." },
-  "rajan-perera": { initials: "RP", name: "Rajan Perera", email: "rajan.p@gmail.com", phone: "+94 70 678 9012", address: "9, Peradeniya Road, Kandy", district: "Kandy", category: "Painting", icon: "🎨", jobs: 94, rating: 4.9, status: "Top", nic: "199045678V", since: "Jan 2025", hourlyRate: "Rs. 1,200", verified: true, bio: "Interior & exterior painting with premium finishes." },
-  "thilanka-bandara": { initials: "TB", name: "Thilanka Bandara", email: "thilanka.b@gmail.com", phone: "+94 75 789 0123", address: "21, Beach Road, Matara", district: "Matara", category: "Carpentry", icon: "🪚", jobs: 12, rating: 3.8, status: "Suspended", nic: "199156789V", since: "Sep 2025", hourlyRate: "Rs. 1,400", verified: false, bio: "Furniture repair and custom woodwork." },
-  "ashan-kumara": { initials: "AK", name: "Ashan Kumara", email: "ashan.k@gmail.com", phone: "+94 77 890 1234", address: "55, Marine Drive, Colombo 06", district: "Colombo", category: "Plumbing", icon: "🔧", jobs: 67, rating: 4.7, status: "New", nic: "199567890V", since: "Apr 2026", hourlyRate: "Rs. 1,500", verified: true, bio: "Plumbing & pipe-fitting specialist." },
+  "marcus-sterling": { initials: "MS", name: "Marcus Sterling", email: "marcus.s@gmail.com", phone: "+94 77 234 5678", address: "12, Galle Road, Colombo 04", district: "Colombo", category: "Plumbing", icon: "🔧", jobs: 342, rating: 4.9, status: "Top", nic: "198512345V", since: "Aug 2024", hourlyRate: "LKR 1,800", verified: true, bio: "Master plumber with 15+ years experience in residential and commercial systems." },
+  "elena-rodriguez": { initials: "ER", name: "Elena Rodriguez", email: "elena.r@gmail.com", phone: "+94 71 345 6789", address: "8, Ward Place, Colombo 07", district: "Colombo", category: "Electrical", icon: "⚡", jobs: 218, rating: 4.8, status: "Top", nic: "198723456V", since: "Nov 2024", hourlyRate: "LKR 2,000", verified: true, bio: "Certified electrician specializing in solar and smart-home installations." },
+  "james-wilson": { initials: "JW", name: "James Wilson", email: "james.w@yahoo.com", phone: "+94 76 555 4321", address: "33, Negombo Road, Gampaha", district: "Gampaha", category: "HVAC", icon: "❄️", jobs: 156, rating: 4.6, status: "Active", nic: "198834567V", since: "Feb 2025", hourlyRate: "LKR 1,600", verified: true, bio: "HVAC technician — split AC, central cooling, refrigeration." },
+  "rajan-perera": { initials: "RP", name: "Rajan Perera", email: "rajan.p@gmail.com", phone: "+94 70 678 9012", address: "9, Peradeniya Road, Kandy", district: "Kandy", category: "Painting", icon: "🎨", jobs: 94, rating: 4.9, status: "Top", nic: "199045678V", since: "Jan 2025", hourlyRate: "LKR 1,200", verified: true, bio: "Interior & exterior painting with premium finishes." },
+  "thilanka-bandara": { initials: "TB", name: "Thilanka Bandara", email: "thilanka.b@gmail.com", phone: "+94 75 789 0123", address: "21, Beach Road, Matara", district: "Matara", category: "Carpentry", icon: "🪚", jobs: 12, rating: 3.8, status: "Suspended", nic: "199156789V", since: "Sep 2025", hourlyRate: "LKR 1,400", verified: false, bio: "Furniture repair and custom woodwork." },
+  "ashan-kumara": { initials: "AK", name: "Ashan Kumara", email: "ashan.k@gmail.com", phone: "+94 77 890 1234", address: "55, Marine Drive, Colombo 06", district: "Colombo", category: "Plumbing", icon: "🔧", jobs: 67, rating: 4.7, status: "New", nic: "199567890V", since: "Apr 2026", hourlyRate: "LKR 1,500", verified: true, bio: "Plumbing & pipe-fitting specialist." },
 };
 
 const ACTIVE = [
-  { ref: "FXN-204812", service: "AC Repair & Service", customer: "Priya Mendis", date: "Today · 2:00 PM", amount: "Rs. 4,200", status: "In Progress" },
-  { ref: "FXN-204798", service: "Tap Replacement", customer: "Sunitha De Silva", date: "Tomorrow · 10:00 AM", amount: "Rs. 2,800", status: "Accepted" },
+  { ref: "FXN-204812", service: "AC Repair & Service", customer: "Priya Mendis", date: "Today · 2:00 PM", amount: "LKR 4,200", status: "In Progress" },
+  { ref: "FXN-204798", service: "Tap Replacement", customer: "Sunitha De Silva", date: "Tomorrow · 10:00 AM", amount: "LKR 2,800", status: "Accepted" },
 ];
 const PAST = [
-  { ref: "FXN-204500", service: "Pipe Leak Fix", customer: "Anoma Jayawardena", date: "12 May 2026", amount: "Rs. 5,200", status: "Completed", rating: 5 },
-  { ref: "FXN-204321", service: "Bathroom Plumbing", customer: "Layla Fernando", date: "28 Apr 2026", amount: "Rs. 14,500", status: "Completed", rating: 5 },
-  { ref: "FXN-204110", service: "Drain Cleaning", customer: "Ranjith Wijesinghe", date: "15 Apr 2026", amount: "Rs. 3,400", status: "Completed", rating: 4 },
-  { ref: "FXN-203987", service: "Water Heater Install", customer: "Nuwan Kumara", date: "02 Apr 2026", amount: "Rs. 9,800", status: "Cancelled", rating: 0 },
+  { ref: "FXN-204500", service: "Pipe Leak Fix", customer: "Anoma Jayawardena", date: "12 May 2026", amount: "LKR 5,200", status: "Completed", rating: 5 },
+  { ref: "FXN-204321", service: "Bathroom Plumbing", customer: "Layla Fernando", date: "28 Apr 2026", amount: "LKR 14,500", status: "Completed", rating: 5 },
+  { ref: "FXN-204110", service: "Drain Cleaning", customer: "Ranjith Wijesinghe", date: "15 Apr 2026", amount: "LKR 3,400", status: "Completed", rating: 4 },
+  { ref: "FXN-203987", service: "Water Heater Install", customer: "Nuwan Kumara", date: "02 Apr 2026", amount: "LKR 9,800", status: "Cancelled", rating: 0 },
 ];
 
 export function AdminProviderDetailPage() {

@@ -71,12 +71,12 @@ export function emptyCard(): ServiceCard {
 export function syncDerived(card: ServiceCard): ServiceCard {
   const rate =
     card.rateAmount && card.rateType
-      ? `Rs. ${Number(card.rateAmount).toLocaleString()} / ${card.rateType
+      ? `LKR ${Number(card.rateAmount).toLocaleString()} / ${card.rateType
           .toLowerCase()
           .replace("per ", "")
           .replace("fixed", "job · Fixed")}`
       : "";
-  const min = card.minFee ? ` · Min Rs. ${Number(card.minFee).toLocaleString()}` : "";
+  const min = card.minFee ? ` · Min LKR ${Number(card.minFee).toLocaleString()}` : "";
   return {
     ...card,
     priceLine: rate + min,

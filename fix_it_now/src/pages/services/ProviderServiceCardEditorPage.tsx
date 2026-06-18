@@ -251,7 +251,7 @@ export default function ProviderServiceCardEditorPage({ initial }: Props) {
             <div className="mt-3">
               <h3 className="text-sm font-bold">{card.title || "Your Service Title"}</h3>
               <p className="text-xs text-muted-foreground">
-                Rs. {card.rateAmount || "???"} / {card.rateType.toLowerCase().replace("per ", "")}
+                LKR {card.rateAmount || "???"} / {card.rateType.toLowerCase().replace("per ", "")}
               </p>
               <p className="mt-1 text-xs text-muted-foreground">
                 {card.shortSummary ||

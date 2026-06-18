@@ -6,23 +6,23 @@ const HOMEOWNERS: Record<string, {
   initials: string; name: string; email: string; phone: string; address: string; district: string; city: string;
   bookings: number; spent: string; since: string; status: "Active" | "New" | "Flagged"; nic: string;
 }> = {
-  "priya-mendis": { initials: "PM", name: "Priya Mendis", email: "priya.m@gmail.com", phone: "+94 77 123 4567", address: "23/A, Park Road", district: "Colombo", city: "Colombo 7", bookings: 14, spent: "Rs. 48,200", since: "Jan 2026", status: "Active", nic: "199123456V" },
-  "ranjith-wijesinghe": { initials: "RW", name: "Ranjith Wijesinghe", email: "ranjith.w@yahoo.com", phone: "+94 71 987 6543", address: "12, Temple Lane", district: "Kandy", city: "Kandy", bookings: 8, spent: "Rs. 22,500", since: "Mar 2026", status: "Active", nic: "198567432V" },
-  "sunitha-de-silva": { initials: "SD", name: "Sunitha De Silva", email: "sunitha.d@gmail.com", phone: "+94 76 555 1234", address: "5B, Lake Drive", district: "Gampaha", city: "Gampaha", bookings: 21, spent: "Rs. 78,000", since: "Oct 2025", status: "Active", nic: "197812345V" },
-  "nuwan-kumara": { initials: "NK", name: "Nuwan Kumara", email: "nuwan.k@hotmail.com", phone: "+94 75 234 5678", address: "88, Beach Road", district: "Matara", city: "Matara", bookings: 3, spent: "Rs. 7,800", since: "May 2026", status: "New", nic: "200012345V" },
-  "layla-fernando": { initials: "LF", name: "Layla Fernando", email: "layla.f@gmail.com", phone: "+94 77 111 2233", address: "45, Galle Road", district: "Colombo", city: "Colombo 3", bookings: 6, spent: "Rs. 18,400", since: "Feb 2026", status: "Flagged", nic: "199587654V" },
-  "anoma-jayawardena": { initials: "AJ", name: "Anoma Jayawardena", email: "anoma.j@gmail.com", phone: "+94 70 444 5566", address: "9, High Level Road", district: "Colombo", city: "Nugegoda", bookings: 11, spent: "Rs. 34,000", since: "Nov 2025", status: "Active", nic: "198765432V" },
+  "priya-mendis": { initials: "PM", name: "Priya Mendis", email: "priya.m@gmail.com", phone: "+94 77 123 4567", address: "23/A, Park Road", district: "Colombo", city: "Colombo 7", bookings: 14, spent: "LKR 48,200", since: "Jan 2026", status: "Active", nic: "199123456V" },
+  "ranjith-wijesinghe": { initials: "RW", name: "Ranjith Wijesinghe", email: "ranjith.w@yahoo.com", phone: "+94 71 987 6543", address: "12, Temple Lane", district: "Kandy", city: "Kandy", bookings: 8, spent: "LKR 22,500", since: "Mar 2026", status: "Active", nic: "198567432V" },
+  "sunitha-de-silva": { initials: "SD", name: "Sunitha De Silva", email: "sunitha.d@gmail.com", phone: "+94 76 555 1234", address: "5B, Lake Drive", district: "Gampaha", city: "Gampaha", bookings: 21, spent: "LKR 78,000", since: "Oct 2025", status: "Active", nic: "197812345V" },
+  "nuwan-kumara": { initials: "NK", name: "Nuwan Kumara", email: "nuwan.k@hotmail.com", phone: "+94 75 234 5678", address: "88, Beach Road", district: "Matara", city: "Matara", bookings: 3, spent: "LKR 7,800", since: "May 2026", status: "New", nic: "200012345V" },
+  "layla-fernando": { initials: "LF", name: "Layla Fernando", email: "layla.f@gmail.com", phone: "+94 77 111 2233", address: "45, Galle Road", district: "Colombo", city: "Colombo 3", bookings: 6, spent: "LKR 18,400", since: "Feb 2026", status: "Flagged", nic: "199587654V" },
+  "anoma-jayawardena": { initials: "AJ", name: "Anoma Jayawardena", email: "anoma.j@gmail.com", phone: "+94 70 444 5566", address: "9, High Level Road", district: "Colombo", city: "Nugegoda", bookings: 11, spent: "LKR 34,000", since: "Nov 2025", status: "Active", nic: "198765432V" },
 };
 
 const ACTIVE = [
-  { ref: "FXN-204812", service: "AC Repair & Service", provider: "Marcus Sterling", date: "Today · 2:00 PM", amount: "Rs. 4,200", status: "In Progress" },
-  { ref: "FXN-204798", service: "Plumbing Leak Fix", provider: "Ashan Kumara", date: "Tomorrow · 10:00 AM", amount: "Rs. 2,800", status: "Accepted" },
+  { ref: "FXN-204812", service: "AC Repair & Service", provider: "Marcus Sterling", date: "Today · 2:00 PM", amount: "LKR 4,200", status: "In Progress" },
+  { ref: "FXN-204798", service: "Plumbing Leak Fix", provider: "Ashan Kumara", date: "Tomorrow · 10:00 AM", amount: "LKR 2,800", status: "Accepted" },
 ];
 const PAST = [
-  { ref: "FXN-204500", service: "Electrical Rewiring", provider: "Elena Rodriguez", date: "12 May 2026", amount: "Rs. 8,200", status: "Completed", rating: 5 },
-  { ref: "FXN-204321", service: "House Painting", provider: "Rajan Perera", date: "28 Apr 2026", amount: "Rs. 24,500", status: "Completed", rating: 5 },
-  { ref: "FXN-204110", service: "Carpentry — Door Fix", provider: "Thilanka Bandara", date: "15 Apr 2026", amount: "Rs. 3,400", status: "Completed", rating: 4 },
-  { ref: "FXN-203987", service: "Deep Cleaning", provider: "James Wilson", date: "02 Apr 2026", amount: "Rs. 6,800", status: "Cancelled", rating: 0 },
+  { ref: "FXN-204500", service: "Electrical Rewiring", provider: "Elena Rodriguez", date: "12 May 2026", amount: "LKR 8,200", status: "Completed", rating: 5 },
+  { ref: "FXN-204321", service: "House Painting", provider: "Rajan Perera", date: "28 Apr 2026", amount: "LKR 24,500", status: "Completed", rating: 5 },
+  { ref: "FXN-204110", service: "Carpentry — Door Fix", provider: "Thilanka Bandara", date: "15 Apr 2026", amount: "LKR 3,400", status: "Completed", rating: 4 },
+  { ref: "FXN-203987", service: "Deep Cleaning", provider: "James Wilson", date: "02 Apr 2026", amount: "LKR 6,800", status: "Cancelled", rating: 0 },
 ];
 
 export function AdminHomeownerDetailPage() {

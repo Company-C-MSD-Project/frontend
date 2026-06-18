@@ -362,7 +362,7 @@ function DashboardView() {
                 <p className="flex items-center gap-1 text-[11px] text-muted-foreground"><MapPin className="h-3 w-3" /> {p.area}</p>
                 <p className="flex items-center gap-1 text-[11px] text-muted-foreground"><Clock className="h-3 w-3" /> {p.availability}</p>
                 <div className="flex items-center justify-between border-t border-border pt-2.5">
-                  <p className="text-xs"><span className="text-base font-bold">${p.hourly}</span><span className="text-muted-foreground">/hr</span></p>
+                  <p className="text-xs"><span className="text-base font-bold">LKR {p.hourly}</span><span className="text-muted-foreground">/hr</span></p>
                   <Link to="/$username/book" params={{ username: username }} className="rounded-lg bg-primary px-3 py-1.5 text-[11px] font-bold text-primary-foreground hover:opacity-90 transition-opacity">Book Now</Link>
                 </div>
               </div>
@@ -563,7 +563,7 @@ function SystemHealthView() {
         <ul className="mt-4 space-y-3 text-sm">
           {[
             { d: "bg-emerald-500", t: "✅ Booking #FIN-0847 completed — Plumbing · Colombo", w: "5 minutes ago" },
-            { d: "bg-amber-600", t: "💳 Payment of Rs. 4,200 processed successfully", w: "18 minutes ago" },
+            { d: "bg-amber-600", t: "💳 Payment of LKR 4,200 processed successfully", w: "18 minutes ago" },
             { d: "bg-blue-500", t: "📍 Provider Rajan Perera en route — ETA 12 mins", w: "31 minutes ago" },
             { d: "bg-amber-500", t: "⚠ Notification delivery slight delay — SMS queue", w: "1 hour ago" },
             { d: "bg-emerald-500", t: "💾 Daily backup completed successfully", w: "2 hours ago" },
@@ -603,11 +603,11 @@ function SystemHealthView() {
 /* ---------------- Wallet ---------------- */
 function WalletView() {
   const txs = [
-    { icon: "🔧", t: "Plumbing — Faucet Repair", d: "Marcus Sterling · 23 May 2026", s: "Completed", a: "− Rs. 4,200", neg: true },
-    { icon: "⚡", t: "Electrical — Switch Installation", d: "Elena Rodriguez · 20 May 2026", s: "Completed", a: "− Rs. 3,800", neg: true },
-    { icon: "❄️", t: "HVAC — AC Service", d: "James Wilson · 18 May 2026", s: "In Escrow", a: "− Rs. 7,500", neg: true },
-    { icon: "💰", t: "Wallet Top-Up", d: "Bank Transfer · 15 May 2026", s: "Credit", a: "+ Rs. 50,000", neg: false },
-    { icon: "↩️", t: "Refund — Cancelled Booking", d: "Painting Service · 10 May 2026", s: "Refunded", a: "+ Rs. 2,000", neg: false },
+    { icon: "🔧", t: "Plumbing — Faucet Repair", d: "Marcus Sterling · 23 May 2026", s: "Completed", a: "− LKR 4,200", neg: true },
+    { icon: "⚡", t: "Electrical — Switch Installation", d: "Elena Rodriguez · 20 May 2026", s: "Completed", a: "− LKR 3,800", neg: true },
+    { icon: "❄️", t: "HVAC — AC Service", d: "James Wilson · 18 May 2026", s: "In Escrow", a: "− LKR 7,500", neg: true },
+    { icon: "💰", t: "Wallet Top-Up", d: "Bank Transfer · 15 May 2026", s: "Credit", a: "+ LKR 50,000", neg: false },
+    { icon: "↩️", t: "Refund — Cancelled Booking", d: "Painting Service · 10 May 2026", s: "Refunded", a: "+ LKR 2,000", neg: false },
   ];
 
   return (
@@ -620,7 +620,7 @@ function WalletView() {
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="rounded-2xl bg-gradient-to-br from-[oklch(0.32_0.05_55)] to-[oklch(0.42_0.08_55)] p-6 text-white">
           <p className="text-[11px] font-bold uppercase tracking-wider opacity-75">Available Balance</p>
-          <p className="mt-2 text-3xl font-bold">Rs. 124,050</p>
+          <p className="mt-2 text-3xl font-bold">LKR 124,050</p>
           <p className="mt-1 text-xs opacity-75">FixItNow Escrow Wallet · Gold Member</p>
           <div className="mt-5 flex gap-2">
             <button className="flex-1 rounded-xl bg-white px-3 py-2 text-xs font-bold text-foreground">+ Add Funds</button>
@@ -629,13 +629,13 @@ function WalletView() {
         </div>
         <div className="rounded-2xl border border-border bg-card p-6">
           <div className="text-2xl">📊</div>
-          <p className="mt-2 text-2xl font-bold">Rs. 428,000</p>
+          <p className="mt-2 text-2xl font-bold">LKR 428,000</p>
           <p className="text-xs text-muted-foreground">Total Spent (All Time)</p>
-          <p className="mt-2 text-xs text-emerald-600">↑ Rs. 12,400 this month</p>
+          <p className="mt-2 text-xs text-emerald-600">↑ LKR 12,400 this month</p>
         </div>
         <div className="rounded-2xl border border-border bg-card p-6">
           <div className="text-2xl">🔁</div>
-          <p className="mt-2 text-2xl font-bold">Rs. 18,500</p>
+          <p className="mt-2 text-2xl font-bold">LKR 18,500</p>
           <p className="text-xs text-muted-foreground">In Escrow (Active Jobs)</p>
           <p className="mt-2 text-xs text-primary">3 jobs in progress</p>
         </div>

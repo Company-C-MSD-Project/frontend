@@ -19,9 +19,9 @@ const CATS = [
 ];
 
 const PROVIDERS = [
-  { i: "MS", name: "Marcus Sterling", city: "Colombo", cat: "🔧 Plumbing", jobs: 48, revenue: "Rs. 134K", rating: 4.9 },
-  { i: "ER", name: "Elena Rodriguez", city: "Colombo", cat: "⚡ Electrical", jobs: 36, revenue: "Rs. 98K", rating: 4.8 },
-  { i: "JW", name: "James Wilson", city: "Gampaha", cat: "❄ HVAC", jobs: 28, revenue: "Rs. 76K", rating: 4.6 },
+  { i: "MS", name: "Marcus Sterling", city: "Colombo", cat: "🔧 Plumbing", jobs: 48, revenue: "LKR 134K", rating: 4.9 },
+  { i: "ER", name: "Elena Rodriguez", city: "Colombo", cat: "⚡ Electrical", jobs: 36, revenue: "LKR 98K", rating: 4.8 },
+  { i: "JW", name: "James Wilson", city: "Gampaha", cat: "❄ HVAC", jobs: 28, revenue: "LKR 76K", rating: 4.6 },
 ];
 
 const DISTRICTS = [
@@ -63,7 +63,7 @@ export function AdminMonthlyOverviewPage() {
       </div>
 
       <section className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <KPI label="Total Revenue" value="Rs. 2.4M" delta="↑ 18% vs Apr 2026" tone="emerald" />
+        <KPI label="Total Revenue" value="LKR 2.4M" delta="↑ 18% vs Apr 2026" tone="emerald" />
         <KPI label="Total Bookings" value="1,840" delta="↑ 12% vs Apr 2026" tone="emerald" />
         <KPI label="New Homeowners" value="124" delta="↑ 24 from last month" tone="emerald" />
         <KPI label="New Providers" value="18" delta="↑ 6 from last month" tone="emerald" />
@@ -72,7 +72,7 @@ export function AdminMonthlyOverviewPage() {
       <section className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KPI label="Completion Rate" value="94.2%" delta="↑ 1.4% vs Apr" tone="emerald" />
         <KPI label="Cancellation Rate" value="5.8%" delta="↓ 0.6% vs Apr" tone="red" />
-        <KPI label="Avg. Job Value" value="Rs. 4,820" delta="↑ Rs. 320 vs Apr" tone="emerald" />
+        <KPI label="Avg. Job Value" value="LKR 4,820" delta="↑ LKR 320 vs Apr" tone="emerald" />
         <KPI label="Avg. Rating" value="4.8 ★" delta="↑ 0.1 vs Apr" tone="emerald" />
       </section>
 
@@ -92,9 +92,9 @@ export function AdminMonthlyOverviewPage() {
             ))}
           </div>
           <div className="mt-4 grid grid-cols-3 gap-2 border-t border-background/10 pt-4">
-            <MiniStat value="Rs. 2.4M" label="Month Total" tone="text-emerald-400" />
-            <MiniStat value="Rs. 600K" label="Weekly Avg." />
-            <MiniStat value="Rs. 192K" label="Platform Fee" tone="text-amber-400" />
+            <MiniStat value="LKR 2.4M" label="Month Total" tone="text-emerald-400" />
+            <MiniStat value="LKR 600K" label="Weekly Avg." />
+            <MiniStat value="LKR 192K" label="Platform Fee" tone="text-amber-400" />
           </div>
         </div>
 

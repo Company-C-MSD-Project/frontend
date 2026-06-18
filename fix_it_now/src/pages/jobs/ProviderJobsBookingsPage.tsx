@@ -120,7 +120,7 @@ function BookingCard({ booking, onComplete, tone }: { booking: Booking; onComple
             </div>
             <div className="flex items-center gap-3">
               <span className={`rounded-full border px-2.5 py-1 text-[11px] font-semibold ${badge.cls}`}>{badge.label}</span>
-              <p className="text-base font-bold">Rs. {booking.total_amount.toLocaleString()}</p>
+              <p className="text-base font-bold">LKR {booking.total_amount.toLocaleString()}</p>
             </div>
           </div>
 

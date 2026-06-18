@@ -164,7 +164,7 @@ export function ServicesPage() {
             <p className="mt-1 text-sm opacity-90">Enjoy 0% service fees, priority booking, and extended warranties.</p>
           </div>
           <button className="inline-flex items-center gap-2 rounded-xl bg-background px-5 py-3 text-sm font-semibold text-foreground shadow-sm hover:opacity-90 transition-opacity">
-            Subscribe to Gold — Rs. 29,990/mo <ArrowRight className="h-4 w-4" />
+            Subscribe to Gold — LKR 29,990/mo <ArrowRight className="h-4 w-4" />
           </button>
         </div>
       </section>

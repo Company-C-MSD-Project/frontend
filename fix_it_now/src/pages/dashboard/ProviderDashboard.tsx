@@ -38,7 +38,7 @@ export function ProviderDashboard() {
   const activeJobsValue = providerStats?.active_jobs.value ?? bookings.filter((b) => b.status === "in_progress" || b.status === "accepted").length;
   const stats = [
     { label: "Active Jobs", value: activeJobsValue, icon: Wrench, hint: providerStats?.active_jobs.hint ?? "+1 since yesterday" },
-    { label: "This Week", value: providerStats?.weekly_earnings.value ?? "Rs. —", icon: DollarSign, hint: providerStats?.weekly_earnings.hint ?? "" },
+    { label: "This Week", value: providerStats?.weekly_earnings.value ?? "LKR —", icon: DollarSign, hint: providerStats?.weekly_earnings.hint ?? "" },
     { label: "Avg Rating", value: providerStats?.avg_rating.value ?? "—", icon: Star, hint: providerStats?.avg_rating.hint ?? "" },
     { label: "Completion Rate", value: providerStats?.completion_rate.value ?? "—", icon: TrendingUp, hint: providerStats?.completion_rate.hint ?? "" },
   ];
@@ -118,7 +118,7 @@ export function ProviderDashboard() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-bold">Rs. {j.total_amount.toLocaleString()}</p>
+                  <p className="font-bold">LKR {j.total_amount.toLocaleString()}</p>
                   <span className="text-[10px] font-bold uppercase text-emerald-600">{j.status}</span>
                 </div>
               </div>

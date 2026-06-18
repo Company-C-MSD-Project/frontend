@@ -39,7 +39,7 @@ export function ProviderDashboard() {
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
             { label: "Active Jobs", value: "3", icon: Wrench, hint: "+1 since yesterday" },
-            { label: "This Week", value: "Rs. 37,200", icon: DollarSign, hint: "+18% vs last week" },
+            { label: "This Week", value: "LKR 37,200", icon: DollarSign, hint: "+18% vs last week" },
             { label: "Avg Rating", value: "4.9", icon: Star, hint: "From 128 reviews" },
             { label: "Completion Rate", value: "98%", icon: TrendingUp, hint: "Top 5% of pros" },
           ].map((s) => {

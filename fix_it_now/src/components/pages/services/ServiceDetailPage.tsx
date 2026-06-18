@@ -75,7 +75,7 @@ export function ServiceDetailPage() {
 
             <div className="rounded-2xl bg-background/95 p-5 text-foreground shadow-xl backdrop-blur sm:min-w-[240px]">
               <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Starting From</p>
-              <p className="mt-1.5 text-3xl font-bold">Rs. {service.startingPrice.toLocaleString()} <span className="text-sm font-medium text-muted-foreground">/service</span></p>
+              <p className="mt-1.5 text-3xl font-bold">LKR {service.startingPrice.toLocaleString()} <span className="text-sm font-medium text-muted-foreground">/service</span></p>
               <button className="mt-4 w-full rounded-xl bg-primary py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90 transition-opacity">Book Now →</button>
             </div>
           </div>
@@ -96,7 +96,7 @@ export function ServiceDetailPage() {
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-xl">{s.emoji}</div>
                     <p className="mt-3 font-semibold">{s.name}</p>
                     <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{s.description}</p>
-                    <p className="mt-3 text-sm"><span className="font-bold text-primary">Rs. {s.priceFrom.toLocaleString()}</span> <span className="text-xs text-muted-foreground">onwards</span></p>
+                    <p className="mt-3 text-sm"><span className="font-bold text-primary">LKR {s.priceFrom.toLocaleString()}</span> <span className="text-xs text-muted-foreground">onwards</span></p>
                   </button>
                 ))}
               </div>
@@ -129,7 +129,7 @@ export function ServiceDetailPage() {
                   { id: "available", label: "Available Now" },
                   { id: "rated", label: "Top Rated" },
                   { id: "near", label: "Within 5km" },
-                  { id: "cheap", label: "Rs. under 2500/hr" },
+                  { id: "cheap", label: "LKR under 2500/hr" },
                 ].map((f) => (
                   <button
                     key={f.id}
@@ -167,7 +167,7 @@ export function ServiceDetailPage() {
                       </div>
                     </div>
                     <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
-                      <p className="text-sm"><span className="text-lg font-bold">Rs. {p.hourly.toLocaleString()}</span><span className="text-xs text-muted-foreground"> /hr</span></p>
+                      <p className="text-sm"><span className="text-lg font-bold">LKR {p.hourly.toLocaleString()}</span><span className="text-xs text-muted-foreground"> /hr</span></p>
                       <button className="rounded-lg bg-primary px-4 py-2 text-xs font-bold text-primary-foreground hover:opacity-90 transition-opacity">Book Now</button>
                     </div>
                   </div>
