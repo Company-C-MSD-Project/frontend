@@ -11,15 +11,18 @@ import hvac from "@/assets/cover/service-hvac.jpg";
 import welder from "@/assets/cover/service-welder.jpg";
 import cleaner from "@/assets/cover/service-cleaner.jpg";
 
-const services = [
-  { id: "electrician", name: "Electrician", img: electrician, desc: "Wiring, repairs, installations." },
-  { id: "mason", name: "Mason", img: mason, desc: "Brickwork, plastering, tiling." },
-  { id: "plumber", name: "Plumber", img: plumber, desc: "Leaks, pipes, fixtures." },
-  { id: "carpenter", name: "Carpenter", img: carpenter, desc: "Furniture, doors, custom builds." },
-  { id: "painter", name: "Painter", img: painter, desc: "Interior & exterior painting." },
-  { id: "hvac", name: "HVAC Tech", img: hvac, desc: "AC service & installation." },
-  { id: "welder", name: "Welder", img: welder, desc: "Gates, grills, metalwork." },
-  { id: "cleaner", name: "Cleaner", img: cleaner, desc: "Deep & routine home cleaning." },
+// `slug` must match the backend service-category slug (browse.ts maps id: c.slug,
+// and ServiceDetailPage resolves via getServiceBySlug). Categories not yet in the
+// catalog use slug: null and link to the full services section instead.
+const services: { slug: string | null; name: string; img: string; desc: string }[] = [
+  { slug: "electrical", name: "Electrician", img: electrician, desc: "Wiring, repairs, installations." },
+  { slug: "masonry", name: "Mason", img: mason, desc: "Brickwork, plastering, tiling." },
+  { slug: "plumbing", name: "Plumber", img: plumber, desc: "Leaks, pipes, fixtures." },
+  { slug: "carpentry", name: "Carpenter", img: carpenter, desc: "Furniture, doors, custom builds." },
+  { slug: "cleaning", name: "Cleaner", img: cleaner, desc: "Deep & routine home cleaning." },
+  { slug: null, name: "Painter", img: painter, desc: "Interior & exterior painting." },
+  { slug: null, name: "HVAC Tech", img: hvac, desc: "AC service & installation." },
+  { slug: null, name: "Welder", img: welder, desc: "Gates, grills, metalwork." },
 ];
 
 export function HomePage() {
@@ -99,31 +102,38 @@ function Services() {
           <Link to="/services" className="hidden text-sm font-medium text-primary hover:underline sm:inline">View all →</Link>
         </div>
         <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
-          {services.map((s) => (
-            <Link
-              key={s.id}
-              to="/services/$serviceId"
-              params={{ serviceId: s.id }}
-              className="group overflow-hidden rounded-2xl border border-border bg-card transition-all hover:shadow-lg"
-            >
-              <div className="relative aspect-[4/3] overflow-hidden">
-                <img
-                  src={s.img}
-                  alt={s.name}
-                  width={640}
-                  height={480}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <span className="absolute left-3 top-3 rounded-full bg-card/95 px-3 py-1 text-xs font-semibold text-foreground shadow-sm backdrop-blur">
-                  {s.name}
-                </span>
-              </div>
-              <div className="p-4">
-                <p className="text-sm text-muted-foreground">{s.desc}</p>
-              </div>
-            </Link>
-          ))}
+          {services.map((s) => {
+            const cls = "group overflow-hidden rounded-2xl border border-border bg-card transition-all hover:shadow-lg";
+            const inner = (
+              <>
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <img
+                    src={s.img}
+                    alt={s.name}
+                    width={640}
+                    height={480}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <span className="absolute left-3 top-3 rounded-full bg-card/95 px-3 py-1 text-xs font-semibold text-foreground shadow-sm backdrop-blur">
+                    {s.name}
+                  </span>
+                </div>
+                <div className="p-4">
+                  <p className="text-sm text-muted-foreground">{s.desc}</p>
+                </div>
+              </>
+            );
+            return s.slug ? (
+              <Link key={s.name} to="/services/$serviceId" params={{ serviceId: s.slug }} className={cls}>
+                {inner}
+              </Link>
+            ) : (
+              <Link key={s.name} to="/services" className={cls}>
+                {inner}
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>

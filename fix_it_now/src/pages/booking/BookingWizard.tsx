@@ -7,9 +7,10 @@ import { toast } from "sonner";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { AddressAutocomplete } from "@/components/maps/AddressAutocomplete";
 import {
-  loadCategories, loadSubServices, loadProvidersForCategory, getSubService,
+  loadCategories, loadSubServices, loadProvidersForCategory, loadAllProviders, getSubService,
   createBooking, type Category, type SubService, type Provider, type Booking,
 } from "@/lib/booking";
+import { useNewApi } from "@/lib/api-client";
 
 const STEPS = [
   { n: 1, label: "Select Service" },
@@ -72,6 +73,17 @@ export function BookingWizard() {
   // preload provider if passed in (from "Book Now" on a provider card)
   useEffect(() => {
     if (!search.provider) return;
+    if (useNewApi()) {
+      loadAllProviders().then((list) => {
+        const data = list.find((p) => p.id === search.provider);
+        if (data) {
+          setProviders((prev) => (prev.some((p) => p.id === data.id) ? prev : [data, ...prev]));
+          setProviderId(data.id);
+          if (!categoryId && data.category_id) setCategoryId(data.category_id);
+        }
+      });
+      return;
+    }
     import("@/integrations/supabase/client").then(({ supabase }) =>
       supabase
         .from("providers")
