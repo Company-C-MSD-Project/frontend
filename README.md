@@ -9,7 +9,7 @@ Welcome to the frontend repository for **FixItNow**. This repository (Company C)
 To maintain code integrity and ensure smooth collaboration across the development team, please strictly adhere to the following workflow:
 
 *   **No Direct Commits:** Do not make or push any direct changes to the `main` branch.
-*   **Branch Strategy:** **Always use your assigned subsystem branch for coding! 😊** 
+*   **Branch Strategy:** **Always use your assigned subsystem branch for coding! ** 
 *   **Pull Requests:** Submit a Pull Request (PR) to merge your subsystem branch into the main branch only after thorough local testing.
 
 ---
@@ -23,7 +23,7 @@ To maintain code integrity and ensure smooth collaboration across the developmen
 
 ---
 
-## 🚀 Getting Started & Frontend Setup
+##  Getting Started & Frontend Setup
 
 Follow these step-by-step instructions to clone the repository, set up your local environment, and spin up the development server.
 
