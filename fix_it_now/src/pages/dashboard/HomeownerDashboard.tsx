@@ -195,10 +195,10 @@ function ActiveBookingsView() {
   }, []);
 
   const stats = [
-    { icon: "⚙️", v: data?.stats.active_now?.toString() ?? "—", l: "Active Now" },
-    { icon: "🚗", v: data?.stats.en_route?.toString() ?? "—", l: "En Route" },
-    { icon: "🛠️", v: data?.stats.in_progress?.toString() ?? "—", l: "In Progress" },
-    { icon: "💰", v: data?.stats.in_escrow ?? "—", l: "In Escrow" },
+    { icon: "", v: data?.stats.active_now?.toString() ?? "—", l: "Active Now" },
+    { icon: "", v: data?.stats.en_route?.toString() ?? "—", l: "En Route" },
+    { icon: "", v: data?.stats.in_progress?.toString() ?? "—", l: "In Progress" },
+    { icon: "", v: data?.stats.in_escrow ?? "—", l: "In Escrow" },
   ];
   const bookings = data?.items ?? [];
   const toneCls = (t: string) =>
@@ -242,9 +242,9 @@ function ActiveBookingsView() {
               </div>
               <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
                 <span>{b.cat}</span>
-                <span>📅 {b.date}</span>
+                <span>{b.date}</span>
                 <span>{b.time}</span>
-                <span>📍 {b.addr}</span>
+                <span>{b.addr}</span>
               </div>
               <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px]">
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground text-[9px] font-bold text-background">{b.pInit}</span>
@@ -336,7 +336,7 @@ function DashboardView() {
       <section>
         <div className="mb-4 flex items-end justify-between gap-4">
           <div>
-            <p className="text-xs font-bold uppercase tracking-wider text-primary">↗ Highly Recommended</p>
+            <p className="text-xs font-bold uppercase tracking-wider text-primary">Highly Recommended</p>
             <h2 className="mt-1 text-2xl font-bold">Top Rated Professionals</h2>
           </div>
           <button className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 text-xs font-semibold hover:bg-muted transition-colors">
@@ -378,11 +378,11 @@ function DashboardView() {
 /* ---------------- Security ---------------- */
 function SecurityView() {
   const checklist = [
-    { icon: "✅", title: "Strong Password", desc: "Last changed 32 days ago", status: "Passed", tone: "ok" },
-    { icon: "✅", title: "Email Verified", desc: "alex@example.com", status: "Verified", tone: "ok" },
-    { icon: "⚠️", title: "Two-Factor Auth", desc: "Not yet enabled — recommended", status: "Disabled", tone: "warn" },
-    { icon: "✅", title: "Phone Verified", desc: "+94 77 123 4567", status: "Verified", tone: "ok" },
-    { icon: "🔴", title: "Recovery Email", desc: "Backup email not set", status: "Missing", tone: "bad" },
+    { icon: "", title: "Strong Password", desc: "Last changed 32 days ago", status: "Passed", tone: "ok" },
+    { icon: "", title: "Email Verified", desc: "alex@example.com", status: "Verified", tone: "ok" },
+    { icon: "", title: "Two-Factor Auth", desc: "Not yet enabled — recommended", status: "Disabled", tone: "warn" },
+    { icon: "", title: "Phone Verified", desc: "+94 77 123 4567", status: "Verified", tone: "ok" },
+    { icon: "", title: "Recovery Email", desc: "Backup email not set", status: "Missing", tone: "bad" },
   ];
   const toneCls = (t: string) =>
     t === "ok" ? "text-emerald-600 bg-emerald-50" : t === "warn" ? "text-amber-700 bg-amber-50" : "text-red-600 bg-red-50";
@@ -430,10 +430,10 @@ function SecurityView() {
         <p className="mt-2 text-sm text-muted-foreground">Enable 2FA to add an extra layer of protection to your account.</p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {[
-            { icon: "📱", t: "SMS / OTP", d: "One-time code sent to your registered phone number", active: true },
-            { icon: "🔑", t: "Authenticator App", d: "Use Google Authenticator or Authy for secure TOTP codes" },
-            { icon: "📧", t: "Email OTP", d: "Verification code delivered to your email inbox" },
-            { icon: "🛡️", t: "Security Key", d: "Hardware FIDO2 key (YubiKey) for strongest protection" },
+            { icon: "", t: "SMS / OTP", d: "One-time code sent to your registered phone number", active: true },
+            { icon: "", t: "Authenticator App", d: "Use Google Authenticator or Authy for secure TOTP codes" },
+            { icon: "", t: "Email OTP", d: "Verification code delivered to your email inbox" },
+            { icon: "", t: "Security Key", d: "Hardware FIDO2 key (YubiKey) for strongest protection" },
           ].map((o) => (
             <div key={o.t} className={`rounded-xl border p-4 ${o.active ? "border-primary bg-primary/10" : "border-border bg-card"}`}>
               <div className="text-xl">{o.icon}</div>
@@ -484,17 +484,17 @@ function SecurityView() {
 /* ---------------- System Health ---------------- */
 function SystemHealthView() {
   const stats = [
-    { icon: "🟢", v: "99.9%", l: "Platform Uptime" },
-    { icon: "⚡", v: "142ms", l: "Avg. Response" },
-    { icon: "👥", v: "1,284", l: "Active Users Now" },
-    { icon: "📋", v: "47", l: "Jobs In Progress" },
+    { icon: "", v: "99.9%", l: "Platform Uptime" },
+    { icon: "", v: "142ms", l: "Avg. Response" },
+    { icon: "", v: "1,284", l: "Active Users Now" },
+    { icon: "", v: "47", l: "Jobs In Progress" },
   ];
   const services = [
-    { icon: "🔍", t: "Booking Engine", d: "Live search and matching", v: "99.9%" },
-    { icon: "💳", t: "Payment Gateway", d: "Stripe / Local bank processing", v: "100%" },
-    { icon: "📍", t: "GPS Tracking", d: "Real-time provider location", v: "99.7%" },
-    { icon: "🔔", t: "Notifications", d: "Email / SMS / Push alerts", v: "97.4% ⚠" },
-    { icon: "🗄️", t: "Database", d: "MySQL primary & replica", v: "100%" },
+    { icon: "", t: "Booking Engine", d: "Live search and matching", v: "99.9%" },
+    { icon: "", t: "Payment Gateway", d: "Stripe / Local bank processing", v: "100%" },
+    { icon: "", t: "GPS Tracking", d: "Real-time provider location", v: "99.7%" },
+    { icon: "", t: "Notifications", d: "Email / SMS / Push alerts", v: "97.4% " },
+    { icon: "", t: "Database", d: "MySQL primary & replica", v: "100%" },
   ];
   const metrics = [
     { l: "API Response Time", v: "142ms (Good)", pct: 30, c: "bg-emerald-500" },
@@ -562,11 +562,11 @@ function SystemHealthView() {
         <p className="text-xs font-bold uppercase tracking-wider text-primary">Recent Platform Activity</p>
         <ul className="mt-4 space-y-3 text-sm">
           {[
-            { d: "bg-emerald-500", t: "✅ Booking #FIN-0847 completed — Plumbing · Colombo", w: "5 minutes ago" },
-            { d: "bg-amber-600", t: "💳 Payment of LKR 4,200 processed successfully", w: "18 minutes ago" },
-            { d: "bg-blue-500", t: "📍 Provider Rajan Perera en route — ETA 12 mins", w: "31 minutes ago" },
-            { d: "bg-amber-500", t: "⚠ Notification delivery slight delay — SMS queue", w: "1 hour ago" },
-            { d: "bg-emerald-500", t: "💾 Daily backup completed successfully", w: "2 hours ago" },
+            { d: "bg-emerald-500", t: "Booking #FIN-0847 completed — Plumbing · Colombo", w: "5 minutes ago" },
+            { d: "bg-amber-600", t: "Payment of LKR 4,200 processed successfully", w: "18 minutes ago" },
+            { d: "bg-blue-500", t: "Provider Rajan Perera en route — ETA 12 mins", w: "31 minutes ago" },
+            { d: "bg-amber-500", t: "Notification delivery slight delay — SMS queue", w: "1 hour ago" },
+            { d: "bg-emerald-500", t: "Daily backup completed successfully", w: "2 hours ago" },
           ].map((a) => (
             <li key={a.t} className="flex items-start gap-3">
               <span className={`mt-1.5 h-2 w-2 flex-shrink-0 rounded-full ${a.d}`} />
@@ -583,9 +583,9 @@ function SystemHealthView() {
         <p className="text-xs font-bold uppercase tracking-wider text-primary">Backup & Data Status</p>
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
           {[
-            { icon: "💾", t: "Full Backup", d: "Last: Sun 02:00 AM", s: "✓ OK", bg: "bg-emerald-50" },
-            { icon: "📁", t: "Incremental", d: "Last: Today 01:00 AM", s: "✓ OK", bg: "bg-emerald-50" },
-            { icon: "🔄", t: "Live Replication", d: "Mirror: Active", s: "● Live", bg: "bg-blue-50" },
+            { icon: "", t: "Full Backup", d: "Last: Sun 02:00 AM", s: "✓ OK", bg: "bg-emerald-50" },
+            { icon: "", t: "Incremental", d: "Last: Today 01:00 AM", s: "✓ OK", bg: "bg-emerald-50" },
+            { icon: "", t: "Live Replication", d: "Mirror: Active", s: "● Live", bg: "bg-blue-50" },
           ].map((b) => (
             <div key={b.t} className={`rounded-xl p-4 text-center ${b.bg}`}>
               <div className="text-2xl">{b.icon}</div>
@@ -603,11 +603,11 @@ function SystemHealthView() {
 /* ---------------- Wallet ---------------- */
 function WalletView() {
   const txs = [
-    { icon: "🔧", t: "Plumbing — Faucet Repair", d: "Marcus Sterling · 23 May 2026", s: "Completed", a: "− LKR 4,200", neg: true },
-    { icon: "⚡", t: "Electrical — Switch Installation", d: "Elena Rodriguez · 20 May 2026", s: "Completed", a: "− LKR 3,800", neg: true },
-    { icon: "❄️", t: "HVAC — AC Service", d: "James Wilson · 18 May 2026", s: "In Escrow", a: "− LKR 7,500", neg: true },
-    { icon: "💰", t: "Wallet Top-Up", d: "Bank Transfer · 15 May 2026", s: "Credit", a: "+ LKR 50,000", neg: false },
-    { icon: "↩️", t: "Refund — Cancelled Booking", d: "Painting Service · 10 May 2026", s: "Refunded", a: "+ LKR 2,000", neg: false },
+    { icon: "", t: "Plumbing — Faucet Repair", d: "Marcus Sterling · 23 May 2026", s: "Completed", a: "− LKR 4,200", neg: true },
+    { icon: "", t: "Electrical — Switch Installation", d: "Elena Rodriguez · 20 May 2026", s: "Completed", a: "− LKR 3,800", neg: true },
+    { icon: "", t: "HVAC — AC Service", d: "James Wilson · 18 May 2026", s: "In Escrow", a: "− LKR 7,500", neg: true },
+    { icon: "", t: "Wallet Top-Up", d: "Bank Transfer · 15 May 2026", s: "Credit", a: "+ LKR 50,000", neg: false },
+    { icon: "", t: "Refund — Cancelled Booking", d: "Painting Service · 10 May 2026", s: "Refunded", a: "+ LKR 2,000", neg: false },
   ];
 
   return (
@@ -628,13 +628,13 @@ function WalletView() {
           </div>
         </div>
         <div className="rounded-2xl border border-border bg-card p-6">
-          <div className="text-2xl">📊</div>
+          <div className="text-2xl"></div>
           <p className="mt-2 text-2xl font-bold">LKR 428,000</p>
           <p className="text-xs text-muted-foreground">Total Spent (All Time)</p>
           <p className="mt-2 text-xs text-emerald-600">↑ LKR 12,400 this month</p>
         </div>
         <div className="rounded-2xl border border-border bg-card p-6">
-          <div className="text-2xl">🔁</div>
+          <div className="text-2xl"></div>
           <p className="mt-2 text-2xl font-bold">LKR 18,500</p>
           <p className="text-xs text-muted-foreground">In Escrow (Active Jobs)</p>
           <p className="mt-2 text-xs text-primary">3 jobs in progress</p>
@@ -669,17 +669,17 @@ function WalletView() {
             <p className="text-xs font-bold uppercase tracking-wider text-primary">Payment Methods</p>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <div className="rounded-xl border border-primary bg-primary/10 p-3">
-                <div className="text-xl">💳</div>
+                <div className="text-xl"></div>
                 <p className="mt-1 text-sm font-bold">Visa ···· 4242</p>
                 <p className="text-[10px] text-muted-foreground">Expires 08/27 · Default</p>
               </div>
               <div className="rounded-xl border border-border p-3">
-                <div className="text-xl">🏦</div>
+                <div className="text-xl"></div>
                 <p className="mt-1 text-sm font-bold">Bank Transfer</p>
                 <p className="text-[10px] text-muted-foreground">Sampath Bank</p>
               </div>
               <div className="rounded-xl border border-border p-3">
-                <div className="text-xl">📱</div>
+                <div className="text-xl"></div>
                 <p className="mt-1 text-sm font-bold">Dialog Genie</p>
                 <p className="text-[10px] text-muted-foreground">Mobile Wallet</p>
               </div>
@@ -692,10 +692,10 @@ function WalletView() {
           <div className="rounded-2xl border border-border bg-card p-6">
             <p className="text-xs font-bold uppercase tracking-wider text-primary">Gold Member Benefits</p>
             <ul className="mt-3 space-y-2 text-sm">
-              <li>⭐ 0% platform service fee on all bookings</li>
-              <li>⭐ Priority booking — skip the queue</li>
-              <li>⭐ Extended 6-month workmanship warranty</li>
-              <li>⭐ Dedicated Gold support line</li>
+              <li>0% platform service fee on all bookings</li>
+              <li>Priority booking — skip the queue</li>
+              <li>Extended 6-month workmanship warranty</li>
+              <li>Dedicated Gold support line</li>
             </ul>
           </div>
         </section>
@@ -720,10 +720,10 @@ function PastBookingsView() {
   }, []);
 
   const stats = [
-    { icon: "📋", v: data?.stats.total?.toString() ?? "—", l: "Total Bookings" },
-    { icon: "✅", v: data?.stats.completed?.toString() ?? "—", l: "Completed" },
-    { icon: "❌", v: data?.stats.cancelled?.toString() ?? "—", l: "Cancelled" },
-    { icon: "💰", v: data?.stats.total_spent ?? "—", l: "Total Spent" },
+    { icon: "", v: data?.stats.total?.toString() ?? "—", l: "Total Bookings" },
+    { icon: "", v: data?.stats.completed?.toString() ?? "—", l: "Completed" },
+    { icon: "", v: data?.stats.cancelled?.toString() ?? "—", l: "Cancelled" },
+    { icon: "", v: data?.stats.total_spent ?? "—", l: "Total Spent" },
   ];
   const allItems = data?.items ?? [];
   const filters = [
@@ -796,9 +796,9 @@ function PastBookingsView() {
               </div>
               <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
                 <span>{b.cat}</span>
-                <span>📅 {b.date}</span>
+                <span>{b.date}</span>
                 <span>{b.time}</span>
-                <span>📍 {b.addr}</span>
+                <span>{b.addr}</span>
                 {b.svcType && <span>{b.svcType}</span>}
               </div>
               {b.provider && (
@@ -1029,7 +1029,7 @@ function SupportView() {
             <ul className="mt-4 space-y-2.5 text-sm">
               <li className="flex items-center gap-2"><Phone className="h-4 w-4 text-primary" /> 0771234567 · 0767654321</li>
               <li className="flex items-center gap-2"><Mail className="h-4 w-4 text-primary" /> fixitnow@gmail.com</li>
-              <li className="flex items-center gap-2">🖨 Fax: +94761234567</li>
+              <li className="flex items-center gap-2">Fax: +94761234567</li>
               <li className="flex items-center gap-2"><MapPin className="h-4 w-4 text-primary" /> University of Moratuwa, Sri Lanka</li>
               <li className="flex items-center gap-2"><Clock className="h-4 w-4 text-primary" /> Mon–Sat 8 AM – 8 PM · Sun 9 AM – 5 PM</li>
             </ul>

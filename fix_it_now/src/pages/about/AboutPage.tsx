@@ -19,11 +19,14 @@ const values = [
   { icon: Globe, title: "Community", desc: "We are building a better ecosystem for homeowners and tradespeople — fair rates and instant payouts." },
 ];
 
-const team = [
-  { initials: "CH", name: "Chanupa Hansaja", role: "Project Lead" },
-  { initials: "MP", name: "M. Piriyatharsan", role: "Backend Developer" },
-  { initials: "JS", name: "Janindu Sathsara", role: "Frontend Developer" },
-  { initials: "PR", name: "Pasan Rashmika", role: "UI/UX Designer" },
+const contributors = [
+  "RAJAPAKSHA J.S.W.", "CHINTHAKA M.K.M.G.", "PALLIYAGURU D.R.", "GUNASEKARA H.P", "RANAWEERA R.K.D.H.M", "GUNARATNE A.B.C",
+  "FERNANDO W.W.N.H.", "MENDIS TASD", "NANAYAKKARA G.A.A", "KAUSHAL S.V.", "PAMOD B.G.A.Y.", "RODRIGO B.K.G.S.", "RASHMIKA R.R.P.",
+  "NAWARATHNA R.M.D.P.", "CHAMUDITHA B.A.S.K.", "PREMARATHNA W.M.T.N.", "JAYASEKARA N.A.S.N", "WEERAKOON N.M.S.U.", "HERATH H.M.D.N.B.",
+  "KANNANGARA T.M.", "NILUSHIKA B.A.V.", "ANURADHA S.G.D.", "HEWAWASAM H.R.L.", "VITHANAGE H.H.", "COLOMBAVIDANAGE M.D",
+  "SAMEEKSHIKA W.A.K.E.", "RIFNAZ K.R.M.", "PIRIYATHARSAN M.", "MUHAMATH M.A.A.A.", "SHAHITHYAN R.", "SASIKAANTH N.",
+  "GUNESEKARA H.M.Y.J.", "DILMITH G.S.", "VITHANAGE S.V.C.H.", "AMBALANGODAGE S.A.", "JAYALATHGE R.S.", "DISSANAYAKE G.R.G.K.",
+  "JAYAWARDANA A.J.A", "THARAKA A.K.P.S",
 ];
 
 const promise = [
@@ -122,17 +125,18 @@ export function AboutPage() {
 
       <section className="mx-auto max-w-5xl 4xl:max-w-[1800px] px-5 sm:px-6 py-12 md:py-20 text-center">
         <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Built by Group C</h2>
-        <p className="mt-3 text-muted-foreground">A dedicated team committed to making home repair hassle-free.</p>
-        <div className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4">
-          {team.map((m, i) => {
-            const colors = ["bg-primary", "bg-purple-500", "bg-emerald-600", "bg-rose-600"];
+        <p className="mt-3 text-muted-foreground">All {contributors.length} contributors who built FixItNow.</p>
+        <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-4">
+          {contributors.map((name, i) => {
+            const colors = ["bg-primary", "bg-purple-500", "bg-emerald-600", "bg-rose-600", "bg-amber-500", "bg-sky-600", "bg-indigo-500", "bg-teal-600"];
+            const parts = name.split(" ");
+            const initials = ((parts[0]?.[0] ?? "") + (parts[1]?.[0] ?? parts[0]?.[1] ?? "")).toUpperCase();
             return (
               <div key={i}>
-                <div className={`mx-auto flex h-16 w-16 items-center justify-center rounded-full text-base font-bold text-white ${colors[i]}`}>
-                  {m.initials}
+                <div className={`mx-auto flex h-14 w-14 items-center justify-center rounded-full text-sm font-bold text-white ${colors[i % colors.length]}`}>
+                  {initials}
                 </div>
-                <p className="mt-4 font-semibold">{m.name}</p>
-                <p className="text-xs text-muted-foreground">{m.role}</p>
+                <p className="mt-3 text-sm font-semibold">{name}</p>
               </div>
             );
           })}
