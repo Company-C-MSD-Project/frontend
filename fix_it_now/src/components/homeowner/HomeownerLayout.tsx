@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 import { Footer } from "@/components/common/Footer";
 import { useCurrentUser } from "@/hooks/use-current-user";
-import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
 
 export type HomeownerNavKey =
@@ -20,6 +20,7 @@ interface Props {
 
 export function HomeownerLayout({ active, children }: Props) {
   const { profile } = useCurrentUser();
+  const { signOut } = useAuth();
   const navigate = useNavigate();
   const username = profile?.username ?? "";
   const displayName = profile?.display_name ?? username ?? "User";
@@ -32,7 +33,7 @@ export function HomeownerLayout({ active, children }: Props) {
   }, [mobileOpen]);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    await signOut();
     toast.success("Signed out");
     navigate({ to: "/" });
   };

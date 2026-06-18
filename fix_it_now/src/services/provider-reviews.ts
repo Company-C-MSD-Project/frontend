@@ -1,4 +1,5 @@
 import { http } from "./http";
+import { normalizeCurrencyText } from "@/lib/currency";
 
 export interface ProviderReview {
   id: string;
@@ -31,7 +32,7 @@ export const providerReviewsService = {
       city: String(r.city ?? ""),
       service: String(r.service ?? ""),
       date: String(r.date ?? r.created_at ?? ""),
-      paid: String(r.paid ?? r.amount ?? ""),
+      paid: normalizeCurrencyText(r.paid ?? r.amount ?? ""),
       rating: Number(r.rating ?? 0),
       text: String(r.text ?? r.comment ?? ""),
     }));
@@ -42,7 +43,7 @@ export const providerReviewsService = {
       avgRating: Number(data?.avg_rating ?? data?.avgRating ?? 0),
       totalReviews: Number(data?.total_reviews ?? data?.totalReviews ?? 0),
       completionRate: Number(data?.completion_rate ?? data?.completionRate ?? 0),
-      totalEarned: String(data?.total_earned ?? data?.totalEarned ?? ""),
+      totalEarned: normalizeCurrencyText(data?.total_earned ?? data?.totalEarned ?? ""),
       jobsDone: Number(data?.jobs_done ?? data?.jobsDone ?? 0),
       experience: String(data?.experience ?? ""),
       distribution: Array.isArray(data?.distribution)

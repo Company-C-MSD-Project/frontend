@@ -4,14 +4,15 @@ import { Search, MapPin, Star, ArrowRight } from "lucide-react";
 import { Navbar } from "@/components/common/Navbar";
 import { Footer } from "@/components/common/Footer";
 import { SERVICES } from "@/lib/services-data";
+import { formatCurrency } from "@/lib/currency";
 
 const POPULAR = ["Faucet Repair", "AC Maintenance", "Roof Inspection", "Garden Design"];
 
 const TOP_RATED = [
-  { id: "plumber", name: "Marcus Sterling", title: "Master Plumber", area: "Downtown Colombo", avail: "Available within 2 hours", price: 85, rating: 4.9 },
-  { id: "electrician", name: "Elena Rodriguez", title: "Electrical Specialist", area: "Negombo", avail: "Available today", price: 95, rating: 4.8 },
-  { id: "hvac", name: "James Wilson", title: "HVAC & Cooling", area: "Gampaha", avail: "Scheduled slots open", price: 120, rating: 5.0 },
-  { id: "painter", name: "Sarah Chen", title: "Professional Painter", area: "Kandy", avail: "Available within 24 hrs", price: 65, rating: 4.7 },
+  { id: "plumber", name: "Marcus Sterling", title: "Master Plumber", area: "Downtown Colombo", avail: "Available within 2 hours", price: 2800, rating: 4.9 },
+  { id: "electrician", name: "Elena Rodriguez", title: "Electrical Specialist", area: "Negombo", avail: "Available today", price: 3200, rating: 4.8 },
+  { id: "hvac", name: "James Wilson", title: "HVAC & Cooling", area: "Gampaha", avail: "Scheduled slots open", price: 4500, rating: 5.0 },
+  { id: "painter", name: "Sarah Chen", title: "Professional Painter", area: "Kandy", avail: "Available within 24 hrs", price: 2500, rating: 4.7 },
 ];
 
 export function ServicesPage() {
@@ -144,7 +145,7 @@ export function ServicesPage() {
                 <p className="flex items-center gap-1 text-xs text-muted-foreground"><MapPin className="h-3 w-3" /> {p.area}</p>
                 <p className="text-xs text-success">✓ {p.avail}</p>
                 <div className="flex items-center justify-between pt-2">
-                  <p className="text-sm"><span className="text-lg font-bold">${p.price}</span><span className="text-xs text-muted-foreground">/hr</span></p>
+                  <p className="text-sm"><span className="text-lg font-bold">{formatCurrency(p.price)}</span><span className="text-xs text-muted-foreground">/hr</span></p>
                   <Link to="/services/$serviceId" params={{ serviceId: p.id }} className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:opacity-90 transition-opacity">
                     Book Now
                   </Link>
@@ -163,7 +164,7 @@ export function ServicesPage() {
             <p className="mt-1 text-sm opacity-90">Enjoy 0% service fees, priority booking, and extended warranties.</p>
           </div>
           <button className="inline-flex items-center gap-2 rounded-xl bg-background px-5 py-3 text-sm font-semibold text-foreground shadow-sm hover:opacity-90 transition-opacity">
-            Subscribe to Gold — $29.99/mo <ArrowRight className="h-4 w-4" />
+            Subscribe to Gold — Rs. 29,990/mo <ArrowRight className="h-4 w-4" />
           </button>
         </div>
       </section>

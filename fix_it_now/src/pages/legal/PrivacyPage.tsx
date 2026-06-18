@@ -8,40 +8,46 @@ export function PrivacyPage() {
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
       <article className="mx-auto max-w-3xl px-5 pt-10 pb-16">
-        <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-          <ChevronLeft className="h-4 w-4" /> Back to Home
+        <Link to="/signup" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <ChevronLeft className="h-4 w-4" /> Back to Sign Up
         </Link>
         <p className="mt-6 text-[11px] font-semibold uppercase tracking-wider text-primary">Legal</p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Privacy Policy</h1>
-        <p className="mt-3 text-sm text-muted-foreground">Last updated: November 12, 2024</p>
+        <div className="mt-3 flex flex-wrap gap-4 text-sm text-muted-foreground">
+          <span>Effective date: June 18, 2026</span>
+          <span>Version 1.2</span>
+        </div>
 
-        <div className="mt-10 space-y-8 text-base leading-relaxed text-foreground/85">
-          <Section title="1. What We Collect">
-            Account details you provide (name, email, phone, address), booking history, messages exchanged on the platform, and technical data like device type and IP address. Providers also share verification documents for review.
+        <div className="mt-10 space-y-12 text-base leading-relaxed text-foreground/85">
+          <Section title="1. Information We Collect">
+            We collect the data you provide directly, such as name, email, phone, address, booking details, and messages. We also collect technical data like IP address, browser type, and device information.
           </Section>
-          <Section title="2. How We Use Your Information">
-            To run the platform: matching you with providers, processing bookings and payments, sending booking confirmations and service updates, preventing fraud, and improving the product.
+          <Section title="2. How We Use Your Data">
+            Your information is used to provide and improve our services, process bookings and payments, communicate with you, prevent fraud, and personalize your experience.
           </Section>
-          <Section title="3. Sharing With Providers">
-            When you book a service, we share the details the provider needs to complete the job — your name, address, contact number, and the problem description. We don't share payment details with providers.
+          <Section title="3. Sharing with Providers and Partners">
+            When you request a service, we share only the information needed for the provider to complete the job. We will not share your payment details with service providers.
           </Section>
-          <Section title="4. Cookies & Analytics">
-            We use cookies to keep you logged in and to understand how the platform is used. You can disable non-essential cookies in your browser settings; some features may stop working if you do.
+          <Section title="4. Cookies and Tracking Technologies">
+            We use cookies and similar technologies to support login, performance, and analytics. You may manage cookie settings through your browser, but disabling cookies may affect site functionality.
           </Section>
           <Section title="5. Data Retention">
-            We keep your account data while your account is active and for a reasonable period afterwards to handle disputes and comply with legal obligations. You can request deletion at any time.
+            We retain data while your account is active and as needed to comply with legal obligations, resolve disputes, and enforce agreements. You may request access, correction, or deletion of your personal data.
           </Section>
           <Section title="6. Your Rights">
-            You can access, correct, export, or delete your personal data from your profile settings, or by contacting us. We'll respond within a reasonable time.
+            You may request to access, update, or delete your personal information. Contact us if you want to exercise your privacy rights or if you have questions about our practices.
           </Section>
           <Section title="7. Security">
-            Passwords are hashed, traffic is encrypted in transit, and sensitive data is encrypted at rest. No system is perfectly secure — please use a strong, unique password and enable any extra security options we offer.
+            We use administrative, technical, and physical safeguards to protect your data. No system can be completely secure, so please keep your account credentials private.
           </Section>
-          <Section title="8. Changes to This Policy">
-            If we make material changes to how we handle your data, we'll let you know through the app or by email before the changes take effect.
+          <Section title="8. Third-Party Services">
+            We may use third-party service providers for payment processing, analytics, and hosting. Those third parties are contractually bound to protect your data in accordance with this policy.
           </Section>
-          <Section title="9. Contact">
-            Privacy questions or requests? Email <a className="font-medium text-primary hover:underline" href="mailto:fixitnow@gmail.com">fixitnow@gmail.com</a>.
+          <Section title="9. Changes to This Policy">
+            We may update this Privacy Policy periodically. If we make material changes, we will notify you through the app or by email before they become effective.
+          </Section>
+          <Section title="10. Contact">
+            For privacy questions or requests, please email <a className="font-medium text-primary hover:underline" href="mailto:fixitnow@gmail.com">fixitnow@gmail.com</a>.
           </Section>
         </div>
       </article>

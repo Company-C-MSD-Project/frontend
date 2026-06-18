@@ -7,14 +7,15 @@ import { SERVICES, type ServiceCategory, type Provider } from "@/lib/services-da
 import { browseService } from "@/services/browse";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { setBookingIntent } from "@/lib/booking";
+import { formatCurrency } from "@/lib/currency";
 
 const POPULAR = ["Faucet Repair", "AC Maintenance", "Roof Inspection", "Garden Design"];
 
 const FALLBACK_TOP: Array<{ id: string; name: string; title: string; area: string; avail: string; price: number; rating: number }> = [
-  { id: "plumber", name: "Marcus Sterling", title: "Master Plumber", area: "Downtown Colombo", avail: "Available within 2 hours", price: 85, rating: 4.9 },
-  { id: "electrician", name: "Elena Rodriguez", title: "Electrical Specialist", area: "Negombo", avail: "Available today", price: 95, rating: 4.8 },
-  { id: "hvac", name: "James Wilson", title: "HVAC & Cooling", area: "Gampaha", avail: "Scheduled slots open", price: 120, rating: 5.0 },
-  { id: "painter", name: "Sarah Chen", title: "Professional Painter", area: "Kandy", avail: "Available within 24 hrs", price: 65, rating: 4.7 },
+  { id: "plumber", name: "Marcus Sterling", title: "Master Plumber", area: "Downtown Colombo", avail: "Available within 2 hours", price: 2800, rating: 4.9 },
+  { id: "electrician", name: "Elena Rodriguez", title: "Electrical Specialist", area: "Negombo", avail: "Available today", price: 3200, rating: 4.8 },
+  { id: "hvac", name: "James Wilson", title: "HVAC & Cooling", area: "Gampaha", avail: "Scheduled slots open", price: 4500, rating: 5.0 },
+  { id: "painter", name: "Sarah Chen", title: "Professional Painter", area: "Kandy", avail: "Available within 24 hrs", price: 2500, rating: 4.7 },
 ];
 
 export function ServicesPage() {
@@ -23,10 +24,10 @@ export function ServicesPage() {
     ? { to: "/$username/book", params: { username: profile.username } } as const
     : { to: "/login" as const, onClick: () => setBookingIntent({}) };
 
-  const [query, setQuery] = useState("");
-  const [location, setLocation] = useState("Your location");
   const [services, setServices] = useState<ServiceCategory[]>(SERVICES);
   const [topProviders, setTopProviders] = useState<Provider[]>([]);
+  const [query, setQuery] = useState("");
+  const [location, setLocation] = useState("Your location");
 
   const filteredServices = useMemo(() => {
     const normalized = query.trim().toLowerCase();
@@ -37,7 +38,8 @@ export function ServicesPage() {
       const matchesQuery = !normalized
         ? true
         : [service.name, service.tagline, service.description, service.specialists]
-            .some((field) => field.toLowerCase().includes(normalized));
+            .some((field) => field.toLowerCase().includes(normalized)) ||
+          service.subServices.some((subService) => subService.name.toLowerCase().includes(normalized));
 
       const matchesLocation = !useLocation
         ? true
@@ -70,8 +72,6 @@ export function ServicesPage() {
       }))
     : FALLBACK_TOP;
 
-
-
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
@@ -97,7 +97,7 @@ export function ServicesPage() {
               <Search className="h-4 w-4 text-muted-foreground" />
               <input
                 value={query}
-                onChange={(event) => setQuery(event.target.value)}
+                onChange={(e) => setQuery(e.target.value)}
                 placeholder="What service do you need?"
                 className="w-full bg-transparent py-2.5 text-sm outline-none placeholder:text-muted-foreground"
                 aria-label="Search services"
@@ -128,7 +128,12 @@ export function ServicesPage() {
           <div className="mx-auto mt-5 flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
             <span className="font-medium">Popular:</span>
             {POPULAR.map((p) => (
-              <button key={p} className="rounded-full border border-border bg-card px-3 py-1.5 font-medium text-foreground hover:bg-muted transition-colors">
+              <button
+                key={p}
+                type="button"
+                onClick={() => setQuery(p)}
+                className="rounded-full border border-border bg-card px-3 py-1.5 font-medium text-foreground hover:bg-muted transition-colors"
+              >
                 {p}
               </button>
             ))}
@@ -190,7 +195,7 @@ export function ServicesPage() {
                 <p className="flex items-center gap-1 text-xs text-muted-foreground"><MapPin className="h-3 w-3" /> {p.area}</p>
                 <p className="text-xs text-success">✓ {p.avail}</p>
                 <div className="flex items-center justify-between pt-2">
-                  <p className="text-sm"><span className="text-lg font-bold">${p.price}</span><span className="text-xs text-muted-foreground">/hr</span></p>
+                  <p className="text-sm"><span className="text-lg font-bold">{formatCurrency(p.price)}</span><span className="text-xs text-muted-foreground">/hr</span></p>
                   <Link {...bookLink} className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:opacity-90 transition-opacity">
                     Book Now
                   </Link>
@@ -209,7 +214,7 @@ export function ServicesPage() {
             <p className="mt-1 text-sm opacity-90">Enjoy 0% service fees, priority booking, and extended warranties.</p>
           </div>
           <button className="inline-flex items-center gap-2 rounded-xl bg-background px-5 py-3 text-sm font-semibold text-foreground shadow-sm hover:opacity-90 transition-opacity">
-            Subscribe to Gold — $29.99/mo <ArrowRight className="h-4 w-4" />
+            Subscribe to Gold — Rs. 29,990/mo <ArrowRight className="h-4 w-4" />
           </button>
         </div>
       </section>

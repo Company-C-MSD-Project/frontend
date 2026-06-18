@@ -12,6 +12,7 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { supabase } from "@/integrations/supabase/client";
 import { useNewApi } from "@/lib/api-client";
 import { authApi } from "@/lib/auth-api";
+import { formatCurrency } from "@/lib/currency";
 import { toast } from "sonner";
 
 type Tab = "dashboard" | "security" | "system" | "wallet" | "bookings" | "active" | "preferences" | "support";
@@ -276,10 +277,10 @@ function DashboardView() {
   const username = profile?.username ?? "";
   const services = SERVICES.slice(0, 6);
   const providers = [
-    { name: "Marcus Sterling", title: "Master Plumber", area: "Downtown Brooklyn", avail: "Within 2 hours", price: 85, rating: 4.9, color: "oklch(0.42 0.04 55)" },
-    { name: "Elena Rodriguez", title: "Electrical Specialist", area: "Queens Village", avail: "Today", price: 95, rating: 4.8, color: "oklch(0.55 0.10 60)" },
-    { name: "James Wilson", title: "HVAC & Cooling", area: "Manhattan Heights", avail: "Scheduled", price: 120, rating: 5.0, color: "oklch(0.78 0.14 75)" },
-    { name: "Sarah Chen", title: "Professional Painter", area: "Jersey City", avail: "Within 24 hours", price: 65, rating: 4.7, color: "oklch(0.88 0.06 70)" },
+    { name: "Marcus Sterling", title: "Master Plumber", area: "Downtown Colombo", avail: "Within 2 hours", price: 2800, rating: 4.9, color: "oklch(0.42 0.04 55)" },
+    { name: "Elena Rodriguez", title: "Electrical Specialist", area: "Negombo", avail: "Today", price: 3200, rating: 4.8, color: "oklch(0.55 0.10 60)" },
+    { name: "James Wilson", title: "HVAC & Cooling", area: "Gampaha", avail: "Scheduled", price: 4500, rating: 5.0, color: "oklch(0.78 0.14 75)" },
+    { name: "Sarah Chen", title: "Professional Painter", area: "Kandy", avail: "Within 24 hours", price: 2500, rating: 4.7, color: "oklch(0.88 0.06 70)" },
   ];
 
   return (
@@ -343,7 +344,7 @@ function DashboardView() {
                 <p className="flex items-center gap-1 text-[11px] text-muted-foreground"><MapPin className="h-3 w-3" /> {p.area}</p>
                 <p className="flex items-center gap-1 text-[11px] text-muted-foreground"><Clock className="h-3 w-3" /> {p.avail}</p>
                 <div className="flex items-center justify-between border-t border-border pt-2.5">
-                  <p className="text-xs"><span className="text-base font-bold">${p.price}</span><span className="text-muted-foreground">/hr</span></p>
+                  <p className="text-xs"><span className="text-base font-bold">{formatCurrency(p.price)}</span><span className="text-muted-foreground">/hr</span></p>
                   <Link to="/$username/book" params={{ username: username }} className="rounded-lg bg-primary px-3 py-1.5 text-[11px] font-bold text-primary-foreground hover:opacity-90 transition-opacity">Book Now</Link>
                 </div>
               </div>
@@ -855,7 +856,7 @@ function PreferencesView() {
               </Field>
               <Field label="Currency Display" desc="Show prices in your preferred currency">
                 <select className="rounded-lg border border-border bg-background px-3 py-2 text-sm">
-                  <option>LKR (Rs.)</option><option>USD ($)</option><option>EUR (€)</option>
+                  <option>LKR (Rs.)</option>
                 </select>
               </Field>
             </div>
