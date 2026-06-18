@@ -3,8 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ChevronRight, Search, MapPin, Star, Shield, CheckCircle2, Zap, Clock, ChevronDown } from "lucide-react";
 import { Navbar } from "@/components/common/Navbar";
 import { Footer } from "@/components/common/Footer";
-import { getService, type ServiceCategory } from "@/lib/services-data";
-import { browseService } from "@/services/browse";
+import { browseService, type ServiceCategory } from "@/services/browse";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { setBookingIntent } from "@/lib/booking";
 
@@ -13,12 +12,13 @@ const TIMES = ["Morning (8 AM – 12 PM)", "Afternoon (12 PM – 4 PM)", "Evenin
 
 export function ServiceDetailPage() {
   const { serviceId } = useParams({ from: "/services/$serviceId/" });
-  const [service, setService] = useState<ServiceCategory | undefined>(() => getService(serviceId));
+  const [service, setService] = useState<ServiceCategory | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     let alive = true;
-    browseService.getServiceBySlug(serviceId).then((s) => {
-      if (alive && s) setService(s);
-    }).catch(() => {});
+    browseService.getServiceBySlug(serviceId)
+      .then((s) => { if (alive) setService(s); })
+      .finally(() => { if (alive) setLoading(false); });
     return () => { alive = false; };
   }, [serviceId]);
   const { profile } = useCurrentUser();
@@ -32,40 +32,28 @@ export function ServiceDetailPage() {
 
 
   const [filter, setFilter] = useState("all");
-  const [sort, setSort] = useState("top-rated");
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
     if (!service) return [];
-    const normalized = query.trim().toLowerCase();
-    const results = service.providers.filter((p) => {
-      if (normalized) {
-        const fields = [p.name, p.title, p.area, p.distance, p.availability];
-        if (!fields.some((field) => field.toLowerCase().includes(normalized))) return false;
-      }
+    return service.providers.filter((p) => {
+      if (query && !`${p.name} ${p.title}`.toLowerCase().includes(query.toLowerCase())) return false;
       if (filter === "rated" && !p.topRated) return false;
       if (filter === "available" && !p.availability.toLowerCase().includes("available")) return false;
-      if (filter === "near") {
-        const match = p.distance.match(/([0-9]+(?:\.[0-9]+)?)/);
-        return match ? parseFloat(match[1]) <= 5 : p.distance.toLowerCase().includes("km");
-      }
-      if (filter === "cheap") return p.hourly < 2500;
       return true;
     });
+  }, [service, filter, query]);
 
-    if (sort === "nearest") {
-      return [...results].sort((a, b) => {
-        const aDist = parseFloat(a.distance) || Number.MAX_VALUE;
-        const bDist = parseFloat(b.distance) || Number.MAX_VALUE;
-        return aDist - bDist;
-      });
-    }
-    if (sort === "lowest-price") {
-      return [...results].sort((a, b) => a.hourly - b.hourly);
-    }
-    return [...results].sort((a, b) => b.rating - a.rating);
-  }, [service, filter, query, sort]);
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background text-foreground">
+        <Navbar />
+        <div className="mx-auto w-full max-w-6xl 4xl:max-w-[1800px] px-4 sm:px-5 py-24 text-center text-sm text-muted-foreground">Loading service…</div>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!service) {
     return (
@@ -162,14 +150,10 @@ export function ServiceDetailPage() {
                     className="w-full rounded-xl border border-border bg-card pl-10 pr-3 py-2.5 text-sm outline-none focus:border-primary/60"
                   />
                 </div>
-                <select
-                  value={sort}
-                  onChange={(e) => setSort(e.target.value)}
-                  className="rounded-xl border border-border bg-card px-3 py-2.5 text-sm outline-none"
-                >
-                  <option value="top-rated">Sort: Top Rated</option>
-                  <option value="nearest">Sort: Nearest</option>
-                  <option value="lowest-price">Sort: Lowest Price</option>
+                <select className="rounded-xl border border-border bg-card px-3 py-2.5 text-sm outline-none">
+                  <option>Sort: Top Rated</option>
+                  <option>Sort: Nearest</option>
+                  <option>Sort: Lowest Price</option>
                 </select>
               </div>
 
@@ -250,9 +234,9 @@ export function ServiceDetailPage() {
                 <Field label="Your District">
                   <select className={inputCls}>{DISTRICTS.map((d) => <option key={d}>{d}</option>)}</select>
                 </Field>
-                <Link {...bookLink} className="mt-2 inline-flex w-full items-center justify-center rounded-xl bg-primary py-3 text-sm font-bold text-primary-foreground shadow-sm hover:opacity-90 transition-opacity">
+                <button className="mt-2 w-full rounded-xl bg-primary py-3 text-sm font-bold text-primary-foreground shadow-sm hover:opacity-90 transition-opacity">
                   Find & Book Now →
-                </Link>
+                </button>
               </div>
             </div>
 

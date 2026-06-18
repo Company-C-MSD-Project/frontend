@@ -1,22 +1,13 @@
 import { Link } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Search, MapPin, Star, ArrowRight } from "lucide-react";
 import { Navbar } from "@/components/common/Navbar";
 import { Footer } from "@/components/common/Footer";
-import { SERVICES, type ServiceCategory, type Provider } from "@/lib/services-data";
-import { browseService } from "@/services/browse";
+import { browseService, type ServiceCategory, type Provider } from "@/services/browse";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { setBookingIntent } from "@/lib/booking";
-import { formatCurrency } from "@/lib/currency";
 
 const POPULAR = ["Faucet Repair", "AC Maintenance", "Roof Inspection", "Garden Design"];
-
-const FALLBACK_TOP: Array<{ id: string; name: string; title: string; area: string; avail: string; price: number; rating: number }> = [
-  { id: "plumber", name: "Marcus Sterling", title: "Master Plumber", area: "Downtown Colombo", avail: "Available within 2 hours", price: 2800, rating: 4.9 },
-  { id: "electrician", name: "Elena Rodriguez", title: "Electrical Specialist", area: "Negombo", avail: "Available today", price: 3200, rating: 4.8 },
-  { id: "hvac", name: "James Wilson", title: "HVAC & Cooling", area: "Gampaha", avail: "Scheduled slots open", price: 4500, rating: 5.0 },
-  { id: "painter", name: "Sarah Chen", title: "Professional Painter", area: "Kandy", avail: "Available within 24 hrs", price: 2500, rating: 4.7 },
-];
 
 export function ServicesPage() {
   const { profile } = useCurrentUser();
@@ -24,53 +15,32 @@ export function ServicesPage() {
     ? { to: "/$username/book", params: { username: profile.username } } as const
     : { to: "/login" as const, onClick: () => setBookingIntent({}) };
 
-  const [services, setServices] = useState<ServiceCategory[]>(SERVICES);
+  const [services, setServices] = useState<ServiceCategory[]>([]);
   const [topProviders, setTopProviders] = useState<Provider[]>([]);
-  const [query, setQuery] = useState("");
-  const [location, setLocation] = useState("Your location");
-
-  const filteredServices = useMemo(() => {
-    const normalized = query.trim().toLowerCase();
-    const useLocation = location !== "Your location";
-    const normalizedLocation = location.toLowerCase();
-
-    return services.filter((service) => {
-      const matchesQuery = !normalized
-        ? true
-        : [service.name, service.tagline, service.description, service.specialists]
-            .some((field) => field.toLowerCase().includes(normalized)) ||
-          service.subServices.some((subService) => subService.name.toLowerCase().includes(normalized));
-
-      const matchesLocation = !useLocation
-        ? true
-        : service.providers.some((provider) => provider.area.toLowerCase().includes(normalizedLocation));
-
-      return matchesQuery && matchesLocation;
-    });
-  }, [query, location, services]);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     let alive = true;
-    browseService.listCategories().then((list) => {
-      if (alive && list.length) setServices(list);
-    }).catch(() => {});
-    browseService.topProviders(4).then((list) => {
-      if (alive) setTopProviders(list);
-    }).catch(() => {});
+    Promise.all([browseService.listCategories(), browseService.topProviders(4)])
+      .then(([cats, top]) => {
+        if (!alive) return;
+        setServices(cats);
+        setTopProviders(top);
+      })
+      .finally(() => { if (alive) setLoading(false); });
     return () => { alive = false; };
   }, []);
 
-  const topRated = topProviders.length
-    ? topProviders.map((p) => ({
-        id: p.id,
-        name: p.name,
-        title: p.title,
-        area: p.area,
-        avail: p.availability,
-        price: p.hourly,
-        rating: p.rating,
-      }))
-    : FALLBACK_TOP;
+  const topRated = topProviders.map((p) => ({
+    id: p.id,
+    name: p.name,
+    title: p.title,
+    area: p.area,
+    avail: p.availability,
+    price: p.hourly,
+    rating: p.rating,
+  }));
+
+
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -86,53 +56,32 @@ export function ServicesPage() {
             Browse 2,400+ verified professionals across 30+ service categories.
           </p>
 
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-            }}
-            className="mx-auto mt-8 flex max-w-2xl flex-col gap-2 rounded-2xl border border-border bg-card p-2 shadow-sm sm:flex-row"
-          >
+          <div className="mx-auto mt-8 flex max-w-2xl flex-col gap-2 rounded-2xl border border-border bg-card p-2 shadow-sm sm:flex-row">
             <div className="flex flex-1 items-center gap-2 rounded-xl px-3">
               <Search className="h-4 w-4 text-muted-foreground" />
               <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
                 placeholder="What service do you need?"
                 className="w-full bg-transparent py-2.5 text-sm outline-none placeholder:text-muted-foreground"
-                aria-label="Search services"
               />
             </div>
             <div className="flex items-center gap-2 rounded-xl border border-border bg-background px-3 sm:border-l-0">
               <MapPin className="h-4 w-4 text-muted-foreground" />
-              <select
-                value={location}
-                onChange={(event) => setLocation(event.target.value)}
-                className="w-full bg-transparent py-2.5 text-sm outline-none sm:w-auto"
-                aria-label="Select location"
-              >
-                <option value="Your location">Your location</option>
-                <option value="Colombo">Colombo</option>
-                <option value="Kandy">Kandy</option>
-                <option value="Galle">Galle</option>
+              <select className="w-full bg-transparent py-2.5 text-sm outline-none sm:w-auto">
+                <option>Your location</option>
+                <option>Colombo</option>
+                <option>Kandy</option>
+                <option>Galle</option>
               </select>
             </div>
-            <button
-              type="submit"
-              className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
-            >
+            <button className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity">
               Search Now
             </button>
-          </form>
+          </div>
 
           <div className="mx-auto mt-5 flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
             <span className="font-medium">Popular:</span>
             {POPULAR.map((p) => (
-              <button
-                key={p}
-                type="button"
-                onClick={() => setQuery(p)}
-                className="rounded-full border border-border bg-card px-3 py-1.5 font-medium text-foreground hover:bg-muted transition-colors"
-              >
+              <button key={p} className="rounded-full border border-border bg-card px-3 py-1.5 font-medium text-foreground hover:bg-muted transition-colors">
                 {p}
               </button>
             ))}
@@ -146,29 +95,30 @@ export function ServicesPage() {
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Browse All Categories</h2>
           <a href="#" className="text-sm font-medium text-primary hover:underline">View All 30+ Categories →</a>
         </div>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-          {filteredServices.map((s) => (
-            <Link
-              key={s.id}
-              to="/services/$serviceId"
-              params={{ serviceId: s.id }}
-              className="group flex flex-col items-center gap-3 rounded-2xl border border-border bg-card p-5 text-center hover:border-primary/40 hover:shadow-md transition-all"
-            >
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-2xl">
-                {s.emoji}
-              </div>
-              <div>
-                <p className="text-sm font-semibold">{s.name}</p>
-                <p className="mt-0.5 text-[11px] text-muted-foreground">{s.specialists}</p>
-              </div>
-            </Link>
-          ))}
-          {filteredServices.length === 0 ? (
-            <div className="col-span-full rounded-2xl border border-border bg-card p-10 text-center text-sm text-muted-foreground">
-              No services matched your search. Try a different keyword.
-            </div>
-          ) : null}
-        </div>
+        {loading ? (
+          <p className="py-10 text-center text-sm text-muted-foreground">Loading categories…</p>
+        ) : services.length === 0 ? (
+          <p className="rounded-2xl border border-dashed border-border bg-card p-10 text-center text-sm text-muted-foreground">No service categories yet.</p>
+        ) : (
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+            {services.map((s) => (
+              <Link
+                key={s.id}
+                to="/services/$serviceId"
+                params={{ serviceId: s.id }}
+                className="group flex flex-col items-center gap-3 rounded-2xl border border-border bg-card p-5 text-center hover:border-primary/40 hover:shadow-md transition-all"
+              >
+                <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-2xl">
+                  {s.emoji}
+                </div>
+                <div>
+                  <p className="text-sm font-semibold">{s.name}</p>
+                  <p className="mt-0.5 text-[11px] text-muted-foreground">{s.specialists}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Top rated providers */}
@@ -177,32 +127,38 @@ export function ServicesPage() {
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Top Rated Providers</h2>
           <a href="#" className="text-sm font-medium text-primary hover:underline">View More →</a>
         </div>
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {topRated.map((p) => (
-            <div key={p.name} className="overflow-hidden rounded-2xl border border-border bg-card">
-              <div className="relative h-36" style={{ background: `linear-gradient(135deg, var(--primary) 0%, oklch(0.55 0.10 60) 100%)` }}>
-                <span className="absolute left-3 top-3 rounded-full bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-foreground">Top Rated</span>
-                <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-foreground/80 px-2 py-1 text-[11px] font-semibold text-background">
-                  <Star className="h-3 w-3 fill-current text-primary" /> {p.rating}
-                </span>
-              </div>
-              <div className="space-y-2 p-4">
-                <div>
-                  <p className="font-semibold">{p.name}</p>
-                  <p className="text-[11px] font-bold uppercase tracking-wider text-primary">{p.title}</p>
+        {topRated.length === 0 ? (
+          <p className="rounded-2xl border border-dashed border-border bg-card p-10 text-center text-sm text-muted-foreground">
+            {loading ? "Loading providers…" : "No top-rated providers yet."}
+          </p>
+        ) : (
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {topRated.map((p) => (
+              <div key={p.id} className="overflow-hidden rounded-2xl border border-border bg-card">
+                <div className="relative h-36" style={{ background: `linear-gradient(135deg, var(--primary) 0%, oklch(0.55 0.10 60) 100%)` }}>
+                  <span className="absolute left-3 top-3 rounded-full bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-foreground">Top Rated</span>
+                  <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-foreground/80 px-2 py-1 text-[11px] font-semibold text-background">
+                    <Star className="h-3 w-3 fill-current text-primary" /> {p.rating}
+                  </span>
                 </div>
-                <p className="flex items-center gap-1 text-xs text-muted-foreground"><MapPin className="h-3 w-3" /> {p.area}</p>
-                <p className="text-xs text-success">✓ {p.avail}</p>
-                <div className="flex items-center justify-between pt-2">
-                  <p className="text-sm"><span className="text-lg font-bold">{formatCurrency(p.price)}</span><span className="text-xs text-muted-foreground">/hr</span></p>
-                  <Link {...bookLink} className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:opacity-90 transition-opacity">
-                    Book Now
-                  </Link>
+                <div className="space-y-2 p-4">
+                  <div>
+                    <p className="font-semibold">{p.name}</p>
+                    <p className="text-[11px] font-bold uppercase tracking-wider text-primary">{p.title}</p>
+                  </div>
+                  <p className="flex items-center gap-1 text-xs text-muted-foreground"><MapPin className="h-3 w-3" /> {p.area}</p>
+                  <p className="text-xs text-success">✓ {p.avail}</p>
+                  <div className="flex items-center justify-between pt-2">
+                    <p className="text-sm"><span className="text-lg font-bold">${p.price}</span><span className="text-xs text-muted-foreground">/hr</span></p>
+                    <Link {...bookLink} className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:opacity-90 transition-opacity">
+                      Book Now
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Gold CTA */}
@@ -213,7 +169,7 @@ export function ServicesPage() {
             <p className="mt-1 text-sm opacity-90">Enjoy 0% service fees, priority booking, and extended warranties.</p>
           </div>
           <button className="inline-flex items-center gap-2 rounded-xl bg-background px-5 py-3 text-sm font-semibold text-foreground shadow-sm hover:opacity-90 transition-opacity">
-            Subscribe to Gold — Rs. 29,990/mo <ArrowRight className="h-4 w-4" />
+            Subscribe to Gold — $29.99/mo <ArrowRight className="h-4 w-4" />
           </button>
         </div>
       </section>
