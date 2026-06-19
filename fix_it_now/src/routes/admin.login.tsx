@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Mail, Lock, ShieldCheck, ChevronLeft } from "lucide-react";
 import { toast } from "sonner";
 import { setRole, dashboardPathFor } from "@/lib/role";
+import { useNewApi } from "@/lib/api-client";
+import { authApi } from "@/lib/auth-api";
 
 export const Route = createFileRoute("/admin/login")({
   component: AdminLoginPage,
@@ -19,9 +21,13 @@ function AdminLoginPage() {
     if (!email.trim() || !password.trim()) return;
     setLoading(true);
     try {
-      const { supabase } = await import("@/integrations/supabase/client");
-      const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
-      if (error) throw error;
+      if (useNewApi()) {
+        await authApi.signInWithPassword({ email: email.trim(), password });
+      } else {
+        const { supabase } = await import("@/integrations/supabase/client");
+        const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+        if (error) throw error;
+      }
       setRole("admin");
       navigate({ to: dashboardPathFor("admin") });
     } catch (err: any) {
